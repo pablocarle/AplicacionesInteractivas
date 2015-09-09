@@ -1,6 +1,6 @@
 package com.parking.app.model;
 
-public class Auto {
+public abstract class Auto {
 	
 	private String patente;
 	private String marca;
@@ -15,6 +15,10 @@ public class Auto {
 		this.patente = patente;
 		this.marca = marca;
 		this.modelo = modelo;
+	}
+	
+	public AutoView obtenerVista() {
+		return new AutoView(this);
 	}
 
 	@Override

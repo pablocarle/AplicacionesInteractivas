@@ -1,5 +1,8 @@
 package com.parking.app.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cliente {
 	
 	private int idCliente;
@@ -7,6 +10,7 @@ public class Cliente {
 	private String telefono;
 	private String email;
 	private boolean activo;
+	private List<Auto> autos = new ArrayList<Auto>();
 	
 	public Cliente() {
 		super();
@@ -83,5 +87,27 @@ public class Cliente {
 	}
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+
+	public AutoView asociarAuto(String patente, String modelo, String marca, boolean esGrande) throws Exception {
+		Auto nuevoAuto = null;
+		if (esGrande) {
+			nuevoAuto = new AutoPickUpOCamionPequeno();
+		} else {
+			nuevoAuto = new AutoSedan();
+		}
+		nuevoAuto.setPatente(patente);
+		nuevoAuto.setMarca(marca);
+		nuevoAuto.setModelo(modelo);
+		if (!autos.contains(nuevoAuto)) {
+			autos.add(nuevoAuto);
+			return nuevoAuto.obtenerVista();
+		} else {
+			throw new Exception("El auto " + nuevoAuto.getPatente() + " ya esta asociado al cliente");
+		}
+	}
+
+	public List<Auto> getAutos() {
+		return autos;
 	}
 }
