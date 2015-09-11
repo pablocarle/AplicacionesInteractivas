@@ -27,6 +27,11 @@ public class ClienteView {
 		}
 		return retList;
 	}
+	
+	@Override
+	public String toString() {
+		return nombre;
+	}
 
 	@Override
 	public String toString() {

@@ -61,6 +61,7 @@ public class SistemaCocheras {
 			nuevoCliente.setNombre(nombre);
 			nuevoCliente.setTelefono(telefono);
 			clientes.add(nuevoCliente);
+			ClienteMapper.obtenerMapper().insert(nuevoCliente);
 			return nuevoCliente.obtenerVista();
 		} else {
 			throw new Exception("Ya existe cliente con nombre " + nombre + " y email " + email);
@@ -81,6 +82,7 @@ public class SistemaCocheras {
 	}
 	
 	public ClienteView buscarCliente(String nombre, String domicilio, String email, String telefono) {
+		Cliente clienteABuscar = new Cliente(-1, nombre, domicilio, telefono, email, true);
 		return null;
 	}
 	
