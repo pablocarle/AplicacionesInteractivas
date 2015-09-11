@@ -5,16 +5,19 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JList;
 
 import com.parking.app.controller.SistemaCocheras;
-import com.parking.app.model.ClienteView;
 
 public class ListarClientes extends JDialog {
 
-    private final JPanel contentPanel = new JPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
 
     /**
      * Launch the application.
@@ -39,7 +42,7 @@ public class ListarClientes extends JDialog {
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         {
-            JList<ClienteView> list = new JList<ClienteView>();
+            JList list = new JList();
             contentPanel.add(list);
             list.setListData(SistemaCocheras.getSistemaCocheras().listarClientes());
         }

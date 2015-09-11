@@ -33,10 +33,6 @@ public class ClienteView {
 		return nombre;
 	}
 
-	@Override
-	public String toString() {
-	    return nombre;
-	}
 	public int getIdCliente() {
 		return idCliente;
 	}

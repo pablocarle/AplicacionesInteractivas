@@ -44,6 +44,9 @@ create table mediospago (
 	idMedioPago integer not null,
 	nombre varchar(30) not null,
 	descripcion varchar(100),
+	ftp_out varchar(255),
+	ftp_in varchar(255),
+	banco integer,
 	constraint mediospago_pk primary key ( idMedioPago )
 );
 

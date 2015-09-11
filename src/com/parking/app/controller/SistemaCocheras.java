@@ -1,8 +1,13 @@
 package com.parking.app.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Properties;
 import java.util.Vector;
 
 import com.parking.app.db.ClienteMapper;
@@ -19,6 +24,22 @@ import com.parking.app.model.Tarifa;
 public class SistemaCocheras {
 	
 	private static SistemaCocheras instancia;
+	
+	private static double PRECIOHORA;
+	private static int CANTIDADCOCHERAS;
+	
+	static {
+		Properties props = new Properties();
+		try {
+			props.load(new FileInputStream(new File("app.properties")));
+//			PRECIOHORA = Double.parseDouble(props.getProperty(""));
+		
+		} catch (Exception e) {
+			System.out.println("Error cargando archivo de propiedades del sistema");
+			e.printStackTrace();
+		}
+		
+	}
 	
 	private SistemaCocheras() {
 		super();
@@ -69,6 +90,10 @@ public class SistemaCocheras {
 	}
 	
 	private boolean existeCliente(String nombre, String email) {
+		for (Cliente cliente : clientes) {
+			if (cliente.getNombre().equals(nombre) && cliente.getEmail().equals(email))
+				return true;
+		}
 		return false;
 	}
 
@@ -76,8 +101,8 @@ public class SistemaCocheras {
 		Cliente cliente = obtenerCliente(idCliente);
 		if (cliente == null)
 			throw new Exception("No se encontro cliente con id " + idCliente);
-		cliente.setActivo(false);
-		//TODO persistir
+		clientes.remove(cliente);
+		ClienteMapper.obtenerMapper();
 		return cliente.obtenerVista();
 	}
 	

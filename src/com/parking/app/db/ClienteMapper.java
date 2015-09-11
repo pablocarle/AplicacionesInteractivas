@@ -28,13 +28,12 @@ public class ClienteMapper implements Mapper {
 		if (o instanceof Cliente) {
 			Cliente cliente = (Cliente) o;
 			Connection conn = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement ps = conn.prepareStatement("insert into clientes (idCliente, nombre, domicilio, telefono, email, activo) values (?, ?, ?, ?, ?, ?)");
-			ps.setInt(1, cliente.getIdCliente());
-			ps.setString(2, cliente.getNombre());
-			ps.setString(3, cliente.getDomicilio());
-			ps.setString(4, cliente.getTelefono());
-			ps.setString(5, cliente.getEmail());
-			ps.setBoolean(6, cliente.isActivo());
+			PreparedStatement ps = conn.prepareStatement("insert into clientes (nombre, domicilio, telefono, email, activo) values (?, ?, ?, ?, ?)");
+			ps.setString(1, cliente.getNombre());
+			ps.setString(2, cliente.getDomicilio());
+			ps.setString(3, cliente.getTelefono());
+			ps.setString(4, cliente.getEmail());
+			ps.setBoolean(5, cliente.isActivo());
 			ps.execute();
 			PoolConnection.getPoolConnection().releaseConnection(conn);
 		} else {
