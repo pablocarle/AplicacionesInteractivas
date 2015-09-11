@@ -1,9 +1,10 @@
 package com.parking.app.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Vector;
 
-import com.parking.app.db.AutosMapper;
 import com.parking.app.db.ClienteMapper;
 import com.parking.app.db.ContratosMapper;
 import com.parking.app.db.TarifasMapper;
@@ -81,6 +82,15 @@ public class SistemaCocheras {
 	
 	public ClienteView buscarCliente(String nombre, String domicilio, String email, String telefono) {
 		return null;
+	}
+	
+	public Vector<ClienteView> listarClientes() {
+		Vector<ClienteView> lista = new Vector<ClienteView>();
+		for (Cliente cliente : clientes) {
+			lista.add(cliente.obtenerVista());
+		}
+		return lista;
+		
 	}
 	
 	public ClienteView asociarAuto(int idCliente, String patente, String modelo, String marca, boolean esGrande) throws Exception {
