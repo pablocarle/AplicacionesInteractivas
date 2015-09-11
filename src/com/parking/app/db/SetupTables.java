@@ -2,6 +2,7 @@ package com.parking.app.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -27,5 +28,12 @@ public class SetupTables {
         statement.executeUpdate("insert into clientes values(1, 'Juan Perez', 'Cochabamba 332', '467532463', 'email@localhost', 1, null)");
         statement.executeUpdate("insert into clientes values(2, 'Jorge Roque', 'San Juan 552', '7654335', 'email@demo', 1, null)");
         statement.executeUpdate("insert into clientes values(3, 'Pedro Perez', 'Av. Independencia 552', '157654335', 'email2@demo', 0, null)");
+        ResultSet result = statement.executeQuery("select * from clientes");
+        while (result.next())
+        {
+            int id = result.getInt(1);
+            String nombre = result.getString(2);
+            System.out.println(id + " " + nombre);
+        }
     }
 }
