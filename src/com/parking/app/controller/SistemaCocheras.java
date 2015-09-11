@@ -27,8 +27,8 @@ public class SistemaCocheras {
 	private void cargarModelo() throws Exception {
 		clientes = ClienteMapper.obtenerMapper().selectAll();
 //		autos = AutosMapper.obtenerMapper().selectAll();
-		tarifas = TarifasMapper.obtenerMapper().selectAll();
-		contratos = ContratosMapper.obtenerMapper().selectAll();
+//		tarifas = TarifasMapper.obtenerMapper().selectAll();
+//		contratos = ContratosMapper.obtenerMapper().selectAll();
 	}
 
 	public static SistemaCocheras getSistemaCocheras() {

@@ -28,6 +28,10 @@ public class ClienteView {
 		return retList;
 	}
 
+	@Override
+	public String toString() {
+	    return nombre;
+	}
 	public int getIdCliente() {
 		return idCliente;
 	}
