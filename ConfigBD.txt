@@ -1,0 +1,5 @@
+jdbc=jdbc:sqlite:
+servidor=cocheras.db
+usuario=
+password=
+conexiones=3
