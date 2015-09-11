@@ -1,8 +1,12 @@
 package com.parking.app.controller;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
+import com.parking.app.db.AutosMapper;
+import com.parking.app.db.ClienteMapper;
+import com.parking.app.db.ContratosMapper;
+import com.parking.app.db.TarifasMapper;
 import com.parking.app.model.Abono;
 import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
@@ -19,6 +23,13 @@ public class SistemaCocheras {
 		super();
 	}
 	
+	private void cargarModelo() throws Exception {
+		clientes = ClienteMapper.obtenerMapper().selectAll();
+//		autos = AutosMapper.obtenerMapper().selectAll();
+		tarifas = TarifasMapper.obtenerMapper().selectAll();
+		contratos = ContratosMapper.obtenerMapper().selectAll();
+	}
+
 	public static SistemaCocheras getSistemaCocheras() {
 		if (instancia == null) {
 			instancia = new SistemaCocheras();
@@ -26,11 +37,20 @@ public class SistemaCocheras {
 		return instancia;
 	}
 	
-	private List<Cliente> clientes;
-	private List<Contrato> contratos;
-	private List<Cochera> cocheras;
-	private List<Tarifa> tarifas;
-	private List<Abono> abonos;
+	private Collection<Cliente> clientes;
+	private Collection<Contrato> contratos;
+	private Collection<Cochera> cocheras;
+	private Collection<Tarifa> tarifas;
+	private Collection<Abono> abonos;
+	
+	{
+		try {
+			cargarModelo();
+		} catch (Exception e) {
+			System.out.println("error en carga de modelo. " + e);
+			e.printStackTrace();
+		}
+	}
 	
 	public ClienteView crearCliente(String nombre, String domicilio, String email, String telefono) throws Exception {
 		if (!existeCliente(nombre, email)) {
@@ -47,12 +67,16 @@ public class SistemaCocheras {
 	}
 	
 	private boolean existeCliente(String nombre, String email) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public ClienteView bajaCliente(int idCliente) {
-		return null;
+	public ClienteView bajaCliente(int idCliente) throws Exception {
+		Cliente cliente = obtenerCliente(idCliente);
+		if (cliente == null)
+			throw new Exception("No se encontro cliente con id " + idCliente);
+		cliente.setActivo(false);
+		//TODO persistir
+		return cliente.obtenerVista();
 	}
 	
 	public ClienteView buscarCliente(String nombre, String domicilio, String email, String telefono) {

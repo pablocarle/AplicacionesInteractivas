@@ -2,17 +2,13 @@ package com.parking.app.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
-
-import com.parking.app.db.PoolConnection;
+import javax.swing.WindowConstants;
 
 public class Menu extends javax.swing.JFrame {
 

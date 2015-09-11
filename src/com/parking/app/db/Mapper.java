@@ -3,8 +3,9 @@ package com.parking.app.db;
 import java.util.Collection;
 
 public interface Mapper {
-    public void insert (Object o);
-    public void update (Object o);
-    public void delete (Object d);
-    public Collection<Object> select (Object o);
+    public void insert (Object o) throws Exception;
+    public void update (Object o) throws Exception;
+    public void delete (Object d) throws Exception;
+    public Collection<? extends Object> select (Object o) throws Exception;
+    public Collection<? extends Object> selectAll() throws Exception;
 }

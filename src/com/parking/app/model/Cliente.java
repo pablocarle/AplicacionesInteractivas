@@ -11,19 +11,21 @@ public class Cliente {
 	private String email;
 	private boolean activo;
 	private List<Auto> autos = new ArrayList<Auto>();
+	private String domicilio;
 	
 	public Cliente() {
 		super();
 	}
 	
-	public Cliente(int idCliente, String nombre, String telefono, String email,
-			boolean activo) {
+	public Cliente(int idCliente, String nombre, String domicilio, String telefono,
+			String email, boolean activo) {
 		super();
 		this.idCliente = idCliente;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.email = email;
 		this.activo = activo;
+		this.domicilio = domicilio;
 	}
 	
 	public ClienteView obtenerVista() {
@@ -88,10 +90,20 @@ public class Cliente {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
+	public String getDomicilio() {
+		return domicilio;
+	}
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
+	}
+	public void setAutos(List<Auto> autos) {
+		this.autos = autos;
+	}
 
 	public AutoView asociarAuto(String patente, String modelo, String marca, boolean esGrande) throws Exception {
 		Auto nuevoAuto = null;
 		if (esGrande) {
+			
 			nuevoAuto = new AutoPickUpOCamionPequeno();
 		} else {
 			nuevoAuto = new AutoSedan();

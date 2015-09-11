@@ -108,7 +108,7 @@ public class PoolConnection
         }
         return c;
     }
-    public void realeaseConnection(Connection c)
+    public void releaseConnection(Connection c)
     {
         connections.add(c);
     }
