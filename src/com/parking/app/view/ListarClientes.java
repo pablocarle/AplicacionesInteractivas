@@ -12,21 +12,24 @@ import javax.swing.border.EmptyBorder;
 import com.parking.app.controller.SistemaCocheras;
 
 public class ListarClientes extends JDialog {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
+	private static ListarClientes instance; 
+
+    public static ListarClientes getInstance() {
+        if (instance == null) {
+            instance = new ListarClientes();
+        }
+        
+        return instance;
+    }
 
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
         try {
-            ListarClientes dialog = new ListarClientes();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
+            getInstance().setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +65,8 @@ public class ListarClientes extends JDialog {
                 buttonPane.add(cancelButton);
             }
         }
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
+
 
 }

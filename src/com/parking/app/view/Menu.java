@@ -3,6 +3,7 @@ package com.parking.app.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -16,13 +17,12 @@ public class Menu extends javax.swing.JFrame {
 	private JMenuBar jMenuBar1;
 	private JMenuItem jMenuItem1;
 	private JMenu jMenu1;
+	private JMenu mnClientes;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				Menu inst = new Menu();
-				inst.setLocationRelativeTo(null);
-				inst.setVisible(true);
 			}
 		});
 	}
@@ -45,6 +45,32 @@ public class Menu extends javax.swing.JFrame {
 				jMenuBar1 = new JMenuBar();
 				setJMenuBar(jMenuBar1);
 				{
+				    mnClientes = new JMenu("Clientes");
+				    jMenuBar1.add(mnClientes);
+				    
+				    JMenuItem mntmAlta = new JMenuItem("Alta");
+				    mntmAlta.addActionListener(new ActionListener() {
+				        public void actionPerformed(ActionEvent e) {
+				            AltaCliente.getInstance().setVisible(true);
+				        }
+				    });
+				    mnClientes.add(mntmAlta);
+				    
+				    JMenuItem mntmModificar = new JMenuItem("Modificar");
+				    mnClientes.add(mntmModificar);
+				    
+				    JMenuItem mntmBaja = new JMenuItem("Baja");
+				    mnClientes.add(mntmBaja);
+				    
+				    JMenuItem mntmListar = new JMenuItem("Listar");
+				    mntmListar.addActionListener(new ActionListener() {
+				        public void actionPerformed(ActionEvent e) {
+				            ListarClientes.getInstance().setVisible(true);
+				        }
+				    });
+				    mnClientes.add(mntmListar);
+				}
+				{
 					jMenu1 = new JMenu();
 					jMenuBar1.add(jMenu1);
 					jMenu1.setText("Salir del Sistema");
@@ -61,11 +87,13 @@ public class Menu extends javax.swing.JFrame {
 					}
 				}
 			}
+			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			pack();
-			this.setSize(800, 600);
+			setLocationRelativeTo(null);
+			setSize(800, 600);
+			setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 }

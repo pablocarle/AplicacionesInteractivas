@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.parking.app.controller.SistemaCocheras;
 import com.parking.app.model.ClienteView;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AltaCliente extends JDialog {
 
@@ -26,15 +27,21 @@ public class AltaCliente extends JDialog {
 	private JTextField domicilioField;
 	private JTextField emailField;
 	private JTextField textField;
-
+	private static AltaCliente instance;
+	
+	public static AltaCliente getInstance() {
+	    if (instance == null) {
+	        instance = new AltaCliente();
+	    }
+	    
+	    return instance;
+	}
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			AltaCliente dialog = new AltaCliente();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
+		    getInstance().setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,7 +104,8 @@ public class AltaCliente extends JDialog {
 						if (esFormularioValido()) {
 							try {
 								ClienteView cliente = SistemaCocheras.getSistemaCocheras().crearCliente(nameField.getText(), domicilioField.getText(), emailField.getText(), null);
-								System.out.println("Creado cliente!: " + cliente);
+								showMessageDialog(null, "Creado cliente!: " + cliente);
+								dispose();
 							} catch (Exception e1) {
 								System.err.println(e1);
 							}
@@ -121,6 +129,7 @@ public class AltaCliente extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
 	private boolean esFormularioValido() {
