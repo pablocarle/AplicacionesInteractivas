@@ -57,18 +57,20 @@ public class Menu extends javax.swing.JFrame {
 				    mnClientes.add(mntmAlta);
 				    
 				    JMenuItem mntmModificar = new JMenuItem("Modificar");
+				    mntmModificar.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            ModificarCliente.getInstance().setVisible(true);
+                        }
+                    });
 				    mnClientes.add(mntmModificar);
 				    
 				    JMenuItem mntmBaja = new JMenuItem("Baja");
-				    mnClientes.add(mntmBaja);
-				    
-				    JMenuItem mntmListar = new JMenuItem("Listar");
-				    mntmListar.addActionListener(new ActionListener() {
+				    mntmBaja.addActionListener(new ActionListener() {
 				        public void actionPerformed(ActionEvent e) {
-				            ListarClientes.getInstance().setVisible(true);
+				            EliminarCliente.getInstance().setVisible(true);
 				        }
 				    });
-				    mnClientes.add(mntmListar);
+				    mnClientes.add(mntmBaja);
 				}
 				{
 					jMenu1 = new JMenu();

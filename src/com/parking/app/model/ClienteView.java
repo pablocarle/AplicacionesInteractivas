@@ -8,6 +8,7 @@ public class ClienteView {
 	private int idCliente;
 	private String nombre;
 	private String email;
+	private String domicilio;
 	private String telefono;
 	private List<AutoView> autos;
 	
@@ -16,6 +17,7 @@ public class ClienteView {
 		this.idCliente = cliente.getIdCliente();
 		this.nombre = cliente.getNombre();
 		this.email = cliente.getEmail();
+		this.domicilio = cliente.getDomicilio();
 		this.telefono = cliente.getTelefono();
 		this.autos = obtenerAutoViews(cliente);
 	}
@@ -30,7 +32,7 @@ public class ClienteView {
 	
 	@Override
 	public String toString() {
-		return nombre;
+		return nombre + " <" + email + ">";
 	}
 
 	public int getIdCliente() {
@@ -56,6 +58,14 @@ public class ClienteView {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
 
 	public String getTelefono() {
 		return telefono;

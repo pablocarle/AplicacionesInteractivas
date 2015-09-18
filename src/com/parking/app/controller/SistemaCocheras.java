@@ -79,6 +79,7 @@ public class SistemaCocheras {
 			Cliente nuevoCliente = new Cliente();
 			nuevoCliente.setActivo(true);
 			nuevoCliente.setEmail(email);
+			nuevoCliente.setDomicilio(domicilio);
 			nuevoCliente.setNombre(nombre);
 			nuevoCliente.setTelefono(telefono);
 			clientes.add(nuevoCliente);
@@ -102,7 +103,7 @@ public class SistemaCocheras {
 		if (cliente == null)
 			throw new Exception("No se encontro cliente con id " + idCliente);
 		clientes.remove(cliente);
-		ClienteMapper.obtenerMapper();
+		ClienteMapper.obtenerMapper().delete(cliente);
 		return cliente.obtenerVista();
 	}
 	
@@ -131,7 +132,7 @@ public class SistemaCocheras {
 		}
 	}
 	
-	private Cliente obtenerCliente(int idCliente) {
+	public Cliente obtenerCliente(int idCliente) {
 		for (Cliente cliente : clientes) {
 			if (cliente.getIdCliente() == idCliente) {
 				return cliente;
@@ -143,4 +144,15 @@ public class SistemaCocheras {
 	public ContratoView crearContrato(int idCliente, Date fechaInicio, Date fechaFin, String patente, int idMedioPago) throws Exception {
 		return null;
 	}
+
+    public ClienteView modificarCliente(int idCliente, String nombre, String domicilio, String email, String telefono) throws Exception {
+            Cliente cliente = obtenerCliente(idCliente);
+            cliente.setActivo(true);
+            cliente.setEmail(email);
+            cliente.setNombre(nombre);
+            cliente.setDomicilio(domicilio);
+            cliente.setTelefono(telefono);
+            ClienteMapper.obtenerMapper().update(cliente);
+            return cliente.obtenerVista();
+    }
 }

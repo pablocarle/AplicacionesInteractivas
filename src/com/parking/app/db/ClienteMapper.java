@@ -45,16 +45,16 @@ public class ClienteMapper implements Mapper {
 	public void update(Object o) throws Exception {
 		if (o instanceof Cliente) {
 			Cliente cliente = (Cliente) o;
-			Collection<Cliente> clientesDB = select(cliente.getIdCliente());
-			if (!clientesDB.isEmpty()) {
-				
+
 				Connection conn = PoolConnection.getPoolConnection().getConnection();
-				
-				
+				PreparedStatement ps = conn.prepareStatement("update clientes set nombre = ?, domicilio = ?, telefono = ?, email = ? where idCliente = ?");
+	            ps.setString(1, cliente.getNombre());
+	            ps.setString(2, cliente.getDomicilio());
+	            ps.setString(3, cliente.getTelefono());
+	            ps.setString(4, cliente.getEmail());
+	            ps.setInt(5, cliente.getIdCliente());
+	            ps.executeUpdate();
 				PoolConnection.getPoolConnection().releaseConnection(conn);
-			} else {
-				throw new Exception("El cliente " + cliente.getIdCliente() + " no existe");
-			}
 		} else {
 			throw new Exception();
 		}
@@ -66,7 +66,7 @@ public class ClienteMapper implements Mapper {
 			Cliente cliente = (Cliente) o;
 			Connection conn = PoolConnection.getPoolConnection().getConnection();
 			cliente.setActivo(false);
-			PreparedStatement ps = conn.prepareStatement("update clientes set activo = false where idCliente = ?");
+			PreparedStatement ps = conn.prepareStatement("update clientes set activo = 0 where idCliente = ?");
 			ps.setInt(1, cliente.getIdCliente());
 			ps.executeUpdate();
 			PoolConnection.getPoolConnection().releaseConnection(conn);
@@ -88,7 +88,7 @@ public class ClienteMapper implements Mapper {
 	@Override
 	public Collection<Cliente> selectAll() throws Exception {
 		Connection conn = PoolConnection.getPoolConnection().getConnection();
-		PreparedStatement ps = conn.prepareStatement("select idCliente, nombre, domicilio, telefono, email, activo from clientes");
+		PreparedStatement ps = conn.prepareStatement("select idCliente, nombre, domicilio, telefono, email, activo from clientes where activo=1");
 		Collection<Cliente> clientes = new ArrayList<Cliente>();
 		if (ps.execute()) {
 			ResultSet rs = ps.getResultSet();

@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,7 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.parking.app.controller.SistemaCocheras;
+import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
+
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AltaCliente extends JDialog {
@@ -26,14 +30,14 @@ public class AltaCliente extends JDialog {
 	private JTextField nameField;
 	private JTextField domicilioField;
 	private JTextField emailField;
-	private JTextField textField;
+	private JTextField telefonoField;
 	private static AltaCliente instance;
+	private Integer idCliente = null;
 	
 	public static AltaCliente getInstance() {
 	    if (instance == null) {
 	        instance = new AltaCliente();
 	    }
-	    
 	    return instance;
 	}
 	/**
@@ -59,7 +63,7 @@ public class AltaCliente extends JDialog {
 		contentPanel.setLayout(null);
 		
 		JLabel lblNombreYApellido = new JLabel("Nombre y Apellido");
-		lblNombreYApellido.setBounds(10, 11, 103, 14);
+		lblNombreYApellido.setBounds(10, 11, 140, 14);
 		contentPanel.add(lblNombreYApellido);
 		
 		nameField = new JTextField();
@@ -86,13 +90,13 @@ public class AltaCliente extends JDialog {
 		emailField.setColumns(10);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
-		lblTelefono.setBounds(10, 86, 46, 14);
+		lblTelefono.setBounds(10, 86, 140, 14);
 		contentPanel.add(lblTelefono);
 		
-		textField = new JTextField();
-		textField.setBounds(162, 83, 262, 20);
-		contentPanel.add(textField);
-		textField.setColumns(10);
+		telefonoField = new JTextField();
+		telefonoField.setBounds(162, 83, 262, 20);
+		contentPanel.add(telefonoField);
+		telefonoField.setColumns(10);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -101,14 +105,31 @@ public class AltaCliente extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (esFormularioValido()) {
+					    String nombre = nameField.getText();
+					    String domicilio = domicilioField.getText();
+					    String email = emailField.getText();
+					    String tel = telefonoField.getText();
+					    String errors = esFormularioValido(nombre, domicilio, email, tel);
+						if (errors.isEmpty()) {
 							try {
-								ClienteView cliente = SistemaCocheras.getSistemaCocheras().crearCliente(nameField.getText(), domicilioField.getText(), emailField.getText(), null);
-								showMessageDialog(null, "Creado cliente!: " + cliente);
+							    // Cuando hay un idCliente seteado este formulario
+							    // sirve para modificar datos
+							    if (idCliente == null) {
+    								ClienteView cliente = SistemaCocheras
+    								        .getSistemaCocheras().crearCliente(nombre, domicilio, email, tel);
+    								showMessageDialog(null, "Creado cliente!: " + cliente);
+							    } else {
+							        ClienteView cliente = SistemaCocheras
+							                .getSistemaCocheras().modificarCliente(idCliente, nombre, domicilio, email, tel);
+							        showMessageDialog(null, "Cliente modificado!: " + cliente);
+							        idCliente = null;
+							    }
 								dispose();
 							} catch (Exception e1) {
 								System.err.println(e1);
 							}
+						} else {
+						    showMessageDialog(null, errors);
 						}
 					}
 
@@ -119,9 +140,10 @@ public class AltaCliente extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+					    idCliente = null;
 						dispose();
 					}
 				});
@@ -129,11 +151,34 @@ public class AltaCliente extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		addWindowListener(new java.awt.event.WindowAdapter() {
+	        public void windowClosing(WindowEvent winEvt) {
+	            idCliente = null;
+	        }
+	    });
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
-	private boolean esFormularioValido() {
-		// TODO Auto-generated method stub
-		return true;
+	private String esFormularioValido(String nombre, String domicilio, String email, String tel) {
+	    String errorMessage = "";
+		if (nombre.isEmpty() || email.isEmpty()) {
+		    errorMessage = "Debe indicar nombre y email.";
+		} else if (!email.contains("@") || !email.contains(".")
+		        || email.indexOf("@") > email.indexOf(".")
+		        || email.endsWith(".")) {
+		    errorMessage = "Email inválido.";
+		}
+		return errorMessage;
 	}
+
+    public AltaCliente modificar(int id) {
+        idCliente = id;
+        ClienteView cliente = SistemaCocheras.getSistemaCocheras().obtenerCliente(idCliente).obtenerVista();
+
+        nameField.setText(cliente.getNombre());
+        domicilioField.setText(cliente.getDomicilio());
+        emailField.setText(cliente.getEmail());
+        telefonoField.setText(cliente.getTelefono());
+        return instance;
+    }
 }
