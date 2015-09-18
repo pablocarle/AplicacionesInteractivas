@@ -7,9 +7,9 @@ import com.parking.app.model.Tarifa;
 public class TarifasMapper implements Mapper {
 
 	@Override
-	public void insert(Object o) throws Exception {
+	public int insert(Object o) throws Exception {
 		// TODO Auto-generated method stub
-
+	    return 0;
 	}
 
 	@Override

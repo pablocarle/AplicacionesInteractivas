@@ -62,45 +62,43 @@ public class ModificarCliente extends JDialog {
             JPanel buttonPane = new JPanel();
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
-            {
-                JButton okButton = new JButton("Modificar");
-                okButton.setActionCommand("Modificar");
-                buttonPane.add(okButton);
-                getRootPane().setDefaultButton(okButton);
-                okButton.addActionListener(new ActionListener() {
+            
+            JButton okButton = new JButton("Modificar");
+            okButton.setActionCommand("Modificar");
+            buttonPane.add(okButton);
+            getRootPane().setDefaultButton(okButton);
+            okButton.addActionListener(new ActionListener() {
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            if (!list.isSelectionEmpty()) {
-                                JDialog addNewDialog = AltaCliente.getInstance().modificar(list.getSelectedValue().getIdCliente());
-                                addNewDialog.setVisible(true);
-                                addNewDialog.addWindowListener(new WindowAdapter() {
-                                    @Override
-                                    public void windowClosed(WindowEvent e) {
-                                        list.removeAll();
-                                        list.setListData(SistemaCocheras.getSistemaCocheras().listarClientes());
-                                    }
-                                });
-                            }
-                        } catch (Exception e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        if (!list.isSelectionEmpty()) {
+                            JDialog dialog = AltaCliente.getInstance().modificar(list.getSelectedValue().getIdCliente());
+                            dialog.setVisible(true);
+                            dialog.addWindowListener(new WindowAdapter() {
+                                @Override
+                                public void windowClosed(WindowEvent e) {
+                                    list.removeAll();
+                                    list.setListData(SistemaCocheras.getSistemaCocheras().listarClientes());
+                                }
+                            });
                         }
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
                     }
-                });
-
-                {
-                    JButton cancelButton = new JButton("Cancelar");
-                    cancelButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            dispose();
-                        }
-                    });
-                    cancelButton.setActionCommand("Cancel");
-                    buttonPane.add(cancelButton);
                 }
-        }
+            });
+
+            JButton cancelButton = new JButton("Cancelar");
+            cancelButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                }
+            });
+            cancelButton.setActionCommand("Cancel");
+            buttonPane.add(cancelButton);
+
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
 

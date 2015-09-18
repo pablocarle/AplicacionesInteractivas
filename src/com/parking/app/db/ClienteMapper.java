@@ -3,6 +3,8 @@ package com.parking.app.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,21 +26,32 @@ public class ClienteMapper implements Mapper {
 	}
 
 	@Override
-	public void insert(Object o) throws Exception {
+	public int insert(Object o) throws Exception {
 		if (o instanceof Cliente) {
 			Cliente cliente = (Cliente) o;
 			Connection conn = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement ps = conn.prepareStatement("insert into clientes (nombre, domicilio, telefono, email, activo) values (?, ?, ?, ?, ?)");
+			PreparedStatement ps = conn.prepareStatement("insert into clientes (nombre, domicilio, telefono, email, activo) values (?, ?, ?, ?, 1)");
 			ps.setString(1, cliente.getNombre());
 			ps.setString(2, cliente.getDomicilio());
 			ps.setString(3, cliente.getTelefono());
 			ps.setString(4, cliente.getEmail());
-			ps.setBoolean(5, cliente.isActivo());
 			ps.execute();
-			PoolConnection.getPoolConnection().releaseConnection(conn);
+
+            PoolConnection.getPoolConnection().releaseConnection(conn);
+			return getClientId(cliente.getEmail());
 		} else {
 			throw new Exception();
 		}
+	}
+
+	public int getClientId(String email) throws SQLException {
+	    Connection conn = PoolConnection.getPoolConnection().getConnection();
+	    PreparedStatement ps = conn.prepareStatement("select idCliente from clientes where email=?");
+	    ps.setString(1, email);
+	    ResultSet rs = ps.executeQuery();
+	    int idCliente = rs.getInt(1);
+	    PoolConnection.getPoolConnection().releaseConnection(conn);
+        return idCliente;
 	}
 
 	@Override

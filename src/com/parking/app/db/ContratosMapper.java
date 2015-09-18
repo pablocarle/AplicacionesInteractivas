@@ -7,7 +7,8 @@ import com.parking.app.model.Contrato;
 public class ContratosMapper implements Mapper {
 
 	@Override
-	public void insert(Object o) throws Exception {
+	public int insert(Object o) throws Exception {
+        return 0;
 		// TODO Auto-generated method stub
 
 	}

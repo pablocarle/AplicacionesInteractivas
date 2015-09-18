@@ -75,25 +75,28 @@ public class SistemaCocheras {
 	}
 	
 	public ClienteView crearCliente(String nombre, String domicilio, String email, String telefono) throws Exception {
-		if (!existeCliente(nombre, email)) {
+		if (!existeCliente(email)) {
 			Cliente nuevoCliente = new Cliente();
 			nuevoCliente.setActivo(true);
 			nuevoCliente.setEmail(email);
 			nuevoCliente.setDomicilio(domicilio);
 			nuevoCliente.setNombre(nombre);
 			nuevoCliente.setTelefono(telefono);
+			
+			int idCliente = ClienteMapper.obtenerMapper().insert(nuevoCliente);
+			nuevoCliente.setIdCliente(idCliente);
 			clientes.add(nuevoCliente);
-			ClienteMapper.obtenerMapper().insert(nuevoCliente);
 			return nuevoCliente.obtenerVista();
 		} else {
-			throw new Exception("Ya existe cliente con nombre " + nombre + " y email " + email);
+			return null;
 		}
 	}
 	
-	private boolean existeCliente(String nombre, String email) {
+	private boolean existeCliente(String email) {
 		for (Cliente cliente : clientes) {
-			if (cliente.getNombre().equals(nombre) && cliente.getEmail().equals(email))
+			if (cliente.getEmail().equals(email)) {
 				return true;
+			}
 		}
 		return false;
 	}

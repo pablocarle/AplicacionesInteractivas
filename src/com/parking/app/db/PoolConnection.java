@@ -99,10 +99,12 @@ public class PoolConnection
     public  Connection getConnection()
     {
         Connection c = null;
-        if (connections.size()>0)
-            c = connections.remove(0);
-        else
-        {
+
+        if (connections.size()>0) {
+            // intenta reutilizar la misma conexión en lugar de rotarla
+            c = connections.lastElement();
+            connections.remove(c);
+        } else {
             c = connect();
             System.out.println("Se ha creado una nueva conexion fuera de los parametros de configuracion");
         }
