@@ -103,7 +103,6 @@ public class Cliente {
 	public AutoView asociarAuto(String patente, String modelo, String marca, boolean esGrande) throws Exception {
 		Auto nuevoAuto = null;
 		if (esGrande) {
-			
 			nuevoAuto = new AutoPickUpOCamionPequeno();
 		} else {
 			nuevoAuto = new AutoSedan();
@@ -121,5 +120,14 @@ public class Cliente {
 
 	public List<Auto> getAutos() {
 		return autos;
+	}
+
+	public Auto obtenerAuto(String patente) throws Exception {
+		for (Auto auto : autos) {
+			if (auto.getPatente().equals(patente)) {
+				return auto;
+			}
+		}
+		throw new Exception("El auto " + patente + " no pertenece");
 	}
 }

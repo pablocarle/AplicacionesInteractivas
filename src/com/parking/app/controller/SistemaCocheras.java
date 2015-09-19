@@ -2,43 +2,46 @@ package com.parking.app.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
 import com.parking.app.db.ClienteMapper;
-import com.parking.app.db.ContratosMapper;
-import com.parking.app.db.TarifasMapper;
 import com.parking.app.model.Abono;
+import com.parking.app.model.AbonoView;
+import com.parking.app.model.Auto;
 import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
 import com.parking.app.model.Cochera;
+import com.parking.app.model.CocheraEspezial;
 import com.parking.app.model.Contrato;
 import com.parking.app.model.ContratoView;
+import com.parking.app.model.MapaCocheras;
+import com.parking.app.model.MedioPago;
+import com.parking.app.model.MedioPagoView;
 import com.parking.app.model.Tarifa;
 
 public class SistemaCocheras {
 	
 	private static SistemaCocheras instancia;
 	
+	private static Properties props;
+	
 	private static double PRECIOHORA;
 	private static int CANTIDADCOCHERAS;
 	
 	static {
 		Properties props = new Properties();
+		SistemaCocheras.props = props;
 		try {
 			props.load(new FileInputStream(new File("app.properties")));
-//			PRECIOHORA = Double.parseDouble(props.getProperty(""));
-		
+			PRECIOHORA = Double.parseDouble(props.getProperty("precioHora"));
+			CANTIDADCOCHERAS = Integer.parseInt(props.getProperty("cantidadCocheras"));
 		} catch (Exception e) {
 			System.out.println("Error cargando archivo de propiedades del sistema");
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private SistemaCocheras() {
@@ -59,11 +62,13 @@ public class SistemaCocheras {
 		return instancia;
 	}
 	
-	private Collection<Cliente> clientes;
-	private Collection<Contrato> contratos;
-	private Collection<Cochera> cocheras;
-	private Collection<Tarifa> tarifas;
-	private Collection<Abono> abonos;
+	private Collection<Cliente> clientes = new ArrayList<Cliente>();
+	private Collection<Contrato> contratos = new ArrayList<Contrato>();
+	private Collection<Cochera> cocheras = new ArrayList<Cochera>();
+	private Collection<Tarifa> tarifas = new ArrayList<Tarifa>();
+	private Collection<Abono> abonos = new ArrayList<Abono>();
+	private Collection<MedioPago> mediosPago = new ArrayList<MedioPago>();
+	private MapaCocheras mapaCocheras = new MapaCocheras();
 	
 	{
 		try {
@@ -74,26 +79,33 @@ public class SistemaCocheras {
 		}
 	}
 	
+	public String getSistemaCocherasProperty(String propertyName) {
+		return props.getProperty(propertyName);
+	}
+	
 	public ClienteView crearCliente(String nombre, String domicilio, String email, String telefono) throws Exception {
-		if (!existeCliente(nombre, email)) {
+		if (!existeCliente(email)) {
 			Cliente nuevoCliente = new Cliente();
 			nuevoCliente.setActivo(true);
 			nuevoCliente.setEmail(email);
 			nuevoCliente.setDomicilio(domicilio);
 			nuevoCliente.setNombre(nombre);
 			nuevoCliente.setTelefono(telefono);
+			
+			int idCliente = ClienteMapper.obtenerMapper().insert(nuevoCliente);
+			nuevoCliente.setIdCliente(idCliente);
 			clientes.add(nuevoCliente);
-			ClienteMapper.obtenerMapper().insert(nuevoCliente);
 			return nuevoCliente.obtenerVista();
 		} else {
-			throw new Exception("Ya existe cliente con nombre " + nombre + " y email " + email);
+			return null;
 		}
 	}
 	
-	private boolean existeCliente(String nombre, String email) {
+	private boolean existeCliente(String email) {
 		for (Cliente cliente : clientes) {
-			if (cliente.getNombre().equals(nombre) && cliente.getEmail().equals(email))
+			if (cliente.getEmail().equals(email)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -112,10 +124,22 @@ public class SistemaCocheras {
 		return null;
 	}
 	
+	public ClienteView buscarCliente(int idCliente) throws Exception {
+		Cliente cliente = obtenerCliente(idCliente);
+		if (cliente == null) {
+			throw new Exception("No se encontro cliente con id " + idCliente);
+		} else {
+			return cliente.obtenerVista();
+		}
+	}
+	
 	public Vector<ClienteView> listarClientes() {
 		Vector<ClienteView> lista = new Vector<ClienteView>();
 		for (Cliente cliente : clientes) {
-			lista.add(cliente.obtenerVista());
+			if (cliente.isActivo()){
+				lista.add(cliente.obtenerVista());	
+			}
+			
 		}
 		return lista;
 		
@@ -132,7 +156,7 @@ public class SistemaCocheras {
 		}
 	}
 	
-	public Cliente obtenerCliente(int idCliente) {
+	private Cliente obtenerCliente(int idCliente) {
 		for (Cliente cliente : clientes) {
 			if (cliente.getIdCliente() == idCliente) {
 				return cliente;
@@ -141,11 +165,29 @@ public class SistemaCocheras {
 		return null;
 	}
 
-	public ContratoView crearContrato(int idCliente, Date fechaInicio, Date fechaFin, String patente, int idMedioPago) throws Exception {
+	public ContratoView crearContrato(int idCliente, String patente, int idMedioPago, int idAbono) throws Exception {
+		Cliente cliente = obtenerCliente(idCliente);
+		Auto auto = cliente.obtenerAuto(patente);
+		MedioPago medioPago = obtenerMedioPago(idMedioPago);
+		Abono abono = obtenerAbono(idAbono);
+		if (mapaCocheras.hayDisponible(auto)) {
+			return null;
+		} else {
+			throw new Exception();
+		}
+	}
+
+    private Abono obtenerAbono(int idAbono) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-    public ClienteView modificarCliente(int idCliente, String nombre, String domicilio, String email, String telefono) throws Exception {
+	private MedioPago obtenerMedioPago(int idMedioPago) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ClienteView modificarCliente(int idCliente, String nombre, String domicilio, String email, String telefono) throws Exception {
             Cliente cliente = obtenerCliente(idCliente);
             cliente.setActivo(true);
             cliente.setEmail(email);
@@ -155,4 +197,49 @@ public class SistemaCocheras {
             ClienteMapper.obtenerMapper().update(cliente);
             return cliente.obtenerVista();
     }
+
+	public void crearCocheras(int cocherasSimples, int cocherasEspeciales) throws Exception {
+		int total = cocherasSimples + (cocherasEspeciales * 2);
+		if (total <= CANTIDADCOCHERAS) {
+			Cochera cochera = null;
+			for (int i = 0; i < total; i++) {
+				if (i < cocherasSimples) {
+					cochera = new Cochera();
+					cochera.setIdCochera(i);
+					cocheras.add(cochera);
+				} else {
+					cochera = new CocheraEspezial(new Cochera(), new Cochera());
+					cochera.setIdCochera(i);
+					cocheras.add(cochera);
+				}
+			}
+			mapaCocheras.inicializar(cocheras);
+		} else {
+			throw new Exception("La cantidad total debe ser menor a " + CANTIDADCOCHERAS);
+		}
+	}
+	
+	public boolean hayCocheraSimpleDisponible() {
+		return false;
+	}
+	
+	public boolean hayCocheraEspecialDisponible() {
+		return false;
+	}
+
+	public Vector<MedioPagoView> listarMediosPago() {
+		Vector<MedioPagoView> retList = new Vector<MedioPagoView>();
+		for (MedioPago medio : mediosPago) {
+			retList.add(medio.obtenerVista());
+		}
+		return retList;
+	}
+
+	public Vector<AbonoView> listarAbonos() {
+		Vector<AbonoView> retList = new Vector<AbonoView>();
+		for (Abono abono : abonos) {
+			retList.add(abono.obtenerVista());
+		}
+		return retList;
+	}
 }

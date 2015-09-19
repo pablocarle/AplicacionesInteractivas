@@ -52,6 +52,6 @@ create table mediospago (
 
 create unique index autos_patente_idx on autos ( patente );
 
-insert into clientes values(1, 'Juan Perez', 'Cochabamba 332', '467532463', 'email@localhost', null);
-insert into clientes values(2, 'Jorge Roque', 'San Juan 552', '7654335', 'email@demo', null);
-insert into clientes values(3, 'Pedro Perez', 'Av. Independencia 552', '157654335', 'email2@demo', null);
+insert into clientes values(1, 'Juan Perez', 'Cochabamba 332', '467532463', 'email@localhost', 1);
+insert into clientes values(2, 'Jorge Roque', 'San Juan 552', '7654335', 'email@demo', 1);
+insert into clientes values(3, 'Pedro Perez', 'Av. Independencia 552', '157654335', 'email2@demo', 1);

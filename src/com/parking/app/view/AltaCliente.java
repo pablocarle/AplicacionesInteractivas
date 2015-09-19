@@ -1,5 +1,7 @@
 package com.parking.app.view;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -7,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,10 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.parking.app.controller.SistemaCocheras;
-import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
-
-import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AltaCliente extends JDialog {
 
@@ -55,6 +53,9 @@ public class AltaCliente extends JDialog {
 	 * Create the dialog.
 	 */
 	public AltaCliente() {
+		setResizable(false);
+		setModalityType(ModalityType.APPLICATION_MODAL);
+		setModal(true);
 		setTitle("Alta de Cliente");
 		setBounds(100, 100, 450, 198);
 		getContentPane().setLayout(new BorderLayout());
@@ -117,14 +118,21 @@ public class AltaCliente extends JDialog {
 							    if (idCliente == null) {
     								ClienteView cliente = SistemaCocheras
     								        .getSistemaCocheras().crearCliente(nombre, domicilio, email, tel);
-    								showMessageDialog(null, "Creado cliente!: " + cliente);
+    								if (cliente == null) {
+    								    showMessageDialog(null, "Ya existe un cliente con dicho email.");
+    								} else {
+    								    showMessageDialog(null, "Creado cliente!: " + cliente);
+    								    clearFields();
+    	                                dispose();
+    								}
 							    } else {
+							        // XXX Que pasa si se modifica el mail al de otro cliente existente?
 							        ClienteView cliente = SistemaCocheras
 							                .getSistemaCocheras().modificarCliente(idCliente, nombre, domicilio, email, tel);
 							        showMessageDialog(null, "Cliente modificado!: " + cliente);
-							        idCliente = null;
+							        clearFields();
+	                                dispose();
 							    }
-								dispose();
 							} catch (Exception e1) {
 								System.err.println(e1);
 							}
@@ -143,7 +151,7 @@ public class AltaCliente extends JDialog {
 				JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-					    idCliente = null;
+					    clearFields();
 						dispose();
 					}
 				});
@@ -153,7 +161,7 @@ public class AltaCliente extends JDialog {
 		}
 		addWindowListener(new java.awt.event.WindowAdapter() {
 	        public void windowClosing(WindowEvent winEvt) {
-	            idCliente = null;
+	            clearFields();
 	        }
 	    });
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -163,6 +171,8 @@ public class AltaCliente extends JDialog {
 	    String errorMessage = "";
 		if (nombre.isEmpty() || email.isEmpty()) {
 		    errorMessage = "Debe indicar nombre y email.";
+		} else if (nombre.length() < 2 || nombre.matches(".*\\d+.*")) {
+		    errorMessage = "El nombre ingresado es inválido.";
 		} else if (!email.contains("@") || !email.contains(".")
 		        || email.indexOf("@") > email.indexOf(".")
 		        || email.endsWith(".")) {
@@ -171,14 +181,21 @@ public class AltaCliente extends JDialog {
 		return errorMessage;
 	}
 
-    public AltaCliente modificar(int id) {
+	private void clearFields() {
+	    idCliente = null;
+        nameField.setText("");
+        domicilioField.setText("");
+        emailField.setText("");
+        telefonoField.setText("");
+	}
+    public AltaCliente modificar(int id) throws Exception {
         idCliente = id;
-        ClienteView cliente = SistemaCocheras.getSistemaCocheras().obtenerCliente(idCliente).obtenerVista();
-
-        nameField.setText(cliente.getNombre());
-        domicilioField.setText(cliente.getDomicilio());
-        emailField.setText(cliente.getEmail());
-        telefonoField.setText(cliente.getTelefono());
-        return instance;
+        ClienteView cliente;
+		cliente = SistemaCocheras.getSistemaCocheras().buscarCliente(id);
+		nameField.setText(cliente.getNombre());
+		domicilioField.setText(cliente.getDomicilio());
+		emailField.setText(cliente.getEmail());
+		telefonoField.setText(cliente.getTelefono());
+		return instance;
     }
 }

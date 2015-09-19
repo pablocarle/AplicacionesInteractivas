@@ -19,35 +19,28 @@ public class AutosMapper implements Mapper {
 		super();
 	}
 
-	@Override
-	public void insert(Object o) throws Exception {
+	public int insert(Object o) throws Exception {
 		// TODO Auto-generated method stub
-
+	    return 0;
 	}
 
-	@Override
 	public void update(Object o) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void delete(Object d) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public Collection<Auto> select(Object o) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Collection<Auto> selectAll() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 }

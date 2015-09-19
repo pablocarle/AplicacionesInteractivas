@@ -1,15 +1,13 @@
-package com.parking.app.model;
+package com.parking.app.db;
+
+import com.parking.app.model.CocheraView;
 
 public class Cochera {
 	
 	protected int idCochera;
 	
-	public Cochera() {
-		super();
-	}
-
 	public CocheraView obtenerVista() {
-		return new CocheraView(this);
+		return null;
 	}
 
 	public int getIdCochera() {
@@ -18,10 +16,5 @@ public class Cochera {
 
 	public void setIdCochera(int idCochera) {
 		this.idCochera = idCochera;
-	}
-
-	public boolean aceptaAuto(Auto auto) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

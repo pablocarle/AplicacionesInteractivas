@@ -11,17 +11,36 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 public class Menu extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JMenuBar jMenuBar1;
 	private JMenuItem jMenuItem1;
+	private JMenuItem mniInicializar;
+	private JMenu mnCocheras;
 	private JMenu jMenu1;
 	private JMenu mnClientes;
+	private JMenu mnAbonos;
+	private JMenu mnMediosDePago;
+	private JMenuItem mntmNuevoMedioDe;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				@SuppressWarnings("unused")
 				Menu inst = new Menu();
 			}
 		});
@@ -52,6 +71,7 @@ public class Menu extends javax.swing.JFrame {
 				    mntmAlta.addActionListener(new ActionListener() {
 				        public void actionPerformed(ActionEvent e) {
 				            AltaCliente.getInstance().setVisible(true);
+				        
 				        }
 				    });
 				    mnClientes.add(mntmAlta);
@@ -59,6 +79,7 @@ public class Menu extends javax.swing.JFrame {
 				    JMenuItem mntmModificar = new JMenuItem("Modificar");
 				    mntmModificar.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
+                        	ModificarCliente.getInstance().refresh();
                             ModificarCliente.getInstance().setVisible(true);
                         }
                     });
@@ -70,8 +91,72 @@ public class Menu extends javax.swing.JFrame {
 				            EliminarCliente.getInstance().setVisible(true);
 				        }
 				    });
+				    
+				    JMenuItem mntmAsociarAuto = new JMenuItem("Asociar Auto");
+				    mntmAsociarAuto.addActionListener(new ActionListener() {
+				    	public void actionPerformed(ActionEvent e) {
+				    		JDialog dialog = new AsociarAuto();
+				    		dialog.setVisible(true);
+				    	}
+				    });
+				    mnClientes.add(mntmAsociarAuto);
 				    mnClientes.add(mntmBaja);
 				}
+				{
+					mnCocheras = new JMenu();
+					jMenuBar1.add(mnCocheras);
+					mnCocheras.setText("Cocheras");
+					{
+						mniInicializar = new JMenuItem();
+						mnCocheras.add(mniInicializar);
+						mniInicializar.setText("Inicializar");
+						mniInicializar.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								JDialog dialog = new InicializacionCocheras();
+								dialog.setVisible(true);
+							}
+						});
+					}
+				}
+				
+				JMenu mnContratos = new JMenu("Contratos");
+				jMenuBar1.add(mnContratos);
+				
+				JMenuItem mntmNuevoContrato = new JMenuItem("Nuevo Contrato");
+				mntmNuevoContrato.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JDialog dialog = new NuevoContrato();
+						dialog.setVisible(true);
+					}
+				});
+				mnContratos.add(mntmNuevoContrato);
+				
+				mnAbonos = new JMenu("Abonos");
+				jMenuBar1.add(mnAbonos);
+				
+				JMenuItem mntmNuevoAbono = new JMenuItem("Nuevo Abono");
+				mntmNuevoAbono.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				mnAbonos.add(mntmNuevoAbono);
+				
+				JMenuItem mntmEliminarAbono = new JMenuItem("Eliminar Abono");
+				mntmEliminarAbono.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				mnAbonos.add(mntmEliminarAbono);
+				
+				mnMediosDePago = new JMenu("Medios de Pago");
+				jMenuBar1.add(mnMediosDePago);
+				
+				mntmNuevoMedioDe = new JMenuItem("Nuevo Medio de Pago");
+				mntmNuevoMedioDe.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				mnMediosDePago.add(mntmNuevoMedioDe);
 				{
 					jMenu1 = new JMenu();
 					jMenuBar1.add(jMenu1);

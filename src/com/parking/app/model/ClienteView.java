@@ -10,7 +10,7 @@ public class ClienteView {
 	private String email;
 	private String domicilio;
 	private String telefono;
-	private List<AutoView> autos;
+	private List<AutoView> autos = new ArrayList<AutoView>();
 	
 	public ClienteView(Cliente cliente) {
 		super();

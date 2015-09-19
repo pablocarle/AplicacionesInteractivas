@@ -1,10 +1,10 @@
 package com.parking.app.model;
 
-public class Abono {
+public class MedioPagoView {
 
-	public AbonoView obtenerVista() {
+	public int getIdMedioPago() {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 }

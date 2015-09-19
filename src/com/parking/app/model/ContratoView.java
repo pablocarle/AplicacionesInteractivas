@@ -6,4 +6,9 @@ public class ContratoView {
 		// TODO Auto-generated constructor stub
 	}
 
+	public String getIdContrato() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
