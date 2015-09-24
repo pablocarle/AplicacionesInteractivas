@@ -5,19 +5,6 @@ import java.util.Collection;
 import com.parking.app.model.Auto;
 
 public class AutosMapper implements Mapper {
-	
-	private static AutosMapper instancia = null;
-	
-	public static AutosMapper obtenerMapper() {
-		if (instancia == null) {
-			instancia = new AutosMapper();
-		}
-		return instancia;
-	}
-	
-	private AutosMapper() {
-		super();
-	}
 
 	public int insert(Object o) throws Exception {
 		// TODO Auto-generated method stub

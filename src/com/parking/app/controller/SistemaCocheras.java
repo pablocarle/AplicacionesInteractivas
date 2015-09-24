@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import com.parking.app.db.BancoMapper;
 import com.parking.app.db.ClienteMapper;
+import com.parking.app.db.MediosDePagoMapper;
 import com.parking.app.model.Abono;
 import com.parking.app.model.AbonoView;
 import com.parking.app.model.Auto;
@@ -54,6 +55,7 @@ public class SistemaCocheras {
 	private void cargarModelo() throws Exception {
 		clientes = ClienteMapper.obtenerMapper().selectAll();
 		bancos = BancoMapper.obtenerMapper().selectAll();
+		mediosPago = MediosDePagoMapper.obtenerMapper().selectAll();
 //		autos = AutosMapper.obtenerMapper().selectAll();
 //		tarifas = TarifasMapper.obtenerMapper().selectAll();
 //		contratos = ContratosMapper.obtenerMapper().selectAll();
@@ -123,12 +125,7 @@ public class SistemaCocheras {
 		ClienteMapper.obtenerMapper().delete(cliente);
 		return cliente.obtenerVista();
 	}
-	
-	public ClienteView buscarCliente(String nombre, String domicilio, String email, String telefono) {
-		Cliente clienteABuscar = new Cliente(-1, nombre, domicilio, telefono, email, true);
-		return null;
-	}
-	
+
 	public ClienteView buscarCliente(int idCliente) throws Exception {
 		Cliente cliente = obtenerCliente(idCliente);
 		if (cliente == null) {
@@ -147,7 +144,6 @@ public class SistemaCocheras {
 			
 		}
 		return lista;
-		
 	}
 	
 	public ClienteView asociarAuto(int idCliente, String patente, String modelo, String marca, boolean esGrande) throws Exception {
@@ -231,6 +227,31 @@ public class SistemaCocheras {
 	public boolean hayCocheraEspecialDisponible() {
 		return false;
 	}
+
+	public MedioPagoView crearMedioPago(String nombre, Banco banco,
+	        String descripcion,
+	        String ftpOut,
+	        String ftpIn,
+	        String archivo) throws Exception {
+        if(!existeMedioPago(nombre)) {
+            MedioPago nuevoMedioPago = new MedioPago(nombre, banco, descripcion, ftpOut, ftpIn, archivo);
+            int idMedioPago = MediosDePagoMapper.obtenerMapper().insert(nuevoMedioPago);
+            nuevoMedioPago.setIdMedioPago(idMedioPago);
+            mediosPago.add(nuevoMedioPago);
+            return nuevoMedioPago.obtenerVista();
+        } else {
+            return null;
+        }
+    }
+
+    private boolean existeMedioPago(String nombre) {
+        for (MedioPago medioPago : mediosPago) {
+            if (medioPago.getNombre().equals(nombre)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	public Vector<MedioPagoView> listarMediosPago() {
 		Vector<MedioPagoView> retList = new Vector<MedioPagoView>();

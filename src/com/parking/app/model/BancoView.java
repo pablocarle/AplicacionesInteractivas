@@ -3,10 +3,12 @@ package com.parking.app.model;
 public class BancoView {
     private int idBanco;
     private String nombre;
+    private Banco banco;
 
     public BancoView(Banco banco) {
         this.idBanco = banco.getIdBanco();
         this.nombre = banco.getNombre();
+        this.banco = banco;
     }
 
     public int getIdBanco() {
@@ -22,4 +24,7 @@ public class BancoView {
         return nombre;
     }
 
+    public Banco getBanco() {
+        return banco;
+    }
 }

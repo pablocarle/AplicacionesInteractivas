@@ -46,6 +46,7 @@ create table mediospago (
 	descripcion varchar(100),
 	ftp_out varchar(255),
 	ftp_in varchar(255),
+	archivo varchar(255),
 	idBanco integer not null,
 	constraint mediospago_pk primary key ( idMedioPago ),
 	constraint mediospago_bancos_fk foreign key (idBanco) references bancos (idBanco)
