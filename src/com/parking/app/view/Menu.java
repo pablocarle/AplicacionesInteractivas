@@ -154,6 +154,8 @@ public class Menu extends javax.swing.JFrame {
 				mntmNuevoMedioDe = new JMenuItem("Nuevo Medio de Pago");
 				mntmNuevoMedioDe.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+					    JDialog dialog = new NuevoMedioPago();
+                        dialog.setVisible(true);
 					}
 				});
 				mnMediosDePago.add(mntmNuevoMedioDe);
