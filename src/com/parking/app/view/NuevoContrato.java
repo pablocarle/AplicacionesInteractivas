@@ -30,11 +30,11 @@ public class NuevoContrato extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JComboBox comboBoxClientes = new JComboBox();
-	private JComboBox comboBoxAuto = new JComboBox();
+	private JComboBox<ClienteView> comboBoxClientes = new JComboBox<ClienteView>();
+	private JComboBox<AutoView> comboBoxAuto = new JComboBox<AutoView>();
 	private JLabel lblMedioDePago = new JLabel("Medio de Pago");
-	private JComboBox comboBoxMediosPago = new JComboBox();
-	private JComboBox comboBoxAbonos = new JComboBox();
+	private JComboBox<MedioPagoView> comboBoxMediosPago = new JComboBox<MedioPagoView>();
+	private JComboBox<AbonoView> comboBoxAbonos = new JComboBox<AbonoView>();
 	
 	/**
 	 * Launch the application.

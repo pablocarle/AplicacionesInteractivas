@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,6 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import com.parking.app.controller.SistemaCocheras;
+import com.parking.app.model.BancoView;
 
 public class NuevoMedioPago extends JDialog {
 
@@ -26,6 +30,7 @@ public class NuevoMedioPago extends JDialog {
 	private JTextField textFieldFTPOut;
 	private JTextField textFieldFTPIn;
 	private JTextField textFieldNombreArchivo;
+	private JComboBox<BancoView> comboBoxBanco;
 
 	/**
 	 * Launch the application.
@@ -70,7 +75,7 @@ public class NuevoMedioPago extends JDialog {
 			contentPanel.add(lblBanco);
 		}
 		{
-			JComboBox comboBoxBanco = new JComboBox();
+			comboBoxBanco = new JComboBox<BancoView>();
 			comboBoxBanco.setBounds(211, 39, 213, 20);
 			contentPanel.add(comboBoxBanco);
 		}
@@ -143,6 +148,14 @@ public class NuevoMedioPago extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		initData();
 	}
 
+	private void initData() {
+	    comboBoxBanco.removeAllItems();
+        Vector<BancoView> bancos = SistemaCocheras.getSistemaCocheras().listarBancos();
+        for (BancoView banco : bancos) {
+            comboBoxBanco.addItem(banco);
+        }
+	}
 }

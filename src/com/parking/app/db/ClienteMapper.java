@@ -84,13 +84,14 @@ public class ClienteMapper implements Mapper {
 		}
 	}
 
-	public Collection<Cliente> select(Object o) throws Exception {
+	public Cliente select(Object o) throws Exception {
+	    Cliente cliente = null;
 		if (o instanceof Cliente) {
-			Cliente cliente = (Cliente) o;
+			cliente = (Cliente) o;
 		} else {
 			throw new Exception();
 		}
-		return null;
+		return cliente;
 	}
 
 	public Collection<Cliente> selectAll() throws Exception {

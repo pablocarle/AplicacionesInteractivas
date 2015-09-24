@@ -46,8 +46,16 @@ create table mediospago (
 	descripcion varchar(100),
 	ftp_out varchar(255),
 	ftp_in varchar(255),
-	banco integer,
-	constraint mediospago_pk primary key ( idMedioPago )
+	idBanco integer not null,
+	constraint mediospago_pk primary key ( idMedioPago ),
+	constraint mediospago_bancos_fk foreign key (idBanco) references bancos (idBanco)
+);
+
+drop table if exists bancos;
+create table bancos (
+    idBanco integer not null,
+    nombre varchar(30) not null,
+    constraint bancos_pk primary key (idBanco)
 );
 
 create unique index autos_patente_idx on autos ( patente );
@@ -55,3 +63,7 @@ create unique index autos_patente_idx on autos ( patente );
 insert into clientes values(1, 'Juan Perez', 'Cochabamba 332', '467532463', 'email@localhost', 1);
 insert into clientes values(2, 'Jorge Roque', 'San Juan 552', '7654335', 'email@demo', 1);
 insert into clientes values(3, 'Pedro Perez', 'Av. Independencia 552', '157654335', 'email2@demo', 1);
+
+insert into bancos values(1, 'Banco Francés');
+insert into bancos values(2, 'Banco Galicia');
+insert into bancos values(3, 'Banco Santander');
