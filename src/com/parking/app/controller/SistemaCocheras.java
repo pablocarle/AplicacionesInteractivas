@@ -151,15 +151,33 @@ public class SistemaCocheras {
 	public ClienteView asociarAuto(int idCliente, String patente, String modelo, String marca, boolean esGrande) throws Exception {
 		Cliente cliente = obtenerCliente(idCliente);
 		if (cliente != null) {
-			cliente.asociarAuto(patente, modelo, marca, esGrande);
-			ClienteView clienteView = cliente.obtenerVista();
-			return clienteView;
+		    if(!patenteExistente(patente)) {
+    		    Auto auto = new Auto(patente, marca, modelo, esGrande);
+    		    int idAuto = AutosMapper.obtenerMapper().insert(auto);
+    		    AutosMapper.obtenerMapper().asociarAutoCliente(idAuto, idCliente);
+    		    auto.setIdAuto(idAuto);
+    			cliente.asociarAuto(auto);
+    			autos.add(auto);
+    			ClienteView clienteView = cliente.obtenerVista();
+    			return clienteView;
+		    } else {
+		        throw new Exception("Ya existe un auto con la patente " + patente);
+		    }
 		} else {
 			throw new Exception("No se encontro cliente con id " + idCliente);
 		}
 	}
 	
-	private Cliente obtenerCliente(int idCliente) {
+	private boolean patenteExistente(String patente) {
+        for(Auto auto : autos) {
+            if (auto.getPatente().equals(patente)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Cliente obtenerCliente(int idCliente) {
 		for (Cliente cliente : clientes) {
 			if (cliente.getIdCliente() == idCliente) {
 				return cliente;

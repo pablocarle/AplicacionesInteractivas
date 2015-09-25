@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.parking.app.model.Auto;
 import com.parking.app.model.Cliente;
 
 public class ClienteMapper implements Mapper {
@@ -122,6 +123,32 @@ public class ClienteMapper implements Mapper {
 			}
 		}
 		PoolConnection.getPoolConnection().releaseConnection(conn);
+
+		for(Cliente cliente : clientes) {
+    		ps = conn.prepareStatement("select idCliente, patente, marca, modelo, esgrande from autos JOIN clientes_autos ON idCliente=?");
+    		ps.setInt(1, cliente.getIdCliente());
+    	    if (ps.execute()) {
+	          ResultSet rs = ps.getResultSet();
+	          int idAuto;
+	          String patente;
+	          String marca;
+	          String modelo;
+	          boolean esGrande;
+	          Auto auto = null;
+	          while (rs.next()) {
+	                idAuto = rs.getInt(1);
+	                patente = rs.getString(2);
+	                marca = rs.getString(3);
+	                modelo = rs.getString(4);
+	                esGrande = rs.getBoolean(5);
+	                auto = new Auto(patente, marca, modelo, esGrande);
+	                auto.setIdAuto(idAuto);
+	                cliente.asociarAuto(auto);
+	            }
+    	    }
+
+		}
+
 		return clientes;
 	}
 }

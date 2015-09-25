@@ -122,9 +122,8 @@ public class AsociarAuto extends JDialog {
 						if (esValido()) {
 							ClienteView cliente = (ClienteView) comboBoxClientes.getSelectedItem();
 							try {
-								@SuppressWarnings("unused")
 								ClienteView clienteModificado = SistemaCocheras.getSistemaCocheras().asociarAuto(cliente.getIdCliente(), textFieldPatente.getText(), textFieldModelo.getText(), textFieldMarca.getText(), chckbxEsGrande.isSelected());
-								showMessageDialog(null, "Auto asociado correctamente");
+								showMessageDialog(null, "El auto fue asociado correctamente al cliente " + clienteModificado.getNombre());
 								limpiarTodo();
 							} catch (Exception e1) {
 								showMessageDialog(null, e1.getMessage());

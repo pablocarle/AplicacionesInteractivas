@@ -100,14 +100,11 @@ public class Cliente {
 		this.autos = autos;
 	}
 
-	public AutoView asociarAuto(String patente, String modelo, String marca, boolean esGrande) throws Exception {
-		Auto nuevoAuto = new Auto(patente, marca, modelo, esGrande);
-		if (!autos.contains(nuevoAuto)) {
-			autos.add(nuevoAuto);
-			return nuevoAuto.obtenerVista();
-		} else {
-			throw new Exception("El auto " + nuevoAuto.getPatente() + " ya esta asociado al cliente");
+	public AutoView asociarAuto(Auto auto) {
+		if (!autos.contains(auto)) {
+			autos.add(auto);
 		}
+		return auto.obtenerVista();
 	}
 
 	public List<Auto> getAutos() {
