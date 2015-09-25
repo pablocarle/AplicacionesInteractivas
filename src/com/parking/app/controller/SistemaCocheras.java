@@ -15,6 +15,7 @@ import com.parking.app.db.MediosDePagoMapper;
 import com.parking.app.model.Abono;
 import com.parking.app.model.AbonoView;
 import com.parking.app.model.Auto;
+import com.parking.app.model.AutoView;
 import com.parking.app.model.Banco;
 import com.parking.app.model.BancoView;
 import com.parking.app.model.Cliente;
@@ -310,5 +311,14 @@ public class SistemaCocheras {
             retList.add(banco.obtenerVista());
         }
         return retList;
+    }
+
+    public Vector<AutoView> listarAutos() {
+        Vector<AutoView> lista = new Vector<AutoView>();
+        for (Auto auto: autos) {
+            lista.add(auto.obtenerVista());  
+        }
+
+        return lista;
     }
 }

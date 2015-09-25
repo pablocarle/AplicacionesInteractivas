@@ -100,6 +100,14 @@ public class Menu extends javax.swing.JFrame {
 				    	}
 				    });
 				    mnClientes.add(mntmAsociarAuto);
+				    
+				    JMenuItem mntmAdministrarAutos = new JMenuItem("Administrar Autos");
+				    mntmAdministrarAutos.addActionListener(new ActionListener() {
+				        public void actionPerformed(ActionEvent e) {
+				            AdministrarAutos.getInstance().setVisible(true);
+				        }
+				    });
+				    mnClientes.add(mntmAdministrarAutos);
 				    mnClientes.add(mntmBaja);
 				}
 				{

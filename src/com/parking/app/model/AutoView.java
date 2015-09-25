@@ -1,13 +1,14 @@
 package com.parking.app.model;
 
 public class AutoView {
-
+    private int idAuto;
 	private String patente;
 	private String modelo;
 	private String marca;
 	private boolean esGrande;
 
 	public AutoView(Auto auto) {
+	    this.idAuto = auto.getIdAuto();
 		this.patente = auto.getPatente();
 		this.modelo = auto.getModelo();
 		this.marca = auto.getMarca();
@@ -16,7 +17,11 @@ public class AutoView {
 
 	@Override
 	public String toString() {
-		return patente + "(" + marca + " - " + modelo + ")";
+	    String str = patente + " - " + marca + " " + modelo;
+	    if (esGrande) {
+	        str += " (grande)"; 
+	    }
+		return  str;
 	}
 
 	public String getPatente() {
@@ -49,5 +54,9 @@ public class AutoView {
 
     public void setGrande(boolean esGrande) {
         this.esGrande = esGrande;
+    }
+
+    public int getIdAuto() {
+        return idAuto;
     }
 }

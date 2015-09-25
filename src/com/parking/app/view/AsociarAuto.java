@@ -30,9 +30,16 @@ public class AsociarAuto extends JDialog {
 	private JTextField textFieldPatente;
 	private JTextField textFieldMarca;
 	private JTextField textFieldModelo;
-	private JComboBox comboBoxClientes = new JComboBox();
+	private JComboBox<ClienteView> comboBoxClientes = new JComboBox<ClienteView>();
 	private JCheckBox chckbxEsGrande = new JCheckBox("Es grande?");
+	private static AsociarAuto instance = null;
 
+    public static AsociarAuto getInstance() {
+        if (instance == null) {
+            instance = new AsociarAuto();
+        }
+        return instance;
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -168,4 +175,8 @@ public class AsociarAuto extends JDialog {
 			comboBoxClientes.addItem(cliente);
 		}
 	}
+    public JDialog modificar(int idAuto) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
