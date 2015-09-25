@@ -34,6 +34,7 @@ create table autos (
 	patente varchar(30) not null,
 	marca varchar(30),
 	modelo varchar(30),
+	esgrande boolean,
 	constraint autos_pk primary key (idAuto)
 );
 

@@ -101,15 +101,7 @@ public class Cliente {
 	}
 
 	public AutoView asociarAuto(String patente, String modelo, String marca, boolean esGrande) throws Exception {
-		Auto nuevoAuto = null;
-		if (esGrande) {
-			nuevoAuto = new AutoPickUpOCamionPequeno();
-		} else {
-			nuevoAuto = new AutoSedan();
-		}
-		nuevoAuto.setPatente(patente);
-		nuevoAuto.setMarca(marca);
-		nuevoAuto.setModelo(modelo);
+		Auto nuevoAuto = new Auto(patente, marca, modelo, esGrande);
 		if (!autos.contains(nuevoAuto)) {
 			autos.add(nuevoAuto);
 			return nuevoAuto.obtenerVista();

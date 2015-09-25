@@ -1,13 +1,17 @@
 package com.parking.app.model;
 
 public class Auto {
-
+    protected int idAuto;
 	protected String patente;
 	protected String marca;
 	protected String modelo;
+	protected boolean esGrande;
 
-	public Auto() {
-		super();
+	public Auto(String patente, String marca, String modelo, boolean esGrande) {
+	    this.patente = patente;
+	    this.marca = marca;
+	    this.modelo = modelo;
+	    this.esGrande = esGrande;
 	}
 	
 	@Override
@@ -35,6 +39,14 @@ public class Auto {
 		return true;
 	}
 
+	public int getIdAuto() {
+        return idAuto;
+    }
+
+	public void setIdAuto(int idAuto) {
+	    this.idAuto = idAuto;
+	}
+
 	public String getPatente() {
 		return patente;
 	}
@@ -53,6 +65,12 @@ public class Auto {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
+	public boolean sosGrande() {
+        return esGrande;
+    }
+    public void setGrande(boolean esGrande) {
+        this.esGrande = esGrande;
+    }
 	public AutoView obtenerVista() {
 		return new AutoView(this);
 	}

@@ -5,11 +5,13 @@ public class AutoView {
 	private String patente;
 	private String modelo;
 	private String marca;
-	
+	private boolean esGrande;
+
 	public AutoView(Auto auto) {
 		this.patente = auto.getPatente();
 		this.modelo = auto.getModelo();
 		this.marca = auto.getMarca();
+		this.esGrande = auto.sosGrande();
 	}
 
 	@Override
@@ -40,4 +42,12 @@ public class AutoView {
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
+
+    public boolean sosGrande() {
+        return esGrande;
+    }
+
+    public void setGrande(boolean esGrande) {
+        this.esGrande = esGrande;
+    }
 }
