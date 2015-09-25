@@ -13,7 +13,11 @@ public class Abono {
         this.descuento = descuento;
     }
 
-    public AbonoView obtenerVista() {
+    public Abono() {
+    	super();
+	}
+
+	public AbonoView obtenerVista() {
 		return new AbonoView(this);
 	}
 

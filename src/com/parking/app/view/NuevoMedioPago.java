@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.parking.app.controller.SistemaCocheras;
-import com.parking.app.model.Banco;
 import com.parking.app.model.BancoView;
 import com.parking.app.model.MedioPagoView;
 
@@ -142,7 +141,7 @@ public class NuevoMedioPago extends JDialog {
 						String errores = esValido(nombre, descripcion, ftpOut, ftpIn, archivo);
 						if (errores.isEmpty()) {
 							try {
-                                medioPagoView = SistemaCocheras.getSistemaCocheras().crearMedioPago(nombre, bancoView.getBanco(), descripcion, ftpOut, ftpIn, archivo);
+                                medioPagoView = SistemaCocheras.getSistemaCocheras().crearMedioPago(nombre, bancoView.getIdBanco(), descripcion, ftpOut, ftpIn, archivo);
                             } catch (Exception e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();

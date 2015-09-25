@@ -1,6 +1,6 @@
 package com.parking.app.model;
 
-public class Cochera {
+public abstract class Cochera {
 	
 	protected int idCochera;
 	

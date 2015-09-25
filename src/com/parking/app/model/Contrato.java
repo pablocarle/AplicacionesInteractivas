@@ -111,4 +111,9 @@ public class Contrato {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
+
+	public boolean vencesEnDias(int i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

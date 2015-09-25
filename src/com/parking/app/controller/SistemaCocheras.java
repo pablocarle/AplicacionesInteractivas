@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import com.parking.app.db.AbonosMapper;
@@ -25,9 +27,11 @@ import com.parking.app.model.Cochera;
 import com.parking.app.model.CocheraEspezial;
 import com.parking.app.model.Contrato;
 import com.parking.app.model.ContratoView;
+import com.parking.app.model.EventoCobro;
 import com.parking.app.model.MapaCocheras;
 import com.parking.app.model.MedioPago;
 import com.parking.app.model.MedioPagoView;
+import com.parking.app.model.ReporteCobros;
 import com.parking.app.model.Tarifa;
 
 public class SistemaCocheras {
@@ -65,6 +69,20 @@ public class SistemaCocheras {
 		abonos = AbonosMapper.obtenerMapper().selectAll();
 	}
 
+	{
+		new Timer().schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				for (Contrato c : contratos) {
+					if (c.vencesEnDias(10)) {
+						
+					}
+				}
+			}
+		}, 1000 * 60 * 60 * 24);
+	}
+	
 	public static SistemaCocheras getSistemaCocheras() {
 		if (instancia == null) {
 			instancia = new SistemaCocheras();
@@ -241,17 +259,17 @@ public class SistemaCocheras {
 		int total = cocherasSimples + (cocherasEspeciales * 2);
 		if (total <= CANTIDADCOCHERAS) {
 			Cochera cochera = null;
-			for (int i = 0; i < total; i++) {
-				if (i < cocherasSimples) {
-					cochera = new Cochera();
-					cochera.setIdCochera(i);
-					cocheras.add(cochera);
-				} else {
-					cochera = new CocheraEspezial(new Cochera(), new Cochera());
-					cochera.setIdCochera(i);
-					cocheras.add(cochera);
-				}
-			}
+//			for (int i = 0; i < total; i++) {
+//				if (i < cocherasSimples) { //FIXME 
+//					cochera = new Cochera();
+//					cochera.setIdCochera(i);
+//					cocheras.add(cochera);
+//				} else {
+//					cochera = new CocheraEspezial(new Cochera(), new Cochera());
+//					cochera.setIdCochera(i);
+//					cocheras.add(cochera);
+//				}
+//			}
 			mapaCocheras.inicializar(cocheras);
 		} else {
 			throw new Exception("La cantidad total debe ser menor a " + CANTIDADCOCHERAS);
@@ -266,23 +284,42 @@ public class SistemaCocheras {
 		return false;
 	}
 
-	public MedioPagoView crearMedioPago(String nombre, Banco banco,
+	public MedioPagoView crearMedioPago(String nombre, int idBanco,
 	        String descripcion,
 	        String ftpOut,
 	        String ftpIn,
 	        String archivo) throws Exception {
         if(!existeMedioPago(nombre)) {
-            MedioPago nuevoMedioPago = new MedioPago(nombre, banco, descripcion, ftpOut, ftpIn, archivo);
-            int idMedioPago = MediosDePagoMapper.obtenerMapper().insert(nuevoMedioPago);
-            nuevoMedioPago.setIdMedioPago(idMedioPago);
-            mediosPago.add(nuevoMedioPago);
-            return nuevoMedioPago.obtenerVista();
-        } else {
-            return null;
+        	if (existeBanco(idBanco)) {
+        		Banco banco = obtenerBanco(idBanco);
+        		banco.registrar(new ReporteCobros() {
+					
+					@Override
+					public void cobroEfectuado(EventoCobro e) {
+						
+					}
+				});
+        		MedioPago nuevoMedioPago = new MedioPago(nombre, banco, descripcion, ftpOut, ftpIn, archivo);
+        		int idMedioPago = MediosDePagoMapper.obtenerMapper().insert(nuevoMedioPago);
+        		nuevoMedioPago.setIdMedioPago(idMedioPago);
+        		mediosPago.add(nuevoMedioPago);
+        		return nuevoMedioPago.obtenerVista();
+        	}
         }
+        return null;
     }
 
-    private boolean existeMedioPago(String nombre) {
+    private Banco obtenerBanco(int idBanco) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean existeBanco(int idBanco) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean existeMedioPago(String nombre) {
         for (MedioPago medioPago : mediosPago) {
             if (medioPago.getNombre().equals(nombre)) {
                 return true;
@@ -291,11 +328,24 @@ public class SistemaCocheras {
         return false;
     }
     public AbonoView crearAbono(String nombre, int dias, float descuento) throws Exception {
-        Abono abono = new Abono(nombre, dias, descuento);
-        int idAbono = AbonosMapper.obtenerMapper().insert(abono); 
-        abono.setIdAbono(idAbono);
-        return abono.obtenerVista();
+    	if (!existeAbono(dias)) {
+    		Abono abono = new Abono(nombre, dias, descuento);
+    		int idAbono = AbonosMapper.obtenerMapper().insert(abono); 
+    		abono.setIdAbono(idAbono);
+    		return abono.obtenerVista();
+    	} else {
+    		throw new Exception("Ya existe un abono para " + dias + " dias");
+    	}
     }
+	private boolean existeAbono(int dias) {
+		for (Abono abono : abonos) {
+			if (abono.getDias() == dias) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Vector<MedioPagoView> listarMediosPago() {
 		Vector<MedioPagoView> retList = new Vector<MedioPagoView>();
 		for (MedioPago medio : mediosPago) {

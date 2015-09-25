@@ -1,6 +1,7 @@
 package com.parking.app.model;
 
 public class MedioPago {
+	
     private int idMedioPago;
     private String nombre;
     private Banco banco;
@@ -9,8 +10,7 @@ public class MedioPago {
     private String ftpIn;
     private String archivo;
 
-	public MedioPago(String nombre, Banco banco, String descripcion,
-            String ftpOut, String ftpIn, String archivo) {
+	public MedioPago(String nombre, Banco banco, String descripcion, String ftpOut, String ftpIn, String archivo) {
         this.nombre = nombre;
         this.banco = banco;
         this.descripcion = descripcion;
@@ -78,5 +78,4 @@ public class MedioPago {
     public void setArchivo(String archivo) {
         this.archivo = archivo;
     }
-
 }

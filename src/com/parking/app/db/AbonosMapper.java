@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.parking.app.model.Abono;
-import com.parking.app.model.Banco;
 
 public class AbonosMapper implements Mapper {
 	
@@ -34,9 +33,8 @@ public class AbonosMapper implements Mapper {
             ps.setInt(2, abono.getDias());
             ps.setFloat(3, abono.getDescuento());
             ps.execute();
-
             PoolConnection.getPoolConnection().releaseConnection(conn);
-            return getAbonoId(abono.getNombre());
+            return select(abono.getDias()).getIdAbono();
         } else {
             throw new Exception();
         }
@@ -70,7 +68,17 @@ public class AbonosMapper implements Mapper {
 
 	@Override
 	public Abono select(Object o) throws Exception {
-		// TODO Auto-generated method stub
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("select idAbono, nombre, dias, descuento from abonos where dias = ?");
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			Abono abono = new Abono();
+			abono.setIdAbono(rs.getInt(1));
+			abono.setNombre(rs.getString(2));
+			abono.setDias(rs.getInt(3));
+			abono.setDescuento(rs.getFloat(4));
+			return abono;
+		}
 		return null;
 	}
 
