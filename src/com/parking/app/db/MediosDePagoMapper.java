@@ -79,7 +79,7 @@ public class MediosDePagoMapper implements Mapper {
     @Override
     public Collection<MedioPago> selectAll() throws Exception {
         Connection conn = PoolConnection.getPoolConnection().getConnection();
-        PreparedStatement ps = conn.prepareStatement("select idMedioPago, mediospago.nombre, descripcion, ftp_out, ftp_in, archivo, bancos.idBanco, bancos.nombre from mediospago JOIN bancos where mediospago.idBanco = bancos.idBanco");
+        PreparedStatement ps = conn.prepareStatement("select idMedioPago, mediospago.nombre, descripcion, ftp_out, ftp_in, archivo, bancos.idBanco, bancos.nombre from mediospago JOIN bancos ON mediospago.idBanco = bancos.idBanco");
         Collection<MedioPago> mediosPago = new ArrayList<MedioPago>();
 
         if (ps.execute()) {

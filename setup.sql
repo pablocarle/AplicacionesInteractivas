@@ -69,9 +69,11 @@ create table bancos (
 drop table if exists abonos;
 create table abonos (
 	idAbono integer not null,
-	
+	nombre varchar(30) not null,
+	dias integer not null,
+	descuento float not null,
 	constraint abonos_pk primary key (idAbono)
-;
+);
 
 create unique index autos_patente_idx on autos ( patente );
 
