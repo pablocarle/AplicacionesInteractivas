@@ -71,7 +71,7 @@ public class MediosDePagoMapper implements Mapper {
     }
 
     @Override
-    public Collection<? extends Object> select(Object o) throws Exception {
+    public MedioPago select(Object o) throws Exception {
         // TODO Auto-generated method stub
         return null;
     }

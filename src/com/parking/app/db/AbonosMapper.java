@@ -2,45 +2,52 @@ package com.parking.app.db;
 
 import java.util.Collection;
 
-import com.parking.app.model.Auto;
+import com.parking.app.model.Abono;
 
-public class AutosMapper implements Mapper {
-
-	private static AutosMapper instancia = null;
+public class AbonosMapper implements Mapper {
 	
-	private AutosMapper() {
+	private static AbonosMapper instancia = null;
+	
+	private AbonosMapper() {
 		super();
 	}
-	
-	public static AutosMapper obtenerMapper() {
+
+	public static AbonosMapper obtenerMapper() {
 		if (instancia == null) {
-			instancia = new AutosMapper();
+			instancia = new AbonosMapper();
 		}
 		return instancia;
 	}
 	
+	@Override
 	public int insert(Object o) throws Exception {
 		// TODO Auto-generated method stub
-	    return 0;
+		return 0;
 	}
 
+	@Override
 	public void update(Object o) throws Exception {
-		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void delete(Object d) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
-	public Auto select(Object o) throws Exception {
+	@Override
+	public Abono select(Object o) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Collection<Auto> selectAll() throws Exception {
+	@Override
+	public Collection<? extends Object> selectAll() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
 }

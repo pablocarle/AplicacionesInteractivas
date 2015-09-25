@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Cliente {
 	
-	private int idCliente;
+	private int idCliente = -1;
 	private String nombre;
 	private String telefono;
 	private String email;

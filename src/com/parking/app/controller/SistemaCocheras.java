@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import com.parking.app.db.BancoMapper;
 import com.parking.app.db.ClienteMapper;
+import com.parking.app.db.ContratosMapper;
 import com.parking.app.db.MediosDePagoMapper;
 import com.parking.app.model.Abono;
 import com.parking.app.model.AbonoView;
@@ -172,20 +173,35 @@ public class SistemaCocheras {
 		MedioPago medioPago = obtenerMedioPago(idMedioPago);
 		Abono abono = obtenerAbono(idAbono);
 		if (mapaCocheras.hayDisponible(auto)) {
-			return null;
+			Contrato contrato = new Contrato();
+			contrato.setAuto(auto);
+			contrato.setCliente(cliente);
+			contrato.setMedioPago(medioPago);
+			contrato.setAbono(abono);
+			contrato.setIdContrato(ContratosMapper.obtenerMapper().insert(contrato));
+			contratos.add(contrato);
+			return contrato.obtenerVista();
 		} else {
 			throw new Exception();
 		}
 	}
 
-    private Abono obtenerAbono(int idAbono) {
-		// TODO Auto-generated method stub
-		return null;
+    private Abono obtenerAbono(int idAbono) throws Exception {
+    	for (Abono abono : abonos) {
+    		if (abono.getIdAbono() == idAbono) {
+    			return abono;
+    		}
+    	}
+    	throw new Exception("No se encontro el abono con id " + idAbono);
 	}
 
-	private MedioPago obtenerMedioPago(int idMedioPago) {
-		// TODO Auto-generated method stub
-		return null;
+	private MedioPago obtenerMedioPago(int idMedioPago) throws Exception {
+		for (MedioPago mp : mediosPago) {
+			if (mp.getIdMedioPago() == idMedioPago) {
+				return mp;
+			}
+		}
+		throw new Exception("No existe el medio de pago con ID " + idMedioPago);
 	}
 
 	public ClienteView modificarCliente(int idCliente, String nombre, String domicilio, String email, String telefono) throws Exception {

@@ -15,9 +15,10 @@ create table contratos (
 	idCliente integer not null,
 	idAuto integer not null,
 	idMedioPago integer not null,
+	idAbono integer not null,
 	precio decimal(10,2),
 	fechaInicio date,
-	fechaFin date,
+	activo boolean,
 	constraint contratos_pk primary key ( idContrato )
 );
 
@@ -58,6 +59,13 @@ create table bancos (
     nombre varchar(30) not null,
     constraint bancos_pk primary key (idBanco)
 );
+
+drop table if exists abonos;
+create table abonos (
+	idAbono integer not null,
+	
+	constraint abonos_pk primary key (idAbono)
+;
 
 create unique index autos_patente_idx on autos ( patente );
 

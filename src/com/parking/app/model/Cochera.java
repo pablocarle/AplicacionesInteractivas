@@ -21,7 +21,7 @@ public class Cochera {
 	}
 
 	public boolean aceptaAuto(Auto auto) {
-		// TODO Auto-generated method stub
-		return false;
+		// TODO Determinar aceptacion de auto
+		return true;
 	}
 }

@@ -42,7 +42,7 @@ public class ClienteMapper implements Mapper {
 		}
 	}
 
-	public int getClientId(String email) throws SQLException {
+	private int getClientId(String email) throws SQLException {
 	    Connection conn = PoolConnection.getPoolConnection().getConnection();
 	    PreparedStatement ps = conn.prepareStatement("select idCliente from clientes where email=?");
 	    ps.setString(1, email);
