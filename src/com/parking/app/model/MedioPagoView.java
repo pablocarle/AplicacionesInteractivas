@@ -46,4 +46,9 @@ public class MedioPagoView {
     public String getArchivo() {
         return archivo;
     }
+    
+    @Override
+    public String toString() {
+        return nombre +" ("+descripcion+")";
+    }
 }
