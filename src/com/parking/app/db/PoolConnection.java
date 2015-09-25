@@ -4,12 +4,9 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 import java.util.Vector;
-
 //import com.microsoft.sqlserver.jdbc.SQLServerDriver;
-import org.sqlite.JDBC;
 
 public class PoolConnection
 {

@@ -70,7 +70,7 @@ create table bancos (
 drop table if exists abonos;
 create table abonos (
 	idAbono integer not null,
-	nombre varchar(30) not null,
+	nombre varchar(127) not null,
 	dias integer not null,
 	descuento float not null,
 	constraint abonos_pk primary key (idAbono)
@@ -82,6 +82,6 @@ insert into clientes values(1, 'Juan Perez', 'Cochabamba 332', '467532463', 'ema
 insert into clientes values(2, 'Jorge Roque', 'San Juan 552', '7654335', 'email@demo', 1);
 insert into clientes values(3, 'Pedro Perez', 'Av. Independencia 552', '157654335', 'email2@demo', 1);
 
-insert into bancos values(1, 'Banco Francés');
+insert into bancos values(1, 'Banco Frances');
 insert into bancos values(2, 'Banco Galicia');
 insert into bancos values(3, 'Banco Santander');
