@@ -1,24 +1,18 @@
 package com.parking.app.view;
 
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.showConfirmDialog;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.Dialog.ModalityType;
-
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-
-import com.parking.app.controller.SistemaCocheras;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class EliminarAbono extends JDialog {
 

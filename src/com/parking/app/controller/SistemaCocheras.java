@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.Vector;
 
+import com.parking.app.db.AutosMapper;
 import com.parking.app.db.BancoMapper;
 import com.parking.app.db.ClienteMapper;
 import com.parking.app.db.ContratosMapper;
@@ -57,9 +58,8 @@ public class SistemaCocheras {
 		clientes = ClienteMapper.obtenerMapper().selectAll();
 		bancos = BancoMapper.obtenerMapper().selectAll();
 		mediosPago = MediosDePagoMapper.obtenerMapper().selectAll();
-//		autos = AutosMapper.obtenerMapper().selectAll();
-//		tarifas = TarifasMapper.obtenerMapper().selectAll();
-//		contratos = ContratosMapper.obtenerMapper().selectAll();
+		autos = AutosMapper.obtenerMapper().selectAll();
+		contratos = ContratosMapper.obtenerMapper().selectAll();
 	}
 
 	public static SistemaCocheras getSistemaCocheras() {
@@ -75,6 +75,7 @@ public class SistemaCocheras {
 	private Collection<Tarifa> tarifas = new ArrayList<Tarifa>();
 	private Collection<Abono> abonos = new ArrayList<Abono>();
 	private Collection<Banco> bancos = new ArrayList<Banco>();
+	private Collection<Auto> autos = new ArrayList<Auto>();
 	private Collection<MedioPago> mediosPago = new ArrayList<MedioPago>();
 	private MapaCocheras mapaCocheras = new MapaCocheras();
 	
