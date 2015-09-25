@@ -4,13 +4,15 @@ public class AbonoView {
 	
 	private int idAbono;
 	private String nombre;
-	private String descripcion;
+	private int dias;
+	private float descuento;
 	
 	public AbonoView(Abono abono) {
 		super();
 		this.idAbono = abono.getIdAbono();
 		this.nombre = abono.getNombre();
-		this.descripcion = abono.getDescripcion();
+		this.dias = abono.getDias();
+		this.descuento= abono.getDescuento();
 	}
 
 	public int getIdAbono() {
@@ -29,11 +31,20 @@ public class AbonoView {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public int getDias() {
+		return dias;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDias(int dias) {
+		this.dias = dias;
 	}
+
+    public float getDescuento() {
+        return descuento;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " (" + dias + ", " + descuento + "%)";
+    }
 }

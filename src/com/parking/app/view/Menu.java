@@ -145,6 +145,7 @@ public class Menu extends javax.swing.JFrame {
 				JMenuItem mntmNuevoAbono = new JMenuItem("Nuevo Abono");
 				mntmNuevoAbono.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+					    NuevoAbono.getInstance().setVisible(true);
 					}
 				});
 				mnAbonos.add(mntmNuevoAbono);

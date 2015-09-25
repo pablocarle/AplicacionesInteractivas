@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.Vector;
 
+import com.parking.app.db.AbonosMapper;
 import com.parking.app.db.AutosMapper;
 import com.parking.app.db.BancoMapper;
 import com.parking.app.db.ClienteMapper;
@@ -61,6 +62,7 @@ public class SistemaCocheras {
 		mediosPago = MediosDePagoMapper.obtenerMapper().selectAll();
 		autos = AutosMapper.obtenerMapper().selectAll();
 		contratos = ContratosMapper.obtenerMapper().selectAll();
+		abonos = AbonosMapper.obtenerMapper().selectAll();
 	}
 
 	public static SistemaCocheras getSistemaCocheras() {
@@ -288,7 +290,12 @@ public class SistemaCocheras {
         }
         return false;
     }
-
+    public AbonoView crearAbono(String nombre, int dias, float descuento) throws Exception {
+        Abono abono = new Abono(nombre, dias, descuento);
+        int idAbono = AbonosMapper.obtenerMapper().insert(abono); 
+        abono.setIdAbono(idAbono);
+        return abono.obtenerVista();
+    }
 	public Vector<MedioPagoView> listarMediosPago() {
 		Vector<MedioPagoView> retList = new Vector<MedioPagoView>();
 		for (MedioPago medio : mediosPago) {

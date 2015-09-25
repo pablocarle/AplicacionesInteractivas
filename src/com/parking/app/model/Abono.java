@@ -4,9 +4,16 @@ public class Abono {
 
 	private int idAbono;
 	private String nombre;
-	private String descripcion;
+	private int dias;
+	private float descuento;
 	
-	public AbonoView obtenerVista() {
+	public Abono(String nombre, int dias, float descuento) {
+        this.nombre = nombre;
+        this.dias = dias;
+        this.descuento = descuento;
+    }
+
+    public AbonoView obtenerVista() {
 		return new AbonoView(this);
 	}
 
@@ -26,11 +33,19 @@ public class Abono {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public int getDias() {
+        return dias;
+    }
+
+    public void setDias(int dias) {
+        this.dias = dias;
+    }
+
+	public float getDescuento() {
+		return descuento;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDescuento(float descuento) {
+		this.descuento = descuento;
 	}
 }

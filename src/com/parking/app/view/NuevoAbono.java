@@ -1,5 +1,7 @@
 package com.parking.app.view;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
@@ -9,6 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import com.parking.app.controller.SistemaCocheras;
+import com.parking.app.model.AbonoView;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class NuevoAbono extends JDialog {
 
@@ -20,7 +28,14 @@ public class NuevoAbono extends JDialog {
 	private JTextField nombre;
 	private JTextField dias;
 	private JTextField descuento;
-
+	private static NuevoAbono instance;
+	
+    public static NuevoAbono getInstance() {
+        if (instance == null) {
+            instance = new NuevoAbono();
+        }
+        return instance;
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -86,6 +101,23 @@ public class NuevoAbono extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				        try {
+                            AbonoView abono = SistemaCocheras.getSistemaCocheras().crearAbono(nombre.getText(), Integer.valueOf(dias.getText()), Float.valueOf(descuento.getText()));
+                            if(abono != null) {
+                                showMessageDialog(null, "Abono creado!");
+                                dispose();
+                            }
+                        } catch (NumberFormatException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        } catch (Exception e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+				    }
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -93,6 +125,11 @@ public class NuevoAbono extends JDialog {
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setActionCommand("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                    }
+				});
 				buttonPane.add(cancelButton);
 			}
 		}
