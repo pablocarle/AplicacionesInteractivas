@@ -19,8 +19,14 @@ create table contratos (
 	precio decimal(10,2),
 	fechaInicio date,
 	activo boolean,
-	constraint contratos_pk primary key ( idContrato )
+	constraint contratos_pk primary key ( idContrato ),
+	constraint contratos_clientes_fk foreign key ( idCliente ) references clientes ( idCliente ),
+	constraint contratos_autos_fk foreign key ( idAuto ) references autos ( idAuto ),
+	constraint contratos_mediospago_fk foreign key ( idMedioPago ) references mediospago ( idMedioPago ),
+	constraint contratos_abonos_fk foreign key ( idAbono ) references abonos ( idAbono )
 );
+
+create unique index contratos_idx on contratos ( idCliente, idAuto, activo );
 
 drop table if exists autos;
 create table autos (

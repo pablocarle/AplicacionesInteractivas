@@ -3,7 +3,6 @@ package com.parking.app.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -42,29 +41,33 @@ public class ClienteMapper implements Mapper {
 		}
 	}
 
-	private int getClientId(String email) throws SQLException {
+	private int getClientId(String email) throws Exception {
 	    Connection conn = PoolConnection.getPoolConnection().getConnection();
 	    PreparedStatement ps = conn.prepareStatement("select idCliente from clientes where email=?");
 	    ps.setString(1, email);
 	    ResultSet rs = ps.executeQuery();
-	    int idCliente = rs.getInt(1);
-	    PoolConnection.getPoolConnection().releaseConnection(conn);
-        return idCliente;
+	    if (rs.next()) {
+	    	int idCliente = rs.getInt(1);
+	    	PoolConnection.getPoolConnection().releaseConnection(conn);
+	    	return idCliente;
+	    } else {
+	    	throw new Exception();
+	    }
 	}
 
 	public void update(Object o) throws Exception {
 		if (o instanceof Cliente) {
 			Cliente cliente = (Cliente) o;
 
-				Connection conn = PoolConnection.getPoolConnection().getConnection();
-				PreparedStatement ps = conn.prepareStatement("update clientes set nombre = ?, domicilio = ?, telefono = ?, email = ? where idCliente = ?");
-	            ps.setString(1, cliente.getNombre());
-	            ps.setString(2, cliente.getDomicilio());
-	            ps.setString(3, cliente.getTelefono());
-	            ps.setString(4, cliente.getEmail());
-	            ps.setInt(5, cliente.getIdCliente());
-	            ps.executeUpdate();
-				PoolConnection.getPoolConnection().releaseConnection(conn);
+			Connection conn = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement ps = conn.prepareStatement("update clientes set nombre = ?, domicilio = ?, telefono = ?, email = ? where idCliente = ?");
+            ps.setString(1, cliente.getNombre());
+            ps.setString(2, cliente.getDomicilio());
+            ps.setString(3, cliente.getTelefono());
+            ps.setString(4, cliente.getEmail());
+            ps.setInt(5, cliente.getIdCliente());
+            ps.executeUpdate();
+			PoolConnection.getPoolConnection().releaseConnection(conn);
 		} else {
 			throw new Exception();
 		}
