@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.parking.app.controller.SistemaCocheras;
 import com.parking.app.model.Banco;
-import com.parking.app.model.Cliente;
 import com.parking.app.model.MedioPago;
 
 public class MediosDePagoMapper implements Mapper {

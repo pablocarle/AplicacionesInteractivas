@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.parking.app.model.Auto;
-import com.parking.app.model.Banco;
 
 public class AutosMapper implements Mapper {
 
@@ -46,7 +45,7 @@ public class AutosMapper implements Mapper {
 
 	public Collection<Auto> selectAll() throws Exception {
         Connection conn = PoolConnection.getPoolConnection().getConnection();
-        PreparedStatement ps = conn.prepareStatement("select idAuto, patente, marca, modelo, esgrande from bancos");
+        PreparedStatement ps = conn.prepareStatement("select idAuto, patente, marca, modelo, esgrande from autos");
         Collection<Auto> autos = new ArrayList<Auto>();
 
         if (ps.execute()) {
