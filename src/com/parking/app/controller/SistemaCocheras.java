@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
 import com.parking.app.db.AbonosMapper;
@@ -24,14 +22,11 @@ import com.parking.app.model.BancoView;
 import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
 import com.parking.app.model.Cochera;
-import com.parking.app.model.CocheraEspezial;
 import com.parking.app.model.Contrato;
 import com.parking.app.model.ContratoView;
-import com.parking.app.model.EventoCobro;
 import com.parking.app.model.MapaCocheras;
 import com.parking.app.model.MedioPago;
 import com.parking.app.model.MedioPagoView;
-import com.parking.app.model.ReporteCobros;
 import com.parking.app.model.Tarifa;
 
 public class SistemaCocheras {
@@ -56,6 +51,8 @@ public class SistemaCocheras {
 		}
 	}
 	
+	private boolean inicializado = false;
+	
 	private SistemaCocheras() {
 		super();
 	}
@@ -69,20 +66,6 @@ public class SistemaCocheras {
 		abonos = AbonosMapper.obtenerMapper().selectAll();
 	}
 
-	{
-		new Timer().schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				for (Contrato c : contratos) {
-					if (c.vencesEnDias(10)) {
-						
-					}
-				}
-			}
-		}, 1000 * 60 * 60 * 24);
-	}
-	
 	public static SistemaCocheras getSistemaCocheras() {
 		if (instancia == null) {
 			instancia = new SistemaCocheras();
@@ -265,9 +248,10 @@ public class SistemaCocheras {
     }
 
 	public void crearCocheras(int cocherasSimples, int cocherasEspeciales) throws Exception {
-		int total = cocherasSimples + (cocherasEspeciales * 2);
-		if (total <= CANTIDADCOCHERAS) {
-			Cochera cochera = null;
+		if (!inicializado) {
+			int total = cocherasSimples + (cocherasEspeciales * 2);
+			if (total <= CANTIDADCOCHERAS) {
+				Cochera cochera = null;
 //			for (int i = 0; i < total; i++) {
 //				if (i < cocherasSimples) { //FIXME 
 //					cochera = new Cochera();
@@ -279,10 +263,16 @@ public class SistemaCocheras {
 //					cocheras.add(cochera);
 //				}
 //			}
-			mapaCocheras.inicializar(cocheras);
-		} else {
-			throw new Exception("La cantidad total debe ser menor a " + CANTIDADCOCHERAS);
+				mapaCocheras.inicializar(cocheras);
+			} else {
+				throw new Exception("La cantidad total debe ser menor a " + CANTIDADCOCHERAS);
+			}
+			inicializado = true;
 		}
+	}
+	
+	public boolean estanCocherasInicializadas() {
+		return inicializado;
 	}
 	
 	public boolean hayCocheraSimpleDisponible() {
