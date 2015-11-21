@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -123,8 +124,13 @@ public class Menu extends javax.swing.JFrame {
 						mniInicializar.setText("Inicializar");
 						mniInicializar.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent evt) {
-								JDialog dialog = new InicializacionCocheras();
-								dialog.setVisible(true);
+								JDialog dialog;
+								try {
+									dialog = new InicializacionCocheras();
+									dialog.setVisible(true);
+								} catch (Exception e) {
+									JOptionPane.showMessageDialog(null, e.getMessage());
+								}
 							}
 						});
 					}

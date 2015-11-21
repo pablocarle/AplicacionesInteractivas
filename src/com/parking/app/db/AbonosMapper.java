@@ -40,7 +40,8 @@ public class AbonosMapper implements Mapper {
         }
     }
 
-    private int getAbonoId(String nombre) throws Exception {
+    @SuppressWarnings("unused")
+	private int getAbonoId(String nombre) throws Exception {
         Connection conn = PoolConnection.getPoolConnection().getConnection();
         PreparedStatement ps = conn.prepareStatement("select idAbono from abonos where nombre=?");
         ps.setString(1, nombre);

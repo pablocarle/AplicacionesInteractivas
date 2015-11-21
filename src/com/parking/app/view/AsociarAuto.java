@@ -68,7 +68,7 @@ public class AsociarAuto extends JDialog {
 		contentPanel.setLayout(null);
 		{
 			JLabel lblCliente = new JLabel("Cliente");
-			lblCliente.setBounds(10, 11, 46, 14);
+			lblCliente.setBounds(10, 11, 114, 14);
 			contentPanel.add(lblCliente);
 		}
 		{
@@ -84,7 +84,7 @@ public class AsociarAuto extends JDialog {
 		}
 		{
 			JLabel lblPatente = new JLabel("Patente");
-			lblPatente.setBounds(10, 64, 46, 14);
+			lblPatente.setBounds(10, 64, 142, 14);
 			contentPanel.add(lblPatente);
 		}
 		{
@@ -95,7 +95,7 @@ public class AsociarAuto extends JDialog {
 		}
 		{
 			JLabel lblMarca = new JLabel("Marca");
-			lblMarca.setBounds(10, 95, 46, 14);
+			lblMarca.setBounds(10, 95, 114, 14);
 			contentPanel.add(lblMarca);
 		}
 		{
@@ -106,7 +106,7 @@ public class AsociarAuto extends JDialog {
 		}
 		{
 			JLabel lblModelo = new JLabel("Modelo");
-			lblModelo.setBounds(10, 126, 46, 14);
+			lblModelo.setBounds(10, 126, 97, 14);
 			contentPanel.add(lblModelo);
 		}
 		{
@@ -116,7 +116,7 @@ public class AsociarAuto extends JDialog {
 			textFieldModelo.setColumns(10);
 		}
 		
-		chckbxEsGrande.setBounds(10, 151, 97, 23);
+		chckbxEsGrande.setBounds(10, 151, 142, 23);
 		contentPanel.add(chckbxEsGrande);
 		{
 			JPanel buttonPane = new JPanel();

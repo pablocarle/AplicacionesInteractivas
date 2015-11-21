@@ -34,8 +34,11 @@ public class InicializacionCocheras extends javax.swing.JDialog {
 	private JTextField textFieldEspeciales;
 	private JLabel lblCantitadTotal = new JLabel("Cantitad Total:");
 
-	public InicializacionCocheras() {
+	public InicializacionCocheras() throws Exception {
 		super();
+		if (SistemaCocheras.getSistemaCocheras().estanCocherasInicializadas()) {
+			throw new Exception("Las cocheras ya se encuentran inicializadas");
+		}
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
@@ -52,7 +55,7 @@ public class InicializacionCocheras extends javax.swing.JDialog {
 		textFieldSimples.setColumns(10);
 		
 		JLabel lblCocherasEspeziales = new JLabel("Cocheras Espeziales");
-		lblCocherasEspeziales.setBounds(10, 64, 121, 14);
+		lblCocherasEspeziales.setBounds(10, 64, 153, 14);
 		getContentPane().add(lblCocherasEspeziales);
 		
 		textFieldEspeciales = new JTextField();
@@ -66,7 +69,7 @@ public class InicializacionCocheras extends javax.swing.JDialog {
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(285, 92, 89, 23);
+		btnNewButton.setBounds(232, 92, 142, 23);
 		getContentPane().add(btnNewButton);
 		
 		JButton btnOk = new JButton("OK");
@@ -95,7 +98,7 @@ public class InicializacionCocheras extends javax.swing.JDialog {
 				}
 			}
 		});
-		btnOk.setBounds(186, 92, 89, 23);
+		btnOk.setBounds(86, 92, 134, 23);
 		getContentPane().add(btnOk);
 		
 		lblCantitadTotal.setBounds(10, 11, 101, 14);
