@@ -11,7 +11,7 @@ import java.util.Vector;
 
 import com.parking.app.db.AbonosMapper;
 import com.parking.app.db.AutosMapper;
-import com.parking.app.db.BancoMapper;
+import com.parking.app.db.BancosMapper;
 import com.parking.app.db.ClienteMapper;
 import com.parking.app.db.ContratosMapper;
 import com.parking.app.db.MediosDePagoMapper;
@@ -62,7 +62,7 @@ public class SistemaCocheras {
 	
 	private void cargarModelo() throws Exception {
 		clientes = ClienteMapper.obtenerMapper().selectAll();
-		bancos = BancoMapper.obtenerMapper().selectAll();
+		bancos = BancosMapper.obtenerMapper().selectAll();
 		mediosPago = MediosDePagoMapper.obtenerMapper().selectAll();
 		autos = AutosMapper.obtenerMapper().selectAll();
 		contratos = ContratosMapper.obtenerMapper().selectAll();
@@ -198,6 +198,15 @@ public class SistemaCocheras {
         return false;
     }
 
+    public Banco obtenerBanco(int idBanco) {
+        for (Banco banco : bancos) {
+            if (banco.getIdBanco() == idBanco) {
+                return banco;
+            }
+        }
+        return null;
+    }
+
     private Cliente obtenerCliente(int idCliente) {
 		for (Cliente cliente : clientes) {
 			if (cliente.getIdCliente() == idCliente) {
@@ -284,38 +293,30 @@ public class SistemaCocheras {
 		return false;
 	}
 
-	public MedioPagoView crearMedioPago(String nombre, int idBanco,
-	        String descripcion,
-	        String ftpOut,
-	        String ftpIn,
-	        String archivo) throws Exception {
+	public MedioPagoView crearMedioPago(String nombre, Integer idBanco,
+	        String descripcion) throws Exception {
         if(!existeMedioPago(nombre)) {
-        	if (existeBanco(idBanco)) {
-        		Banco banco = obtenerBanco(idBanco);
-        		banco.registrar(new ReporteCobros() {
-					
-					@Override
-					public void cobroEfectuado(EventoCobro e) {
-						
-					}
-				});
-        		MedioPago nuevoMedioPago = new MedioPago(nombre, banco, descripcion, ftpOut, ftpIn, archivo);
-        		int idMedioPago = MediosDePagoMapper.obtenerMapper().insert(nuevoMedioPago);
-        		nuevoMedioPago.setIdMedioPago(idMedioPago);
-        		mediosPago.add(nuevoMedioPago);
-        		return nuevoMedioPago.obtenerVista();
+            Banco banco = null;
+        
+        	if (idBanco != null) {
+        		banco = obtenerBanco(idBanco);
         	}
+    		MedioPago nuevoMedioPago = new MedioPago(nombre, banco, descripcion);
+    		int idMedioPago = MediosDePagoMapper.obtenerMapper().insert(nuevoMedioPago);
+    		nuevoMedioPago.setIdMedioPago(idMedioPago);
+    		mediosPago.add(nuevoMedioPago);
+    		return nuevoMedioPago.obtenerVista();
+        	
         }
         return null;
     }
 
-    private Banco obtenerBanco(int idBanco) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private boolean existeBanco(int idBanco) {
-		// TODO Auto-generated method stub
+	private boolean existeBanco(String nombre) {
+		for (Banco banco : bancos) {
+		    if (banco.getNombre().equals(nombre)) {
+		        return true;
+		    }
+		}
 		return false;
 	}
 
@@ -377,5 +378,15 @@ public class SistemaCocheras {
         }
 
         return lista;
+    }
+
+    public BancoView crearBanco(String nombre, String ftpOut, String ftpIn) throws Exception {
+        if (!existeBanco(nombre)) {
+            Banco banco = new Banco(nombre, ftpOut, ftpOut);
+            int idBanco = BancosMapper.obtenerMapper().insert(banco); 
+            banco.setIdAbono(idBanco);
+            return banco.obtenerVista();
+        }
+        return null;
     }
 }

@@ -1,21 +1,23 @@
 package com.parking.app.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public class Banco {
 	
     private int idBanco;
     private String nombre;
-
-    private List<ReporteCobros> clientesAReportar = new ArrayList<ReporteCobros>();
+    private String ftpIn;
+    private String ftpOut;
     
-    public Banco(int idBanco, String nombre) {
-        this.idBanco = idBanco;
+    public Banco(String nombre, String ftpIn, String ftpOut) {
         this.nombre = nombre;
+        this.ftpIn = ftpIn;
+        this.ftpOut = ftpOut;
     }
-    
+
+    public Banco(int idBanco, String nombre, String ftpIn, String ftpOut) {
+        this(nombre, ftpIn, ftpOut);
+        this.idBanco = idBanco;
+    }
+
     public BancoView obtenerVista() {
         return new BancoView(this);
     }
@@ -27,19 +29,16 @@ public class Banco {
     public String getNombre() {
         return this.nombre;
     }
-    
-    public void registrar(ReporteCobros reporte) {
-    	if (!clientesAReportar.contains(reporte)) {
-    		clientesAReportar.add(reporte);
-    	}
+
+    public void setIdAbono(int idBanco) {
+        this.idBanco = idBanco;
+    }
+
+    public String getFtpIn() {
+        return ftpIn;
     }
     
-    public void efectuarCobros() {
-//    	TODO Generar archivo
-    	EventoCobro ec = null;
-    	for (ReporteCobros rc : clientesAReportar) {
-    		ec = new EventoCobro(nombre + "_" + (new Date()).toString() + ".txt");
-    		rc.cobroEfectuado(ec);
-    	}
+    public String getFtpOut() {
+        return ftpOut;
     }
 }

@@ -52,10 +52,7 @@ create table mediospago (
 	idMedioPago integer not null,
 	nombre varchar(30) not null,
 	descripcion varchar(100),
-	ftp_out varchar(255),
-	ftp_in varchar(255),
-	archivo varchar(255),
-	idBanco integer not null,
+	idBanco integer null,
 	constraint mediospago_pk primary key ( idMedioPago ),
 	constraint mediospago_bancos_fk foreign key (idBanco) references bancos (idBanco)
 );
@@ -64,6 +61,8 @@ drop table if exists bancos;
 create table bancos (
     idBanco integer not null,
     nombre varchar(30) not null,
+    ftp_out varchar(255),
+	ftp_in varchar(255),
     constraint bancos_pk primary key (idBanco)
 );
 
@@ -82,6 +81,6 @@ insert into clientes values(1, 'Juan Perez', 'Cochabamba 332', '467532463', 'ema
 insert into clientes values(2, 'Jorge Roque', 'San Juan 552', '7654335', 'email@demo', 1);
 insert into clientes values(3, 'Pedro Perez', 'Av. Independencia 552', '157654335', 'email2@demo', 1);
 
-insert into bancos values(1, 'Banco Frances');
-insert into bancos values(2, 'Banco Galicia');
-insert into bancos values(3, 'Banco Santander');
+insert into bancos values(1, 'Banco Frances', 'ftp://OutFrances', 'ftp://InFrances');
+insert into bancos values(2, 'Banco Galicia', 'ftp://OutGalicia', 'ftp://InGalicia');
+insert into bancos values(3, 'Banco Santander', 'ftp://OutSantander', 'ftp://InSantander');

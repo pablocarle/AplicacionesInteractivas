@@ -6,17 +6,11 @@ public class MedioPago {
     private String nombre;
     private Banco banco;
     private String descripcion;
-    private String ftpOut;
-    private String ftpIn;
-    private String archivo;
 
-	public MedioPago(String nombre, Banco banco, String descripcion, String ftpOut, String ftpIn, String archivo) {
+	public MedioPago(String nombre, Banco banco, String descripcion) {
         this.nombre = nombre;
         this.banco = banco;
         this.descripcion = descripcion;
-        this.ftpOut = ftpOut;
-        this.ftpIn = ftpIn;
-        this.archivo = archivo;
     }
 
     public MedioPagoView obtenerVista() {
@@ -33,18 +27,6 @@ public class MedioPago {
 
     public String getDescripcion() {
         return descripcion;
-    }
-
-    public String getFtpOut() {
-        return ftpOut;
-    }
-
-    public String getFtpIn() {
-        return ftpIn;
-    }
-
-    public String getArchivo() {
-        return archivo;
     }
 
     public int getIdMedioPago() {
@@ -65,17 +47,5 @@ public class MedioPago {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public void setFtpOut(String ftpOut) {
-        this.ftpOut = ftpOut;
-    }
-
-    public void setFtpIn(String ftpIn) {
-        this.ftpIn = ftpIn;
-    }
-
-    public void setArchivo(String archivo) {
-        this.archivo = archivo;
     }
 }

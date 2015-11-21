@@ -12,11 +12,9 @@ public class MedioPagoView {
 	public MedioPagoView(MedioPago medioPago) {
 	    idMedioPago = medioPago.getIdMedioPago();
         nombre = medioPago.getNombre();
-        banco = medioPago.getBanco().obtenerVista();
+        banco = (medioPago.getBanco() == null) ? null : medioPago.getBanco().obtenerVista();
         descripcion = medioPago.getDescripcion();
-        ftpOut = medioPago.getFtpOut();
-        ftpIn = medioPago.getFtpIn();
-        archivo = medioPago.getArchivo();
+
     }
 
     public int getIdMedioPago() {
@@ -35,18 +33,6 @@ public class MedioPagoView {
         return descripcion;
     }
 
-    public String getFtpOut() {
-        return ftpOut;
-    }
-
-    public String getFtpIn() {
-        return ftpIn;
-    }
-
-    public String getArchivo() {
-        return archivo;
-    }
-    
     @Override
     public String toString() {
         return nombre +" ("+descripcion+")";

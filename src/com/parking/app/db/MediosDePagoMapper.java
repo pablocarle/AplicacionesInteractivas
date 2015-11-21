@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.parking.app.controller.SistemaCocheras;
 import com.parking.app.model.Banco;
 import com.parking.app.model.MedioPago;
 
@@ -29,14 +30,18 @@ public class MediosDePagoMapper implements Mapper {
         if (o instanceof MedioPago) {
             MedioPago medioPago = (MedioPago) o;
             Connection conn = PoolConnection.getPoolConnection().getConnection();
+            PreparedStatement ps;
 
-            PreparedStatement ps = conn.prepareStatement("insert into mediospago (nombre, descripcion, ftp_out, ftp_in, archivo, idBanco) values (?, ?, ?, ?, ?, ?)");
+            if (medioPago.getBanco() == null) {
+                ps = conn.prepareStatement("insert into mediospago (nombre, descripcion) values (?, ?)");
+            } else {
+                ps = conn.prepareStatement("insert into mediospago (nombre, descripcion, idBanco) values (?, ?, ?)");
+                ps.setString(3, Integer.toString(medioPago.getBanco().getIdBanco()));
+            }
+
             ps.setString(1, medioPago.getNombre());
             ps.setString(2, medioPago.getDescripcion());
-            ps.setString(3, medioPago.getFtpOut());
-            ps.setString(4, medioPago.getFtpIn());
-            ps.setString(5, medioPago.getArchivo());
-            ps.setString(6, Integer.toString(medioPago.getBanco().getIdBanco()));
+
             ps.execute();
 
             PoolConnection.getPoolConnection().releaseConnection(conn);
@@ -77,7 +82,8 @@ public class MediosDePagoMapper implements Mapper {
     @Override
     public Collection<MedioPago> selectAll() throws Exception {
         Connection conn = PoolConnection.getPoolConnection().getConnection();
-        PreparedStatement ps = conn.prepareStatement("select idMedioPago, mediospago.nombre, descripcion, ftp_out, ftp_in, archivo, bancos.idBanco, bancos.nombre from mediospago JOIN bancos ON mediospago.idBanco = bancos.idBanco");
+        Collection<Banco> bancos = BancosMapper.obtenerMapper().selectAll(); 
+        PreparedStatement ps = conn.prepareStatement("select idMedioPago, nombre, descripcion, idBanco from mediospago");
         Collection<MedioPago> mediosPago = new ArrayList<MedioPago>();
 
         if (ps.execute()) {
@@ -85,24 +91,23 @@ public class MediosDePagoMapper implements Mapper {
             int idMedioPago;
             String nombre;
             String descripcion;
-            String ftpOut;
-            String ftpIn;
-            String archivo;
-            int idBanco; 
-            String nombreBanco;
+            Banco banco = null;
+            Integer idBanco; 
 
             MedioPago medioPago = null;
             while (rs.next()) {
                 idMedioPago = rs.getInt(1);
                 nombre = rs.getString(2);
                 descripcion = rs.getString(3);
-                ftpOut = rs.getString(4);
-                ftpIn = rs.getString(5);
-                archivo = rs.getString(6);
-                idBanco = rs.getInt(7);
-                nombreBanco = rs.getString(8);
-                Banco banco = new Banco(idBanco, nombreBanco);
-                medioPago = new MedioPago(nombre, banco, descripcion, ftpOut, ftpIn, archivo);
+                idBanco = rs.getInt(4);
+                if (idBanco != null) {
+                    for (Banco b : bancos) {
+                        if (b.getIdBanco() == idBanco) {
+                            banco = b;
+                        }
+                    }
+                }
+                medioPago = new MedioPago(nombre, banco, descripcion);
                 medioPago.setIdMedioPago(idMedioPago);
                 mediosPago.add(medioPago);
             }

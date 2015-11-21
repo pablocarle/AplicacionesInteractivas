@@ -36,6 +36,9 @@ public class Menu extends javax.swing.JFrame {
 	private JMenu mnAbonos;
 	private JMenu mnMediosDePago;
 	private JMenuItem mntmNuevoMedioDe;
+	private JMenu mnNewMenu;
+	private JMenuItem mntmNewMenuItem;
+	private JMenuItem mntmNewMenuItem_1;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -165,9 +168,29 @@ public class Menu extends javax.swing.JFrame {
 					public void actionPerformed(ActionEvent e) {
 					    JDialog dialog = new NuevoMedioPago();
                         dialog.setVisible(true);
+                        //dialog.initData();
 					}
 				});
 				mnMediosDePago.add(mntmNuevoMedioDe);
+				
+				mnNewMenu = new JMenu("Bancos");
+				jMenuBar1.add(mnNewMenu);
+				
+				mntmNewMenuItem_1 = new JMenuItem("Procesar pagos");
+				mntmNewMenuItem_1.addActionListener(new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				    }
+				});
+				mnNewMenu.add(mntmNewMenuItem_1);
+				
+				mntmNewMenuItem = new JMenuItem("Nuevo Banco");
+				mntmNewMenuItem.addActionListener(new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				        JDialog dialog = new NuevoBanco();
+                        dialog.setVisible(true);
+				    }
+				});
+				mnNewMenu.add(mntmNewMenuItem);
 				{
 					jMenu1 = new JMenu();
 					jMenuBar1.add(jMenu1);

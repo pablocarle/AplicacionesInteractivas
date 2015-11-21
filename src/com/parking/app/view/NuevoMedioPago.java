@@ -28,9 +28,6 @@ public class NuevoMedioPago extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldNombreMedioPago;
-	private JTextField textFieldFTPOut;
-	private JTextField textFieldFTPIn;
-	private JTextField textFieldNombreArchivo;
 	private JComboBox<BancoView> comboBoxBanco;
 	private JTextField textFieldDescripcion;
 
@@ -55,7 +52,7 @@ public class NuevoMedioPago extends JDialog {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
 		setTitle("Nuevo Medio de Pago");
-		setBounds(100, 100, 450, 293);
+		setBounds(100, 100, 450, 170);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -81,39 +78,6 @@ public class NuevoMedioPago extends JDialog {
 			comboBoxBanco.setBounds(211, 63, 213, 20);
 			contentPanel.add(comboBoxBanco);
 		}
-		{
-			JLabel lblNewLabel = new JLabel("FTP Salida");
-			lblNewLabel.setBounds(10, 97, 94, 14);
-			contentPanel.add(lblNewLabel);
-		}
-		{
-			textFieldFTPOut = new JTextField();
-			textFieldFTPOut.setBounds(211, 94, 213, 20);
-			contentPanel.add(textFieldFTPOut);
-			textFieldFTPOut.setColumns(10);
-		}
-		{
-			JLabel lblNewLabel_1 = new JLabel("FTP Entrada");
-			lblNewLabel_1.setBounds(10, 128, 94, 14);
-			contentPanel.add(lblNewLabel_1);
-		}
-		{
-			textFieldFTPIn = new JTextField();
-			textFieldFTPIn.setBounds(211, 125, 213, 20);
-			contentPanel.add(textFieldFTPIn);
-			textFieldFTPIn.setColumns(10);
-		}
-		{
-			JLabel lblNombreDeArchivo = new JLabel("Nombre de Archivo");
-			lblNombreDeArchivo.setBounds(10, 159, 119, 14);
-			contentPanel.add(lblNombreDeArchivo);
-		}
-		{
-			textFieldNombreArchivo = new JTextField();
-			textFieldNombreArchivo.setBounds(211, 156, 213, 20);
-			contentPanel.add(textFieldNombreArchivo);
-			textFieldNombreArchivo.setColumns(10);
-		}
 		
 		JLabel lblDescripcin = new JLabel("Descripción");
 		lblDescripcin.setBounds(10, 40, 135, 14);
@@ -125,23 +89,22 @@ public class NuevoMedioPago extends JDialog {
 		contentPanel.add(textFieldDescripcion);
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBounds(0, 97, 450, 39);
+			contentPanel.add(buttonPane);
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 					    String nombre = textFieldNombreMedioPago.getText();
                         String descripcion = textFieldDescripcion.getText();
-                        String ftpOut = textFieldFTPOut.getText();
-                        String ftpIn = textFieldFTPIn.getText();
-                        String archivo = textFieldNombreArchivo.getText();
                         BancoView bancoView = (BancoView) comboBoxBanco.getSelectedItem();
                         MedioPagoView medioPagoView = null;
-						String errores = esValido(nombre, descripcion, ftpOut, ftpIn, archivo);
+						String errores = esValido(nombre, descripcion);
 						if (errores.isEmpty()) {
 							try {
-                                medioPagoView = SistemaCocheras.getSistemaCocheras().crearMedioPago(nombre, bancoView.getIdBanco(), descripcion, ftpOut, ftpIn, archivo);
+							    Integer idBanco = (bancoView == null) ? null : bancoView.getIdBanco();
+                                medioPagoView = SistemaCocheras.getSistemaCocheras().crearMedioPago(nombre, idBanco, descripcion);
                             } catch (Exception e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
@@ -157,19 +120,12 @@ public class NuevoMedioPago extends JDialog {
 						}
 					}
 
-					private String esValido(String nombre, String descripcion,
-                            String ftpOut, String ftpIn, String archivo) {
+					private String esValido(String nombre, String descripcion) {
                         String error = "";
                         if (nombre.length() < 2) {
                             error = "El nombre debe ser de por lo menos dos caractéres";
                         } else if (descripcion.length() < 2){
                             error = "La descripción debe ser de por lo menos dos caractéres";
-                        } else if (ftpOut.length() < 2){
-                            error = "El ftp de salida debe ser de por lo menos dos caractéres";
-                        } else if (ftpIn.length() < 2){
-                            error = "El ftp de entrada debe ser de por lo menos dos caractéres";
-                        } else if (archivo.length() < 1){
-                            error = "El nombre del archivo debe ser de por lo menos un caracter";
                         }
                         return error;
                     }
@@ -192,11 +148,12 @@ public class NuevoMedioPago extends JDialog {
 		initData();
 	}
 
-	private void initData() {
+	public void initData() {
 	    comboBoxBanco.removeAllItems();
         Vector<BancoView> bancos = SistemaCocheras.getSistemaCocheras().listarBancos();
         for (BancoView banco : bancos) {
             comboBoxBanco.addItem(banco);
         }
+        comboBoxBanco.setSelectedIndex(-1);
 	}
 }
