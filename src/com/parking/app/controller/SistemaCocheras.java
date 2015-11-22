@@ -323,6 +323,7 @@ public class SistemaCocheras {
     		Abono abono = new Abono(nombre, dias, descuento);
     		int idAbono = AbonosMapper.obtenerMapper().insert(abono); 
     		abono.setIdAbono(idAbono);
+    		abonos.add(abono);
     		return abono.obtenerVista();
     	} else {
     		throw new Exception("Ya existe un abono para " + dias + " dias");

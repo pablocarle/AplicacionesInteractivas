@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -103,11 +104,11 @@ public class NuevoAbono extends JDialog {
                                 dispose();
                             }
                         } catch (NumberFormatException e1) {
-                            // TODO Auto-generated catch block
+                        	JOptionPane.showMessageDialog(null, "El formulario tiene datos inválidos: " + e1.getMessage());
                             e1.printStackTrace();
                         } catch (Exception e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
+                        	JOptionPane.showMessageDialog(null, e1.getMessage());
+                        	e1.printStackTrace();
                         }
 				    }
 				});

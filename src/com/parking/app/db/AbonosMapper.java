@@ -80,8 +80,13 @@ public class AbonosMapper implements Mapper {
 
 	@Override
 	public Abono select(Object o) throws Exception {
+		int dias = 0;
+		if (o instanceof Number) {
+			dias = ((Number) o).intValue();
+		}
 		Connection conn = PoolConnection.getPoolConnection().getConnection();
 		PreparedStatement ps = conn.prepareStatement("select idAbono, nombre, dias, descuento from abonos where dias = ?");
+		ps.setInt(1, dias);
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
 			Abono abono = new Abono();
