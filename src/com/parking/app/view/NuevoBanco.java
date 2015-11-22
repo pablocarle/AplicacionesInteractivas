@@ -6,10 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,7 +16,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.parking.app.controller.SistemaCocheras;
 import com.parking.app.model.BancoView;
-import com.parking.app.model.MedioPagoView;
 
 public class NuevoBanco extends JDialog {
 

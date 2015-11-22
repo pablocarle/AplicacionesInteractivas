@@ -28,14 +28,7 @@ public class NuevoAbono extends JDialog {
 	private JTextField nombre;
 	private JTextField dias;
 	private JTextField descuento;
-	private static NuevoAbono instance;
 	
-    public static NuevoAbono getInstance() {
-        if (instance == null) {
-            instance = new NuevoAbono();
-        }
-        return instance;
-    }
 	/**
 	 * Launch the application.
 	 */

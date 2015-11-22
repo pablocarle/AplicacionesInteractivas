@@ -379,4 +379,9 @@ public class SistemaCocheras {
         }
         return null;
     }
+
+	public void eliminarAbono(int idAbono) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

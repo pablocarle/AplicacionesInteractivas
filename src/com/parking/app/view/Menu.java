@@ -154,7 +154,8 @@ public class Menu extends javax.swing.JFrame {
 				JMenuItem mntmNuevoAbono = new JMenuItem("Nuevo Abono");
 				mntmNuevoAbono.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-					    NuevoAbono.getInstance().setVisible(true);
+						JDialog nuevoAbonoDialog = new NuevoAbono();
+					    nuevoAbonoDialog.setVisible(true);
 					}
 				});
 				mnAbonos.add(mntmNuevoAbono);
@@ -162,9 +163,20 @@ public class Menu extends javax.swing.JFrame {
 				JMenuItem mntmEliminarAbono = new JMenuItem("Eliminar Abono");
 				mntmEliminarAbono.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						JDialog  listarAbonosDialog = new ListaAbonosDialog(true);
+						listarAbonosDialog.setVisible(true);
 					}
 				});
 				mnAbonos.add(mntmEliminarAbono);
+				
+				JMenuItem mntmListarAbonos = new JMenuItem("Listar Abonos");
+				mntmListarAbonos.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						JDialog listarAbonosDialog = new ListaAbonosDialog(false);
+						listarAbonosDialog.setVisible(true);
+					}
+				});
+				mnAbonos.add(mntmListarAbonos);
 				
 				mnMediosDePago = new JMenu("Medios de Pago");
 				jMenuBar1.add(mnMediosDePago);
