@@ -381,7 +381,8 @@ public class SistemaCocheras {
     }
 
 	public void eliminarAbono(int idAbono) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Abono abono = obtenerAbono(idAbono);
+		abonos.remove(abono);
+		AbonosMapper.obtenerMapper().delete(idAbono);
 	}
 }

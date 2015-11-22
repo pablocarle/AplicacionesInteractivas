@@ -16,6 +16,28 @@ public class Abono {
     public Abono() {
     	super();
 	}
+    
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idAbono;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Abono other = (Abono) obj;
+		if (idAbono != other.idAbono)
+			return false;
+		return true;
+	}
 
 	public AbonoView obtenerVista() {
 		return new AbonoView(this);

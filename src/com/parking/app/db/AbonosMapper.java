@@ -63,8 +63,19 @@ public class AbonosMapper implements Mapper {
 
 	@Override
 	public void delete(Object d) throws Exception {
-		// TODO Auto-generated method stub
-
+		int idAbono = 0;
+		if (d instanceof Number) {
+			idAbono = ((Number) d).intValue();
+		} else if (d instanceof Abono) {
+			idAbono = ((Abono) d).getIdAbono();
+		} else {
+			throw new Exception("No se reconoce " + d);
+		}
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("delete from abonos where idAbono = ?");
+		ps.setInt(1, idAbono);
+		ps.executeUpdate();
+		PoolConnection.getPoolConnection().releaseConnection(conn);
 	}
 
 	@Override
