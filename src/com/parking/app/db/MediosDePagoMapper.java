@@ -63,19 +63,19 @@ public class MediosDePagoMapper implements Mapper {
 
     @Override
     public void update(Object o) throws Exception {
-        // TODO Auto-generated method stub
+        // TODO update
 
     }
 
     @Override
     public void delete(Object d) throws Exception {
-        // TODO Auto-generated method stub
+        // TODO delete
 
     }
 
     @Override
     public MedioPago select(Object o) throws Exception {
-        // TODO Auto-generated method stub
+        // TODO select
         return null;
     }
 

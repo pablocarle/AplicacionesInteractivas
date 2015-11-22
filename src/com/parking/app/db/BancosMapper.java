@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.parking.app.model.Banco;
-import com.parking.app.model.Contrato;
 
 public class BancosMapper implements Mapper {
     
@@ -56,14 +55,25 @@ public class BancosMapper implements Mapper {
 
     @Override
     public void update(Object o) throws Exception {
-        // TODO Auto-generated method stub
+        // TODO update
         
     }
 
     @Override
     public void delete(Object d) throws Exception {
-        // TODO Auto-generated method stub
-        
+    	int idBanco = 0;
+    	if (d instanceof Number) {
+    		idBanco = ((Number) d).intValue();
+    	} else if (d instanceof Banco) {
+    		idBanco = ((Banco) d).getIdBanco();
+    	} else {
+    		throw new Exception("No se reconoce " + d);
+    	}
+    	Connection conn = PoolConnection.getPoolConnection().getConnection();
+    	PreparedStatement ps = conn.prepareStatement("delete from bancos where idBanco = ?");
+    	ps.setInt(1, idBanco);
+    	ps.execute();
+    	PoolConnection.getPoolConnection().releaseConnection(conn);
     }
 
     @Override
@@ -110,5 +120,4 @@ public class BancosMapper implements Mapper {
         PoolConnection.getPoolConnection().releaseConnection(conn);
         return bancos;
     }
-
 }

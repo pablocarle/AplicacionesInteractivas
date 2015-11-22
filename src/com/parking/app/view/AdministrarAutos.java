@@ -75,7 +75,7 @@ public class AdministrarAutos extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!list.isSelectionEmpty()) {
-                        JDialog dialog = AsociarAuto.getInstance().modificar(((AutoView)list.getSelectedValue()).getIdAuto());
+//                        JDialog dialog = AsociarAuto.getInstance().modificar(((AutoView)list.getSelectedValue()).getIdAuto());
                         //dialog.setVisible(true);
                         //dialog.addWindowListener(new WindowAdapter() {
                            // @Override

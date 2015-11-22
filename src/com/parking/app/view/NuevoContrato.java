@@ -76,6 +76,8 @@ public class NuevoContrato extends JDialog {
 				for (AutoView auto : autos) {
 					comboBoxAuto.addItem(auto);
 				}
+				comboBoxAbonos.setSelectedIndex(-1);
+				comboBoxMediosPago.setSelectedIndex(-1);
 			}
 		});
 		comboBoxClientes.setBounds(192, 8, 232, 20);

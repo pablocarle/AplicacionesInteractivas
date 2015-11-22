@@ -175,8 +175,4 @@ public class AsociarAuto extends JDialog {
 			comboBoxClientes.addItem(cliente);
 		}
 	}
-    public JDialog modificar(int idAuto) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

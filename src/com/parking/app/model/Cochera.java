@@ -21,7 +21,8 @@ public abstract class Cochera {
 	}
 
 	public boolean aceptaAuto(Auto auto) {
-		// TODO Determinar aceptacion de auto
+		//TODO Criterio aceptacion auto
+		
 		return true;
 	}
 }

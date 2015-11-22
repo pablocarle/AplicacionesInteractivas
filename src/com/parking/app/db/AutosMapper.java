@@ -57,17 +57,17 @@ public class AutosMapper implements Mapper {
     }
 
     public void update(Object o) throws Exception {
-		// TODO Auto-generated method stub
+		// TODO Update
 
 	}
 
 	public void delete(Object d) throws Exception {
-		// TODO Auto-generated method stub
+		// TODO delete
 
 	}
 
 	public Auto select(Object o) throws Exception {
-		// TODO Auto-generated method stub
+		// TODO select
 		return null;
 	}
 

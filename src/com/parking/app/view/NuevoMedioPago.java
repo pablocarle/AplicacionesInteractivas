@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -106,7 +107,7 @@ public class NuevoMedioPago extends JDialog {
 							    Integer idBanco = (bancoView == null) ? null : bancoView.getIdBanco();
                                 medioPagoView = SistemaCocheras.getSistemaCocheras().crearMedioPago(nombre, idBanco, descripcion);
                             } catch (Exception e1) {
-                                // TODO Auto-generated catch block
+                            	JOptionPane.showMessageDialog(null, e1.getMessage());
                                 e1.printStackTrace();
                             }
 							if (medioPagoView == null) {
