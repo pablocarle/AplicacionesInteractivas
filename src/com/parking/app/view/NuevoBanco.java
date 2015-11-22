@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -105,7 +106,7 @@ public class NuevoBanco extends JDialog {
                             try {
                                 bancoView = SistemaCocheras.getSistemaCocheras().crearBanco(nombre, ftpOut, ftpIn);
                             } catch (Exception e1) {
-                                // TODO Auto-generated catch block
+                            	JOptionPane.showMessageDialog(null, e1.getMessage());
                                 e1.printStackTrace();
                             }
                             if (bancoView == null) {

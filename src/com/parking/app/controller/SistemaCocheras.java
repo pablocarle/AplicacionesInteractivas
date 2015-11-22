@@ -376,6 +376,7 @@ public class SistemaCocheras {
             Banco banco = new Banco(nombre, ftpOut, ftpOut);
             int idBanco = BancosMapper.obtenerMapper().insert(banco); 
             banco.setIdAbono(idBanco);
+            bancos.add(banco);
             return banco.obtenerVista();
         }
         return null;
