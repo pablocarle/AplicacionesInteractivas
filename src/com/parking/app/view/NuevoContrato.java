@@ -151,7 +151,7 @@ public class NuevoContrato extends JDialog {
 										showMessageDialog(null, "No se han cargado cheques");
 									} else {
 										try {
-											ContratoView contrato = SistemaCocheras.getSistemaCocheras().crearContrato(cliente.getIdCliente(), auto.getPatente(), medioPago == null ? 0 : medioPago.getIdMedioPago(), abono == null ? 0 : abono.getIdAbono());
+											ContratoView contrato = SistemaCocheras.getSistemaCocheras().crearContrato(cliente.getIdCliente(), auto.getPatente(), medioPago == null ? 0 : medioPago.getIdMedioPago(), abono == null ? 0 : abono.getIdAbono(), cheques);
 											showMessageDialog(null, "Contrato creado correctamente con id " + contrato.getIdContrato());
 										} catch (Exception e1) {
 											showMessageDialog(null, e1.getMessage());

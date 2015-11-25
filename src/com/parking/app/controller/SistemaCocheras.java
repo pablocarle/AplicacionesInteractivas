@@ -20,6 +20,7 @@ import com.parking.app.model.Auto;
 import com.parking.app.model.AutoView;
 import com.parking.app.model.Banco;
 import com.parking.app.model.BancoView;
+import com.parking.app.model.ChequeView;
 import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
 import com.parking.app.model.Cochera;
@@ -205,7 +206,7 @@ public class SistemaCocheras {
 		return null;
 	}
 
-	public ContratoView crearContrato(int idCliente, String patente, int idMedioPago, int idAbono) throws Exception {
+	public ContratoView crearContrato(int idCliente, String patente, int idMedioPago, int idAbono, List<ChequeView> cheques) throws Exception {
 		if (!inicializado) {
 			throw new Exception("Las cocheras no estan inicializadas. Inicialice layout de cocheras para comenzar");
 		}

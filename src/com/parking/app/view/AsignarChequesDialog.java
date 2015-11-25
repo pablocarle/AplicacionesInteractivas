@@ -53,7 +53,7 @@ public class AsignarChequesDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if (esFormValido()) {
 					ChequeView cv = new ChequeView();
-					SimpleDateFormat sdf = new SimpleDateFormat();
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					Date fecha;
 					try {
 						fecha = sdf.parse(txtFecha.getText());
@@ -79,8 +79,9 @@ public class AsignarChequesDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				int index = chequeList.getSelectedIndex();
 				if (index >= 0) {
-					chequeList.remove(index);
 					chequesAux.remove(chequeList.getSelectedValue());
+					chequeList.removeAll();
+					chequeList.setListData(chequesAux.toArray(new ChequeView[0]));
 				} else {
 					showMessageDialog(null, "Debe seleccionar un cheque");
 				}
@@ -92,7 +93,9 @@ public class AsignarChequesDialog extends JDialog {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				chequesAux.removeAll(cheques);
 				cheques.addAll(chequesAux);
+				setVisible(false);
 			}
 		});
 		btnAceptar.setBounds(270, 295, 117, 25);
@@ -130,6 +133,7 @@ public class AsignarChequesDialog extends JDialog {
 		getContentPane().add(lblFecha);
 		
 		txtFecha = new JTextField();
+		txtFecha.setText("dd/MM/yyyy");
 		txtFecha.setBounds(167, 207, 349, 19);
 		getContentPane().add(txtFecha);
 		txtFecha.setColumns(10);
@@ -151,7 +155,7 @@ public class AsignarChequesDialog extends JDialog {
 	
 	private boolean esFormValido() {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			sdf.parse(txtFecha.getText());
 			Double.parseDouble(txtMonto.getText());
 			return true;
