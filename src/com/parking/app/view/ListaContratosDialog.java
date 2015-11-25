@@ -37,6 +37,7 @@ public class ListaContratosDialog extends JDialog {
 					if (ret == JOptionPane.YES_OPTION) {
 						try {
 							SistemaCocheras.getSistemaCocheras().eliminarContrato(listContratos.getSelectedValue().getIdContrato());
+							loadData();
 						} catch (Exception e1) {
 							showMessageDialog(null, e1.getMessage());
 						}
@@ -61,6 +62,7 @@ public class ListaContratosDialog extends JDialog {
 	}
 
 	private void loadData() {
+		listContratos.removeAll();
 		listContratos.setListData(SistemaCocheras.getSistemaCocheras().obtenerContratosActivos().toArray(new ContratoView[0]));
 	}
 

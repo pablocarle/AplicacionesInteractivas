@@ -529,8 +529,23 @@ public class SistemaCocheras {
 		return retList;
 	}
 
-	public void eliminarContrato(int idContrato) {
-		// TODO Auto-generated method stub
-		
+	public void eliminarContrato(int idContrato) throws Exception {
+		Contrato contrato = obtenerContrato(idContrato);
+		if (contrato != null) {
+			mapaCocheras.liberar(contrato.getAuto());
+			contratos.remove(contrato);
+			ContratosMapper.obtenerMapper().delete(contrato);
+		} else {
+			throw new Exception("No se encontro contrato con id " + idContrato);
+		}
+	}
+
+	private Contrato obtenerContrato(int idContrato) {
+		for (Contrato c : contratos) {
+			if (idContrato == c.getIdContrato()) {
+				return c;
+			}
+		}
+		return null;
 	}
 }
