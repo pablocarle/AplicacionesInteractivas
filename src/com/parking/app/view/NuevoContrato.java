@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import com.parking.app.controller.SistemaCocheras;
 import com.parking.app.model.AbonoView;
 import com.parking.app.model.AutoView;
+import com.parking.app.model.ChequeView;
 import com.parking.app.model.ClienteView;
 import com.parking.app.model.ContratoView;
 import com.parking.app.model.MedioPagoView;
@@ -35,6 +37,18 @@ public class NuevoContrato extends JDialog {
 	private JLabel lblMedioDePago = new JLabel("Medio de Pago");
 	private JComboBox<MedioPagoView> comboBoxMediosPago = new JComboBox<MedioPagoView>();
 	private JComboBox<AbonoView> comboBoxAbonos = new JComboBox<AbonoView>();
+	
+	private List<ChequeView> cheques = new ArrayList<>();
+	private final JButton btnCheques = new JButton("Cheques");
+	{
+		btnCheques.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JDialog asignarCheques = new AsignarChequesDialog(cheques);
+				asignarCheques.setVisible(true);
+			}
+		});
+		btnCheques.setVisible(false);
+	}
 	
 	/**
 	 * Launch the application.
@@ -99,6 +113,16 @@ public class NuevoContrato extends JDialog {
 		
 		lblMedioDePago.setBounds(10, 105, 146, 14);
 		contentPanel.add(lblMedioDePago);
+		comboBoxMediosPago.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MedioPagoView mpv = (MedioPagoView) comboBoxMediosPago.getSelectedItem();
+				if (SistemaCocheras.MEDIOPAGO_CHEQUE == mpv.getIdMedioPago()) {
+					btnCheques.setVisible(true);
+				} else {
+					btnCheques.setVisible(false);
+				}
+			}
+		});
 		
 		comboBoxMediosPago.setBounds(192, 102, 232, 20);
 		contentPanel.add(comboBoxMediosPago);
@@ -117,12 +141,25 @@ public class NuevoContrato extends JDialog {
 							MedioPagoView medioPago = (MedioPagoView) comboBoxMediosPago.getSelectedItem();
 							AutoView auto = (AutoView) comboBoxAuto.getSelectedItem();
 							
-							try {
-								ContratoView contrato = SistemaCocheras.getSistemaCocheras().crearContrato(cliente.getIdCliente(), auto.getPatente(), medioPago == null ? 0 : medioPago.getIdMedioPago(), abono == null ? 0 : abono.getIdAbono());
-								showMessageDialog(null, "Contrato creado correctamente con id " + contrato.getIdContrato());
-							} catch (Exception e1) {
-								showMessageDialog(null, e1.getMessage());
+							if (cliente != null && abono != null && medioPago != null && auto != null) {
+								if (medioPago.getIdMedioPago() < 0 && abono.getIdAbono() >= 0) {
+									showMessageDialog(null, "No se puede crear un contrato con abono y en efectivo");
+								} else {
+									if (medioPago.getIdMedioPago() == SistemaCocheras.MEDIOPAGO_CHEQUE && cheques.isEmpty()) {
+										showMessageDialog(null, "No se han cargado cheques");
+									} else {
+										try {
+											ContratoView contrato = SistemaCocheras.getSistemaCocheras().crearContrato(cliente.getIdCliente(), auto.getPatente(), medioPago == null ? 0 : medioPago.getIdMedioPago(), abono == null ? 0 : abono.getIdAbono());
+											showMessageDialog(null, "Contrato creado correctamente con id " + contrato.getIdContrato());
+										} catch (Exception e1) {
+											showMessageDialog(null, e1.getMessage());
+										}
+									}
+								}
+							} else {
+								showMessageDialog(null, "Faltan valores requeridos");
 							}
+							
 						} else {
 							showMessageDialog(null, str.toString());
 						}
@@ -134,6 +171,8 @@ public class NuevoContrato extends JDialog {
 						return true;
 					}
 				});
+				
+				buttonPane.add(btnCheques);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
