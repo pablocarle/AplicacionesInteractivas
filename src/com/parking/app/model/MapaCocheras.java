@@ -13,11 +13,24 @@ public class MapaCocheras {
 	
 	public boolean hayDisponible(Auto auto) {
 		for (Map.Entry<Cochera, Auto> entry : mapa.entrySet()) {
-			if (entry.getKey().aceptaAuto(auto)) {
+			if (entry.getValue() == null && entry.getKey().aceptaAuto(auto)) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public Cochera asignar(Auto auto) throws Exception {
+		if (hayDisponible(auto)) {
+			for (Map.Entry<Cochera, Auto> entry : mapa.entrySet()) {
+				if (entry.getValue() == null && entry.getKey().aceptaAuto(auto)) {
+					return entry.getKey();
+				}
+			}
+			throw new Exception("No hay disponibilidad para el auto " + auto);
+		} else {
+			throw new Exception("No hay disponibilidad para el auto " + auto);
+		}
 	}
 
 	/**
