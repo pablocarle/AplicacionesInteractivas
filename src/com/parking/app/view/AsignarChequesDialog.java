@@ -34,6 +34,7 @@ public class AsignarChequesDialog extends JDialog {
 
 	public AsignarChequesDialog(List<ChequeView> cheques) {
 		super();
+		setBounds(100, 100, 534, 366);
 		setResizable(false);
 		setModal(true);
 		cheques.clear();

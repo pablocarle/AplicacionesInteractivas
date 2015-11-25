@@ -116,10 +116,12 @@ public class NuevoContrato extends JDialog {
 		comboBoxMediosPago.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MedioPagoView mpv = (MedioPagoView) comboBoxMediosPago.getSelectedItem();
-				if (SistemaCocheras.MEDIOPAGO_CHEQUE == mpv.getIdMedioPago()) {
-					btnCheques.setVisible(true);
-				} else {
-					btnCheques.setVisible(false);
+				if (mpv != null) {
+					if (SistemaCocheras.MEDIOPAGO_CHEQUE == mpv.getIdMedioPago()) {
+						btnCheques.setVisible(true);
+					} else {
+						btnCheques.setVisible(false);
+					}
 				}
 			}
 		});
