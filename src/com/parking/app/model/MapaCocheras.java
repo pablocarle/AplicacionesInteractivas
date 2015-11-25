@@ -35,6 +35,7 @@ public class MapaCocheras {
 		if (hayDisponible(auto)) {
 			for (Map.Entry<Cochera, Auto> entry : mapa.entrySet()) {
 				if (entry.getValue() == null && entry.getKey().aceptaAuto(auto)) {
+					entry.setValue(auto);
 					return entry.getKey();
 				}
 			}
