@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -22,6 +23,7 @@ import com.parking.app.model.BancoView;
 import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
 import com.parking.app.model.Cochera;
+import com.parking.app.model.CocheraEstandar;
 import com.parking.app.model.Contrato;
 import com.parking.app.model.ContratoView;
 import com.parking.app.model.MapaCocheras;
@@ -249,21 +251,17 @@ public class SistemaCocheras {
 
 	public void crearCocheras(int cocherasSimples, int cocherasEspeciales) throws Exception {
 		if (!inicializado) {
+			List<Cochera> cocheras = new ArrayList<>();
 			int total = cocherasSimples + (cocherasEspeciales * 2);
 			if (total <= CANTIDADCOCHERAS) {
 				Cochera cochera = null;
-//			for (int i = 0; i < total; i++) {
-//				if (i < cocherasSimples) { //FIXME 
-//					cochera = new Cochera();
-//					cochera.setIdCochera(i);
-//					cocheras.add(cochera);
-//				} else {
-//					cochera = new CocheraEspezial(new Cochera(), new Cochera());
-//					cochera.setIdCochera(i);
-//					cocheras.add(cochera);
-//				}
-//			}
-				mapaCocheras.inicializar(cocheras);
+				int idsCount = 0;
+				while (idsCount < total) {
+					cochera = new CocheraEstandar();
+					cochera.setIdCochera(idsCount);
+					cocheras.add(cochera);
+				}
+				this.cocheras = mapaCocheras.inicializar(cocheras, cocherasSimples, cocherasEspeciales);
 			} else {
 				throw new Exception("La cantidad total debe ser menor a " + CANTIDADCOCHERAS);
 			}

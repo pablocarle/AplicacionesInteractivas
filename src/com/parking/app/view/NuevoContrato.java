@@ -64,7 +64,7 @@ public class NuevoContrato extends JDialog {
 		contentPanel.setLayout(null);
 		{
 			JLabel lblCliente = new JLabel("Cliente");
-			lblCliente.setBounds(10, 11, 46, 14);
+			lblCliente.setBounds(10, 11, 129, 14);
 			contentPanel.add(lblCliente);
 		}
 		
@@ -97,7 +97,7 @@ public class NuevoContrato extends JDialog {
 		comboBoxAbonos.setBounds(192, 70, 232, 20);
 		contentPanel.add(comboBoxAbonos);
 		
-		lblMedioDePago.setBounds(10, 105, 92, 14);
+		lblMedioDePago.setBounds(10, 105, 146, 14);
 		contentPanel.add(lblMedioDePago);
 		
 		comboBoxMediosPago.setBounds(192, 102, 232, 20);
@@ -128,6 +128,7 @@ public class NuevoContrato extends JDialog {
 					}
 
 					private boolean esValido(StringBuffer str) {
+//						TODO Hay forma que el contrato tenga datos invalidos en el formulario (solo cliente)?
 						str.append("Es invalido porque....");
 						return true;
 					}
