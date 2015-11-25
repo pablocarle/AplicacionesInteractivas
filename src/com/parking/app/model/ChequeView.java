@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class ChequeView {
 	
+	private int idCheque;
 	private String entidad;
 	private Date fecha;
 	private int idContrato;
@@ -99,5 +100,13 @@ public class ChequeView {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public int getIdCheque() {
+		return idCheque;
+	}
+
+	public void setIdCheque(int idCheque) {
+		this.idCheque = idCheque;
 	}
 }

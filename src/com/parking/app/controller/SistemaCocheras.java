@@ -11,6 +11,7 @@ import java.util.Vector;
 import com.parking.app.db.AbonosMapper;
 import com.parking.app.db.AutosMapper;
 import com.parking.app.db.BancosMapper;
+import com.parking.app.db.ChequesMapper;
 import com.parking.app.db.ClienteMapper;
 import com.parking.app.db.ContratosMapper;
 import com.parking.app.db.LayoutActivoMapper;
@@ -21,6 +22,7 @@ import com.parking.app.model.Auto;
 import com.parking.app.model.AutoView;
 import com.parking.app.model.Banco;
 import com.parking.app.model.BancoView;
+import com.parking.app.model.Cheque;
 import com.parking.app.model.ChequeView;
 import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
@@ -83,6 +85,9 @@ public class SistemaCocheras {
 		autos = AutosMapper.obtenerMapper().selectAll();
 		contratos = ContratosMapper.obtenerMapper().selectAll();
 		abonos = AbonosMapper.obtenerMapper().selectAll();
+		cheques = ChequesMapper.getMapper().selectAll();
+		chequeCount = cheques.size();
+		contratoCount = contratos.size();
 		
 		for (Contrato contrato : contratos) {
 			if (contrato.isActivo()) {
@@ -106,7 +111,11 @@ public class SistemaCocheras {
 	private Collection<Banco> bancos = new ArrayList<Banco>();
 	private Collection<Auto> autos = new ArrayList<Auto>();
 	private Collection<MedioPago> mediosPago = new ArrayList<MedioPago>();
+	private Collection<Cheque> cheques = new ArrayList<Cheque>();
 	private MapaCocheras mapaCocheras = new MapaCocheras();
+
+	private int contratoCount = 0;
+	private int chequeCount = 0;
 	
 	{
 		try {
@@ -234,6 +243,7 @@ public class SistemaCocheras {
 		Abono abono = obtenerAbono(idAbono);
     	if (mapaCocheras.hayDisponible(auto)) {
     		Contrato contrato = new ContratoHora(horas);
+    		contrato.setIdContrato(++contratoCount);
     		contrato.setCliente(cliente);
     		contrato.setAuto(auto);
     		contrato.setMedioPago(medioPago);
@@ -258,6 +268,7 @@ public class SistemaCocheras {
 		Abono abono = obtenerAbono(idAbono);
     	if (mapaCocheras.hayDisponible(auto)) {
     		Contrato contrato = new ContratoAbonoEfectivo();
+    		contrato.setIdContrato(++contratoCount);
     		contrato.setCliente(cliente);
     		contrato.setAuto(auto);
     		contrato.setMedioPago(medioPago);
@@ -281,13 +292,18 @@ public class SistemaCocheras {
 		MedioPago medioPago = obtenerMedioPago(idMedioPago);
 		Abono abono = obtenerAbono(idAbono);
     	if (mapaCocheras.hayDisponible(auto)) {
+    		for (ChequeView cheque : cheques) {
+    			cheque.setIdCheque(++chequeCount);
+    		}
     		Contrato contrato = new ContratoAbonoCheque(cheques);
+    		contrato.setIdContrato(++contratoCount);
     		contrato.setCliente(cliente);
     		contrato.setAuto(auto);
     		contrato.setMedioPago(medioPago);
     		contrato.setAbono(abono);
     		contrato.setPrecio(contrato.calcularPrecio());
     		contratos.add(contrato);
+    		cheques.addAll(cheques);
     		ContratosMapper.obtenerMapper().insert(contrato);
     		mapaCocheras.asignar(auto);
     		return contrato.obtenerVista();
@@ -311,6 +327,7 @@ public class SistemaCocheras {
     		} else {
     			contrato = new ContratoAbonoDebitoCBU();
     		}
+    		contrato.setIdContrato(++contratoCount);
     		contrato.setCliente(cliente);
     		contrato.setAuto(auto);
     		contrato.setMedioPago(medioPago);

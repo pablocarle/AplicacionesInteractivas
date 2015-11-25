@@ -149,7 +149,4 @@ public class AbonosMapper implements Mapper {
         PoolConnection.getPoolConnection().releaseConnection(conn);
         return abonos;
 	}
-
-
-
 }

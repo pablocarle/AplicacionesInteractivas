@@ -20,6 +20,7 @@ public class ContratoAbonoCheque extends ContratoAbono {
 
 	private Cheque convertir(ChequeView object) {
 		Cheque cheque = new Cheque();
+		cheque.setIdCheque(object.getIdCheque());
 		cheque.setEntidad(object.getEntidad());
 		cheque.setFecha(object.getFecha());
 		cheque.setMonto(object.getMonto());
