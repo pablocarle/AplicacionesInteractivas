@@ -149,6 +149,12 @@ public class Menu extends javax.swing.JFrame {
 				mnContratos.add(mntmNuevoContrato);
 				
 				JMenuItem mntmBajaContrato = new JMenuItem("Baja Contrato");
+				mntmBajaContrato.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JDialog dialog = new ListaContratosDialog();
+						dialog.setVisible(true);
+					}
+				});
 				mnContratos.add(mntmBajaContrato);
 				
 				mnAbonos = new JMenu("Abonos");

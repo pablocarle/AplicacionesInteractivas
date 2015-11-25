@@ -22,6 +22,7 @@ public class ListaContratosDialog extends JDialog {
 		setModal(true);
 		setResizable(false);
 		setTitle("Contratos");
+		setBounds(100, 100, 786, 289);
 		getContentPane().setLayout(null);
 		
 		listContratos = new JList<ContratoView>();
