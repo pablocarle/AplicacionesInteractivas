@@ -94,4 +94,24 @@ public class MapaCocheras {
 			LayoutActivoMapper.getMapper().delete(la);
 		}
 	}
+
+	public List<Cochera> obtenerCocherasLibres() {
+		List<Cochera> cocheras = new ArrayList<Cochera>();
+		for (Map.Entry<Cochera, Auto> entry : mapa.entrySet()) {
+			if (entry.getValue() == null) {
+				cocheras.add(entry.getKey());
+			}
+		}
+		return cocheras;
+	}
+
+	public List<Cochera> obtenerCocherasOcupadas() {
+		List<Cochera> cocheras = new ArrayList<Cochera>();
+		for (Map.Entry<Cochera, Auto> entry : mapa.entrySet()) {
+			if (entry.getValue() != null) {
+				cocheras.add(entry.getKey());
+			}
+		}
+		return cocheras;
+	}
 }

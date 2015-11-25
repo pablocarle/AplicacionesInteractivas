@@ -28,6 +28,7 @@ import com.parking.app.model.Cliente;
 import com.parking.app.model.ClienteView;
 import com.parking.app.model.Cochera;
 import com.parking.app.model.CocheraEstandar;
+import com.parking.app.model.CocheraView;
 import com.parking.app.model.Contrato;
 import com.parking.app.model.ContratoAbonoCheque;
 import com.parking.app.model.ContratoAbonoDebitoCBU;
@@ -547,5 +548,23 @@ public class SistemaCocheras {
 			}
 		}
 		return null;
+	}
+	
+	public List<CocheraView> obtenerCocherasLibres() {
+		List<CocheraView> cocheras = new ArrayList<CocheraView>();
+		List<Cochera> cocherasLibres = mapaCocheras.obtenerCocherasLibres();
+		for (Cochera c : cocherasLibres) {
+			cocheras.add(c.obtenerVista());
+		}
+		return cocheras;
+	}
+	
+	public List<CocheraView> obtenerCocherasOcupadas() {
+		List<CocheraView> cocheras = new ArrayList<CocheraView>();
+		List<Cochera> cocherasLibres = mapaCocheras.obtenerCocherasOcupadas();
+		for (Cochera c : cocherasLibres) {
+			cocheras.add(c.obtenerVista());
+		}
+		return cocheras;
 	}
 }
