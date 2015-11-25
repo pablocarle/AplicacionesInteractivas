@@ -161,11 +161,24 @@ public class SistemaCocheras {
 		Cliente cliente = obtenerCliente(idCliente);
 		if (cliente == null)
 			throw new Exception("No se encontro cliente con id " + idCliente);
-		clientes.remove(cliente);
-		ClienteMapper.obtenerMapper().delete(cliente);
+		if (!tieneContratoActivo(cliente)) {
+			clientes.remove(cliente);		
+			ClienteMapper.obtenerMapper().delete(cliente);
+		} else {
+			throw new Exception("El cliente con id " + idCliente + " tiene contratos activos");
+		}
 		return cliente.obtenerVista();
 	}
 
+	public boolean tieneContratoActivo(Cliente cliente) {
+    	for (Contrato contrato : contratos) {
+    		if (contrato.isActivo() && contrato.getCliente().getIdCliente() == cliente.getIdCliente()) {
+    			return true;
+    		}
+    	}
+		return false;
+	}
+	
 	public ClienteView buscarCliente(int idCliente) throws Exception {
 		Cliente cliente = obtenerCliente(idCliente);
 		if (cliente == null) {
