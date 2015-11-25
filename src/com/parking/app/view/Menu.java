@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import com.parking.app.controller.SistemaCocheras;
+
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -215,6 +217,16 @@ public class Menu extends javax.swing.JFrame {
 				mntmNewMenuItem_1 = new JMenuItem("Procesar pagos");
 				mntmNewMenuItem_1.addActionListener(new ActionListener() {
 				    public void actionPerformed(ActionEvent e) {
+				    	int ret = JOptionPane.showConfirmDialog(null, "Esta acción procesará los cobros a efectuar enviando archivo a las entidades. Continuar?", "Procesar", JOptionPane.YES_NO_OPTION);
+				    	if (ret == JOptionPane.YES_OPTION) {
+				    		try {
+				    			int pagosProcesados = SistemaCocheras.getSistemaCocheras().procesarPagos();
+				    			JOptionPane.showMessageDialog(null, "Se procesaron " + pagosProcesados + " pagos");
+				    		} catch (Exception e1) {
+				    			JOptionPane.showMessageDialog(null, e1.getMessage());
+				    			e1.printStackTrace();
+				    		}
+				    	}
 				    }
 				});
 				mnNewMenu.add(mntmNewMenuItem_1);

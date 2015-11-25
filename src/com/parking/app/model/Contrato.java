@@ -115,8 +115,16 @@ public abstract class Contrato {
 		this.activo = activo;
 	}
 
-	public boolean vencesEnDias(int i) {
-		// TODO Auto-generated method stub
+	public boolean vencesEnDias(int cantidadDias) {
+		long actual = Calendar.getInstance().getTimeInMillis();
+		long dias = cantidadDias * 24 * 60 * 60 * 1000;
+		long fechaContrato = fechaInicio.getTime();
+		if (abono != null && abono.getDias() > 0) {
+			long vencimiento = fechaContrato + (1000 * abono.getDias() * 60 * 60 * 24);
+			if ((actual + dias) >= vencimiento) {
+				return true;
+			}
+		}
 		return false;
 	}
 }

@@ -1,7 +1,12 @@
 package com.parking.app.controller;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -566,5 +571,40 @@ public class SistemaCocheras {
 			cocheras.add(c.obtenerVista());
 		}
 		return cocheras;
+	}
+
+	public int procesarPagos() throws IOException {
+		int count = 0;
+		for (Contrato contrato : contratos) {
+			if (contrato.vencesEnDias(10)) {
+				procesarPago(contrato);
+				count++;
+			}
+		}
+		return count;
+	}
+
+	private void procesarPago(Contrato contrato) throws IOException {
+		if (contrato.getMedioPago().isTarjeta() || contrato.getMedioPago().getBanco() != null) {
+			Banco banco = contrato.getMedioPago().getBanco();
+			File file = new File(banco.getFtpOut());
+			if (file.isFile() && file.canWrite()) {
+				OutputStreamWriter osw = null;
+				FileOutputStream fos = null;
+				Writer writer = null;
+				try {
+					fos = new FileOutputStream(file);
+					osw = new OutputStreamWriter(fos);
+					writer = new BufferedWriter(osw);
+					writer.write(contrato.getCliente().getNombre() + "|" + contrato.getPrecio() + "|" + contrato.getMedioPago().getNombre());
+				} finally {
+					if (writer != null) {
+						writer.close();
+					}
+				}
+			} else {
+				throw new IOException("No se puede escribir en " + file.getAbsolutePath());
+			}
+		}
 	}
 }
