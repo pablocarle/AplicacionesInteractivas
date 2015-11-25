@@ -45,7 +45,7 @@ public class ContratosMapper implements Mapper {
 			PreparedStatement ps = conn.prepareStatement("insert into contratos (idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo) values (?, ?, ?, ?, ?, ?, ?, 1)");
 			ps.setInt(1, c.getIdContrato());
 			ps.setInt(2, c.getCliente().getIdCliente());
-			ps.setString(3, c.getAuto().getPatente());
+			ps.setInt(3, c.getAuto().getIdAuto());
 			ps.setInt(4, c.getMedioPago().getIdMedioPago());
 			ps.setInt(5, c.getAbono().getIdAbono());
 			ps.setBigDecimal(6, c.getPrecio());
