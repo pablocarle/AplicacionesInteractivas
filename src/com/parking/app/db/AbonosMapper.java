@@ -106,20 +106,20 @@ public class AbonosMapper implements Mapper {
 	}
 
     private Abono selectPorDia(int dias) throws SQLException {
+        Abono abono = null;
 		Connection conn = PoolConnection.getPoolConnection().getConnection();
 		PreparedStatement ps = conn.prepareStatement("select idAbono, nombre, dias, descuento from abonos where dias = ?");
 		ps.setInt(1, dias);
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
-			Abono abono = new Abono();
+			abono = new Abono();
 			abono.setIdAbono(rs.getInt(1));
 			abono.setNombre(rs.getString(2));
 			abono.setDias(rs.getInt(3));
 			abono.setDescuento(rs.getFloat(4));
-			return abono;
 		}
 		PoolConnection.getPoolConnection().releaseConnection(conn);
-		return null;
+		return abono;
 	}
 	
 	@Override

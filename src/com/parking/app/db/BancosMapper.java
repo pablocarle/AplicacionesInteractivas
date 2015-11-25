@@ -78,19 +78,18 @@ public class BancosMapper implements Mapper {
 
     @Override
     public Banco select(Object o) throws Exception {
+        Banco banco = null;
         if (o instanceof Number) {
             Connection conn = PoolConnection.getPoolConnection().getConnection();
             PreparedStatement ps = conn.prepareStatement("select idBanco, nombre, ftp_out, ftp_in from bancos where idBanco = ?");
             ps.setInt(1, ((Number) o).intValue());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                Banco banco = new Banco(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                banco = new Banco(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
                 PoolConnection.getPoolConnection().releaseConnection(conn);
-                return banco;
-            } else {
-            	PoolConnection.getPoolConnection().releaseConnection(conn);
-                return null;
             }
+        	PoolConnection.getPoolConnection().releaseConnection(conn);
+            return banco;
         } else {
             throw new Exception();
         }
