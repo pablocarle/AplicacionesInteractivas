@@ -217,6 +217,7 @@ public class SistemaCocheras {
 			contrato.setAbono(abono);
 			contrato.setIdContrato(ContratosMapper.obtenerMapper().insert(contrato));
 			contratos.add(contrato);
+			mapaCocheras.asignar(auto);
 			return contrato.obtenerVista();
 		} else {
 			throw new Exception();
@@ -256,17 +257,17 @@ public class SistemaCocheras {
 		if (!inicializado) {
 			List<Cochera> cocheras = new ArrayList<>();
 			int total = cocherasSimples + (cocherasEspeciales * 2);
-			if (total <= CANTIDADCOCHERAS) {
+			if (total == CANTIDADCOCHERAS) {
 				Cochera cochera = null;
 				int idsCount = 0;
-				while (idsCount < total) {
+				while (idsCount++ < total) {
 					cochera = new CocheraEstandar();
 					cochera.setIdCochera(idsCount);
 					cocheras.add(cochera);
 				}
 				this.cocheras = mapaCocheras.inicializar(cocheras, cocherasSimples, cocherasEspeciales);
 			} else {
-				throw new Exception("La cantidad total debe ser menor a " + CANTIDADCOCHERAS);
+				throw new Exception("La cantidad total debe ser igual a " + CANTIDADCOCHERAS);
 			}
 			inicializado = true;
 		}
@@ -276,14 +277,6 @@ public class SistemaCocheras {
 		return inicializado;
 	}
 	
-	public boolean hayCocheraSimpleDisponible() {
-		return false;
-	}
-	
-	public boolean hayCocheraEspecialDisponible() {
-		return false;
-	}
-
 	public MedioPagoView crearMedioPago(String nombre, Integer idBanco,
 	        String descripcion) throws Exception {
         if(!existeMedioPago(nombre)) {
