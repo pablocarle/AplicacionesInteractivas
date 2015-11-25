@@ -7,11 +7,25 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.parking.app.model.Cheque;
 
 public class ChequesMapper implements Mapper {
 
+	private static ChequesMapper instance = null;
+	
+	private ChequesMapper() {
+		super();
+	}
+	
+	public static ChequesMapper getMapper() {
+		if (instance == null) {
+			instance = new ChequesMapper();
+		}
+		return instance;
+	}
+	
 	@Override
 	public int insert(Object o) throws Exception {
 		if (o instanceof Cheque) {
@@ -114,6 +128,42 @@ public class ChequesMapper implements Mapper {
 				cheques.add(c);
 			}
 		}
+		PoolConnection.getPoolConnection().releaseConnection(conn);
+		return cheques;
+	}
+
+	public List<Cheque> selectDeContrato(int idContrato) throws Exception {
+		List<Cheque> cheques = new ArrayList<Cheque>();
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("select idCheque, idContrato, fecha, monto, entidad, numero from cheques where idContrato = ?");
+		ps.setInt(1, idContrato);
+		
+		if (ps.execute()) {
+			ResultSet rs = ps.getResultSet();
+			int idCheque;
+			Date fecha;
+			BigDecimal monto;
+			String entidad;
+			String numero;
+			Cheque c = null;
+			while (rs.next()) {
+				idCheque = rs.getInt(1);
+				idContrato = rs.getInt(2);
+				fecha = rs.getDate(3);
+				monto = rs.getBigDecimal(4);
+				entidad = rs.getString(5);
+				numero = rs.getString(6);
+				c = new Cheque();
+				c.setIdCheque(idCheque);
+				c.setIdContrato(idContrato);
+				c.setFecha(fecha);
+				c.setMonto(monto);
+				c.setEntidad(entidad);
+				c.setNumero(numero);
+				cheques.add(c);
+			}
+		}
+		PoolConnection.getPoolConnection().releaseConnection(conn);
 		return cheques;
 	}
 }

@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.parking.app.controller.SistemaCocheras;
@@ -41,6 +42,8 @@ public class NuevoContrato extends JDialog {
 	private List<ChequeView> cheques = new ArrayList<ChequeView>();
 	private JDialog chequesDialog = new AsignarChequesDialog(cheques);
 	private final JButton btnCheques = new JButton("Cheques");
+	private JTextField txtHoras;
+	private JLabel lblHoras;
 	{
 		btnCheques.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -71,7 +74,7 @@ public class NuevoContrato extends JDialog {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
 		setTitle("Nuevo Contrato");
-		setBounds(100, 100, 450, 215);
+		setBounds(100, 100, 450, 236);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -107,6 +110,32 @@ public class NuevoContrato extends JDialog {
 		JLabel lblAbono = new JLabel("Abono");
 		lblAbono.setBounds(10, 73, 46, 14);
 		contentPanel.add(lblAbono);
+		comboBoxAbonos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBoxAbonos.getSelectedItem() != null) {
+					AbonoView abono = (AbonoView) comboBoxAbonos.getSelectedItem();
+					if (abono.getIdAbono() == SistemaCocheras.ABONO_SINABONO) {
+						txtHoras.setVisible(true);
+						lblHoras.setVisible(true);
+						comboBoxMediosPago.removeAllItems();
+						MedioPagoView efectivo = new MedioPagoView();
+						efectivo.setIdMedioPago(SistemaCocheras.MEDIOPAGO_EFECTIVO);
+						efectivo.setNombre("Efectivo");
+						efectivo.setDescripcion("Efectivo");
+						efectivo.setBanco(null);
+						comboBoxMediosPago.addItem(efectivo);
+					} else {
+						txtHoras.setVisible(false);
+						lblHoras.setVisible(false);
+						comboBoxMediosPago.removeAllItems();
+						Vector<MedioPagoView> mediosPago = SistemaCocheras.getSistemaCocheras().listarMediosPago();
+						for (MedioPagoView medioPago : mediosPago) {
+							comboBoxMediosPago.addItem(medioPago);
+						}
+					}
+				}
+			}
+		});
 		
 		comboBoxAbonos.setBounds(192, 70, 232, 20);
 		contentPanel.add(comboBoxAbonos);
@@ -128,6 +157,17 @@ public class NuevoContrato extends JDialog {
 		
 		comboBoxMediosPago.setBounds(192, 102, 232, 20);
 		contentPanel.add(comboBoxMediosPago);
+		
+		lblHoras = new JLabel("Horas");
+		lblHoras.setBounds(10, 130, 46, 14);
+		contentPanel.add(lblHoras);
+		lblHoras.setVisible(false);
+		
+		txtHoras = new JTextField();
+		txtHoras.setBounds(190, 127, 234, 20);
+		txtHoras.setVisible(false);
+		contentPanel.add(txtHoras);
+		txtHoras.setColumns(10);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -144,18 +184,28 @@ public class NuevoContrato extends JDialog {
 							AutoView auto = (AutoView) comboBoxAuto.getSelectedItem();
 							
 							if (cliente != null && abono != null && medioPago != null && auto != null) {
-								if (medioPago.getIdMedioPago() < 0 && abono.getIdAbono() >= 0) {
-									showMessageDialog(null, "No se puede crear un contrato con abono y en efectivo");
+								if (medioPago.getIdMedioPago() == SistemaCocheras.MEDIOPAGO_CHEQUE && cheques.isEmpty()) {
+									showMessageDialog(null, "No se han cargado cheques");
 								} else {
-									if (medioPago.getIdMedioPago() == SistemaCocheras.MEDIOPAGO_CHEQUE && cheques.isEmpty()) {
-										showMessageDialog(null, "No se han cargado cheques");
-									} else {
-										try {
-											ContratoView contrato = SistemaCocheras.getSistemaCocheras().crearContrato(cliente.getIdCliente(), auto.getPatente(), medioPago == null ? 0 : medioPago.getIdMedioPago(), abono == null ? 0 : abono.getIdAbono(), cheques);
+									try {
+										ContratoView contrato = null;
+										if (SistemaCocheras.ABONO_SINABONO == abono.getIdAbono() && txtHoras != null && txtHoras.getText().length() > 0) {
+											contrato = SistemaCocheras.getSistemaCocheras().crearContratoHora(cliente.getIdCliente(), auto.getPatente(), medioPago.getIdMedioPago(), abono.getIdAbono(), Integer.parseInt(txtHoras.getText()));
 											showMessageDialog(null, "Contrato creado correctamente con id " + contrato.getIdContrato());
-										} catch (Exception e1) {
-											showMessageDialog(null, e1.getMessage());
+										} else if (SistemaCocheras.ABONO_SINABONO == abono.getIdAbono() && (txtHoras == null || txtHoras.getText().length() == 0)) {
+											showMessageDialog(null, "Debe especificar horas");
+										} else {
+											if (SistemaCocheras.MEDIOPAGO_CHEQUE == medioPago.getIdMedioPago()) {
+												contrato = SistemaCocheras.getSistemaCocheras().crearContratoAbonoCheque(cliente.getIdCliente(), auto.getPatente(), medioPago.getIdMedioPago(), abono.getIdAbono(), cheques);
+											} else if (SistemaCocheras.MEDIOPAGO_EFECTIVO == medioPago.getIdMedioPago()) {
+												contrato = SistemaCocheras.getSistemaCocheras().crearContratoAbonoEfectivo(cliente.getIdCliente(), auto.getPatente(), medioPago.getIdMedioPago(), abono.getIdAbono());
+											} else {
+												contrato = SistemaCocheras.getSistemaCocheras().crearContratoAbonoDebito(cliente.getIdCliente(), auto.getPatente(), medioPago.getIdMedioPago(), abono.getIdAbono());
+											}
+											showMessageDialog(null, "Contrato creado correctamente con id " + contrato.getIdContrato());
 										}
+									} catch (Exception e1) {
+										showMessageDialog(null, e1.getMessage());
 									}
 								}
 							} else {

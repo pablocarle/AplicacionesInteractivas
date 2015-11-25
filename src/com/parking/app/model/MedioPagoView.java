@@ -9,6 +9,7 @@ public class MedioPagoView {
     private String ftpOut;
     private String ftpIn;
     private String archivo;
+    private boolean esTarjeta;
 
 	public MedioPagoView(MedioPago medioPago) {
 		super();
@@ -16,9 +17,14 @@ public class MedioPagoView {
         nombre = medioPago.getNombre();
         banco = (medioPago.getBanco() == null) ? null : medioPago.getBanco().obtenerVista();
         descripcion = medioPago.getDescripcion();
+        esTarjeta = medioPago.isTarjeta();
     }
 
-    public int getIdMedioPago() {
+    public MedioPagoView() {
+    	super();
+	}
+
+	public int getIdMedioPago() {
 		return idMedioPago;
 	}
 
@@ -77,5 +83,13 @@ public class MedioPagoView {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public boolean isEsTarjeta() {
+		return esTarjeta;
+	}
+
+	public void setEsTarjeta(boolean esTarjeta) {
+		this.esTarjeta = esTarjeta;
 	}
 }

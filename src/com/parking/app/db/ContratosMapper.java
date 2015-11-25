@@ -1,13 +1,26 @@
 package com.parking.app.db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
+import com.parking.app.controller.SistemaCocheras;
+import com.parking.app.model.Abono;
+import com.parking.app.model.Auto;
+import com.parking.app.model.Cheque;
+import com.parking.app.model.Cliente;
 import com.parking.app.model.Contrato;
+import com.parking.app.model.ContratoAbonoCheque;
+import com.parking.app.model.ContratoAbonoDebitoCBU;
+import com.parking.app.model.ContratoAbonoEfectivo;
+import com.parking.app.model.ContratoAbonoTarjeta;
+import com.parking.app.model.ContratoHora;
+import com.parking.app.model.MedioPago;
 
 public class ContratosMapper implements Mapper {
 
@@ -110,16 +123,15 @@ public class ContratosMapper implements Mapper {
 			ps.setInt(1, ((Number) o).intValue());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				Contrato contrato = new Contrato();
-				contrato.setIdContrato(rs.getInt(1));
-				contrato.setCliente(ClienteMapper.obtenerMapper().select(rs.getInt(2)));
-				contrato.setAuto(AutosMapper.obtenerMapper().select(rs.getInt(3)));
-				contrato.setMedioPago(MediosDePagoMapper.obtenerMapper().select(rs.getInt(4)));
-				contrato.setAbono(AbonosMapper.obtenerMapper().select(rs.getInt(5)));
-				contrato.setPrecio(rs.getBigDecimal(6));
-				contrato.setFechaInicio(rs.getDate(7));
-				contrato.setActivo(rs.getBoolean(8));
-				return contrato;
+				int idContrato = rs.getInt(1);
+				int idCliente = rs.getInt(2);
+				int idAuto = rs.getInt(3);
+				int idMedioPago = rs.getInt(4);
+				int idAbono = rs.getInt(5);
+				BigDecimal precio = rs.getBigDecimal(6);
+				Date fechaInicio = rs.getDate(7);
+				boolean activo = rs.getBoolean(8);
+				return armarContrato(idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo);
 			} else {
 				return null;
 			}
@@ -133,18 +145,58 @@ public class ContratosMapper implements Mapper {
 		Connection conn = PoolConnection.getPoolConnection().getConnection();
 		PreparedStatement ps = conn.prepareStatement("select idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo from contratos");
 		ResultSet rs = ps.executeQuery();
+		int idContrato;
+		int idCliente;
+		int idAuto;
+		int idMedioPago;
+		int idAbono;
+		BigDecimal precio;
+		Date fechaInicio;
+		boolean activo;
 		while (rs.next()) {
-			Contrato contrato = new Contrato();
-			contrato.setIdContrato(rs.getInt(1));
-			contrato.setCliente(ClienteMapper.obtenerMapper().select(rs.getInt(2)));
-			contrato.setAuto(AutosMapper.obtenerMapper().select(rs.getInt(3)));
-			contrato.setMedioPago(MediosDePagoMapper.obtenerMapper().select(rs.getInt(4)));
-			contrato.setAbono(AbonosMapper.obtenerMapper().select(rs.getInt(5)));
-			contrato.setPrecio(rs.getBigDecimal(6));
-			contrato.setFechaInicio(rs.getDate(7));
-			contrato.setActivo(rs.getBoolean(8));
-			contratos.add(contrato);
+			idContrato = rs.getInt(1);
+			idCliente = rs.getInt(2);
+			idAuto = rs.getInt(3);
+			idMedioPago = rs.getInt(4);
+			idAbono = rs.getInt(5);
+			precio = rs.getBigDecimal(6);
+			fechaInicio = rs.getDate(7);
+			activo = rs.getBoolean(8);
+			contratos.add(armarContrato(idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo));
 		}
 		return contratos;
+	}
+	
+	private Contrato armarContrato(int idContrato, int idCliente, int idAuto, int idMedioPago, int idAbono, BigDecimal precio, Date fechaInicio, boolean activo) throws Exception {
+		Contrato contrato = null;
+		Cliente cliente = ClienteMapper.obtenerMapper().select(idCliente);
+		Auto auto = AutosMapper.obtenerMapper().select(idAuto);
+		MedioPago medioPago = MediosDePagoMapper.obtenerMapper().select(idMedioPago);
+		Abono abono = AbonosMapper.obtenerMapper().select(idAbono);
+		if (SistemaCocheras.ABONO_SINABONO == abono.getIdAbono()) {
+			contrato = new ContratoHora(-1);
+		} else {
+			if (SistemaCocheras.MEDIOPAGO_EFECTIVO == medioPago.getIdMedioPago()) {
+				contrato = new ContratoAbonoEfectivo();
+			} else if (SistemaCocheras.MEDIOPAGO_CHEQUE == medioPago.getIdMedioPago()) {
+				List<Cheque> cheques = ChequesMapper.getMapper().selectDeContrato(idContrato);
+				contrato = new ContratoAbonoCheque(cheques);
+			} else if (medioPago.isTarjeta()) {
+				contrato = new ContratoAbonoTarjeta();
+			} else {
+				contrato = new ContratoAbonoDebitoCBU();
+			}
+		}
+		if (contrato != null) {
+			contrato.setIdContrato(idContrato);
+			contrato.setAbono(abono);
+			contrato.setActivo(activo);
+			contrato.setAuto(auto);
+			contrato.setCliente(cliente);
+			contrato.setFechaInicio(fechaInicio);
+			contrato.setMedioPago(medioPago);
+			contrato.setPrecio(precio);
+		}
+		return contrato;
 	}
 }

@@ -27,6 +27,11 @@ import com.parking.app.model.ClienteView;
 import com.parking.app.model.Cochera;
 import com.parking.app.model.CocheraEstandar;
 import com.parking.app.model.Contrato;
+import com.parking.app.model.ContratoAbonoCheque;
+import com.parking.app.model.ContratoAbonoDebitoCBU;
+import com.parking.app.model.ContratoAbonoEfectivo;
+import com.parking.app.model.ContratoAbonoTarjeta;
+import com.parking.app.model.ContratoHora;
 import com.parking.app.model.ContratoView;
 import com.parking.app.model.LayoutActivo;
 import com.parking.app.model.MapaCocheras;
@@ -36,15 +41,15 @@ import com.parking.app.model.Tarifa;
 
 public class SistemaCocheras {
 	
-	public static int MEDIOPAGO_EFECTIVO = -1;
-	public static int MEDIOPAGO_CHEQUE = -2;
-	public static int ABONO_SINABONO = -1;
+	public static final int MEDIOPAGO_EFECTIVO = -1;
+	public static final int MEDIOPAGO_CHEQUE = -2;
+	public static final int ABONO_SINABONO = -1;
 	
 	private static SistemaCocheras instancia;
 	
 	private static Properties props;
 	
-	private static double PRECIOHORA;
+	public static double PRECIOHORA;
 	private static int CANTIDADCOCHERAS;
 	
 	static {
@@ -219,8 +224,8 @@ public class SistemaCocheras {
 		}
 		return null;
 	}
-
-	public ContratoView crearContrato(int idCliente, String patente, int idMedioPago, int idAbono, List<ChequeView> cheques) throws Exception {
+    
+    public ContratoView crearContratoHora(int idCliente, String patente, int idMedioPago, int idAbono, int horas) throws Exception {
 		if (!inicializado) {
 			throw new Exception("Las cocheras no estan inicializadas. Inicialice layout de cocheras para comenzar");
 		}
@@ -228,24 +233,99 @@ public class SistemaCocheras {
 		Auto auto = cliente.obtenerAuto(patente);
 		MedioPago medioPago = obtenerMedioPago(idMedioPago);
 		Abono abono = obtenerAbono(idAbono);
-		if (mapaCocheras.hayDisponible(auto)) {
-			
-			
-			
-			Contrato contrato = new Contrato();
-			contrato.setAuto(auto);
-			contrato.setCliente(cliente);
-			contrato.setMedioPago(medioPago);
-			contrato.setAbono(abono);
-			contrato.setIdContrato(ContratosMapper.obtenerMapper().insert(contrato));
-			contratos.add(contrato);
-			mapaCocheras.asignar(auto);
-			return contrato.obtenerVista();
-		} else {
-			throw new Exception("No hay disponibilidad");
+    	if (mapaCocheras.hayDisponible(auto)) {
+    		Contrato contrato = new ContratoHora(horas);
+    		contrato.setCliente(cliente);
+    		contrato.setAuto(auto);
+    		contrato.setMedioPago(medioPago);
+    		contrato.setAbono(abono);
+    		contrato.setPrecio(contrato.calcularPrecio());
+    		contratos.add(contrato);
+    		ContratosMapper.obtenerMapper().insert(contrato);
+    		mapaCocheras.asignar(auto);
+    		return contrato.obtenerVista();
+    	} else {
+    		throw new Exception("No hay disponibilidad");
+    	}
+    }
+    
+    public ContratoView crearContratoAbonoEfectivo(int idCliente, String patente, int idMedioPago, int idAbono) throws Exception {
+    	if (!inicializado) {
+			throw new Exception("Las cocheras no estan inicializadas. Inicialice layout de cocheras para comenzar");
 		}
-	}
-
+		Cliente cliente = obtenerCliente(idCliente);
+		Auto auto = cliente.obtenerAuto(patente);
+		MedioPago medioPago = obtenerMedioPago(idMedioPago);
+		Abono abono = obtenerAbono(idAbono);
+    	if (mapaCocheras.hayDisponible(auto)) {
+    		Contrato contrato = new ContratoAbonoEfectivo();
+    		contrato.setCliente(cliente);
+    		contrato.setAuto(auto);
+    		contrato.setMedioPago(medioPago);
+    		contrato.setAbono(abono);
+    		contrato.setPrecio(contrato.calcularPrecio());
+    		contratos.add(contrato);
+    		ContratosMapper.obtenerMapper().insert(contrato);
+    		mapaCocheras.asignar(auto);
+    		return contrato.obtenerVista();
+    	} else {
+    		throw new Exception("No hay disponibilidad");
+    	}
+    }
+    
+    public ContratoView crearContratoAbonoCheque(int idCliente, String patente, int idMedioPago, int idAbono, List<ChequeView> cheques) throws Exception {
+    	if (!inicializado) {
+			throw new Exception("Las cocheras no estan inicializadas. Inicialice layout de cocheras para comenzar");
+		}
+		Cliente cliente = obtenerCliente(idCliente);
+		Auto auto = cliente.obtenerAuto(patente);
+		MedioPago medioPago = obtenerMedioPago(idMedioPago);
+		Abono abono = obtenerAbono(idAbono);
+    	if (mapaCocheras.hayDisponible(auto)) {
+    		Contrato contrato = new ContratoAbonoCheque(cheques);
+    		contrato.setCliente(cliente);
+    		contrato.setAuto(auto);
+    		contrato.setMedioPago(medioPago);
+    		contrato.setAbono(abono);
+    		contrato.setPrecio(contrato.calcularPrecio());
+    		contratos.add(contrato);
+    		ContratosMapper.obtenerMapper().insert(contrato);
+    		mapaCocheras.asignar(auto);
+    		return contrato.obtenerVista();
+    	} else {
+    		throw new Exception("No hay disponibilidad");
+    	}
+    }
+    
+    public ContratoView crearContratoAbonoDebito(int idCliente, String patente, int idMedioPago, int idAbono) throws Exception {
+    	if (!inicializado) {
+			throw new Exception("Las cocheras no estan inicializadas. Inicialice layout de cocheras para comenzar");
+		}
+		Cliente cliente = obtenerCliente(idCliente);
+		Auto auto = cliente.obtenerAuto(patente);
+		MedioPago medioPago = obtenerMedioPago(idMedioPago);
+		Abono abono = obtenerAbono(idAbono);
+    	if (mapaCocheras.hayDisponible(auto)) {
+    		Contrato contrato = null;
+    		if (medioPago.isTarjeta()) {
+    			contrato = new ContratoAbonoTarjeta();
+    		} else {
+    			contrato = new ContratoAbonoDebitoCBU();
+    		}
+    		contrato.setCliente(cliente);
+    		contrato.setAuto(auto);
+    		contrato.setMedioPago(medioPago);
+    		contrato.setAbono(abono);
+    		contrato.setPrecio(contrato.calcularPrecio());
+    		contratos.add(contrato);
+    		ContratosMapper.obtenerMapper().insert(contrato);
+    		mapaCocheras.asignar(auto);
+    		return contrato.obtenerVista();
+    	} else {
+    		throw new Exception("No hay disponibilidad");
+    	}
+    }
+    
     private Abono obtenerAbono(int idAbono) throws Exception {
     	for (Abono abono : abonos) {
     		if (abono.getIdAbono() == idAbono) {

@@ -17,6 +17,10 @@ public class MedioPago {
 		return new MedioPagoView(this);
 	}
 
+    public boolean esEfectivo() {
+    	return banco == null;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -48,4 +52,9 @@ public class MedioPago {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+	public boolean isTarjeta() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

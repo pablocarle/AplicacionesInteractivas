@@ -3,17 +3,17 @@ package com.parking.app.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Contrato {
+public abstract class Contrato {
 	
-	private Date fechaInicio;
-	private Cliente cliente;
-	private Auto auto;
-	private Cochera cochera;
-	private MedioPago medioPago;
-	private Abono abono;
-	private BigDecimal precio;
-	private int idContrato = -1;
-	private boolean activo;
+	protected Date fechaInicio;
+	protected Cliente cliente;
+	protected Auto auto;
+	protected Cochera cochera;
+	protected MedioPago medioPago;
+	protected Abono abono;
+	protected BigDecimal precio;
+	protected int idContrato = -1;
+	protected boolean activo;
 	
 	public Contrato() {
 		super();
@@ -57,6 +57,8 @@ public class Contrato {
 		return true;
 	}
 
+	public abstract BigDecimal calcularPrecio();
+	
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}

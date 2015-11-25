@@ -22,6 +22,15 @@ public class MapaCocheras {
 		return false;
 	}
 	
+	public boolean liberar(Auto auto) {
+		if (mapa.containsKey(auto)) {
+			mapa.remove(auto);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public Cochera asignar(Auto auto) throws Exception {
 		if (hayDisponible(auto)) {
 			for (Map.Entry<Cochera, Auto> entry : mapa.entrySet()) {
