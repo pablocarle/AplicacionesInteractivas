@@ -141,5 +141,4 @@ public class MediosDePagoMapper implements Mapper {
         PoolConnection.getPoolConnection().releaseConnection(conn);
         return mediosPago;
     }
-
 }

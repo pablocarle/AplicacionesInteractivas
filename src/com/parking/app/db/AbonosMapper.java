@@ -97,6 +97,7 @@ public class AbonosMapper implements Mapper {
 			abono.setDescuento(rs.getFloat(4));
 			return abono;
 		}
+		PoolConnection.getPoolConnection().releaseConnection(conn);
 		return null;
 	}
 
@@ -113,6 +114,7 @@ public class AbonosMapper implements Mapper {
 			abono.setDescuento(rs.getFloat(4));
 			return abono;
 		}
+		PoolConnection.getPoolConnection().releaseConnection(conn);
 		return null;
 	}
 	

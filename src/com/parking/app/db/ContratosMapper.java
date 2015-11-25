@@ -131,6 +131,7 @@ public class ContratosMapper implements Mapper {
 				BigDecimal precio = rs.getBigDecimal(6);
 				Date fechaInicio = rs.getDate(7);
 				boolean activo = rs.getBoolean(8);
+				PoolConnection.getPoolConnection().releaseConnection(conn);
 				return armarContrato(idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo);
 			} else {
 				return null;
@@ -164,6 +165,7 @@ public class ContratosMapper implements Mapper {
 			activo = rs.getBoolean(8);
 			contratos.add(armarContrato(idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo));
 		}
+		PoolConnection.getPoolConnection().releaseConnection(conn);
 		return contratos;
 	}
 	

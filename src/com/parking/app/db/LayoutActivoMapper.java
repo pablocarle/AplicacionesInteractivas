@@ -88,5 +88,4 @@ public class LayoutActivoMapper implements Mapper {
 		PoolConnection.getPoolConnection().releaseConnection(conn);
 		return layoutActivo;
 	}
-
 }
