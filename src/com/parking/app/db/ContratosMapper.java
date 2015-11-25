@@ -163,6 +163,8 @@ public class ContratosMapper implements Mapper {
 		BigDecimal precio;
 		Date fechaInicio;
 		boolean activo;
+		List<ContratoAux> contratosAux = new ArrayList<ContratosMapper.ContratoAux>();
+		ContratoAux contratoAux = null;
 		while (rs.next()) {
 			idContrato = rs.getInt(1);
 			idCliente = rs.getInt(2);
@@ -172,9 +174,21 @@ public class ContratosMapper implements Mapper {
 			precio = rs.getBigDecimal(6);
 			fechaInicio = rs.getDate(7);
 			activo = rs.getBoolean(8);
-			contratos.add(armarContrato(idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo));
+			contratoAux = new ContratoAux();
+			contratoAux.setIdContrato(idContrato);
+			contratoAux.setIdCliente(idCliente);
+			contratoAux.setIdAuto(idAuto);
+			contratoAux.setIdMedioPago(idMedioPago);
+			contratoAux.setIdAbono(idAbono);
+			contratoAux.setPrecio(precio);
+			contratoAux.setFecha(fechaInicio);
+			contratoAux.setActivo(activo);
+			contratosAux.add(contratoAux);
 		}
 		PoolConnection.getPoolConnection().releaseConnection(conn);
+		for (ContratoAux ca : contratosAux) {
+			contratos.add(armarContrato(ca.getIdContrato(), ca.getIdCliente(), ca.getIdAuto(), ca.getIdMedioPago(), ca.getIdAbono(), ca.getPrecio(), ca.getFecha(), ca.isActivo()));
+		}
 		return contratos;
 	}
 	
@@ -209,5 +223,66 @@ public class ContratosMapper implements Mapper {
 			contrato.setPrecio(precio);
 		}
 		return contrato;
+	}
+	
+	private class ContratoAux {
+		
+		private int idContrato;
+		private int idCliente;
+		private int idAuto;
+		private int idMedioPago;
+		private int idAbono;
+		private BigDecimal precio;
+		private Date fecha;
+		private boolean activo;
+		
+		public int getIdContrato() {
+			return idContrato;
+		}
+		public void setIdContrato(int idContrato) {
+			this.idContrato = idContrato;
+		}
+		public int getIdCliente() {
+			return idCliente;
+		}
+		public void setIdCliente(int idCliente) {
+			this.idCliente = idCliente;
+		}
+		public int getIdAuto() {
+			return idAuto;
+		}
+		public void setIdAuto(int idAuto) {
+			this.idAuto = idAuto;
+		}
+		public int getIdMedioPago() {
+			return idMedioPago;
+		}
+		public void setIdMedioPago(int idMedioPago) {
+			this.idMedioPago = idMedioPago;
+		}
+		public int getIdAbono() {
+			return idAbono;
+		}
+		public void setIdAbono(int idAbono) {
+			this.idAbono = idAbono;
+		}
+		public BigDecimal getPrecio() {
+			return precio;
+		}
+		public void setPrecio(BigDecimal precio) {
+			this.precio = precio;
+		}
+		public Date getFecha() {
+			return fecha;
+		}
+		public void setFecha(Date fecha) {
+			this.fecha = fecha;
+		}
+		public boolean isActivo() {
+			return activo;
+		}
+		public void setActivo(boolean activo) {
+			this.activo = activo;
+		}
 	}
 }
