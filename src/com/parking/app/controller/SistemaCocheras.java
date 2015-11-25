@@ -518,4 +518,19 @@ public class SistemaCocheras {
         mediosPago.remove(medioPago);
         MediosDePagoMapper.obtenerMapper().delete(idMedioPago);
     }
+
+	public List<ContratoView> obtenerContratosActivos() {
+		List<ContratoView> retList = new ArrayList<ContratoView>();
+		for (Contrato c : contratos) {
+			if (c.isActivo()) {
+				retList.add(c.obtenerVista());
+			}
+		}
+		return retList;
+	}
+
+	public void eliminarContrato(int idContrato) {
+		// TODO Auto-generated method stub
+		
+	}
 }

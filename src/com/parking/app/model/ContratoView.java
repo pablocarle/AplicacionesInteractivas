@@ -27,6 +27,13 @@ public class ContratoView {
 		this.activo = contrato.isActivo();
 	}
 
+	@Override
+	public String toString() {
+		return "[Fecha de Inicio: " + fechaInicio + ", Cliente: "
+				+ cliente + ", Auto: " + auto + ", Medio de Pago: " + medioPago
+				+ ", Abono: " + abono + ", Precio: " + precio + "]";
+	}
+
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
