@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.parking.app.model.Auto;
 
@@ -62,12 +63,39 @@ public class AutosMapper implements Mapper {
 	}
 
 	public void delete(Object d) throws Exception {
-		// TODO delete
-
+		int id = 0;
+		if (d instanceof Number) {
+			id = ((Number) d).intValue();
+		}
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("delete from autos where idAuto = ?");
+		ps.setInt(1, id);
+		ps.execute();
+		PoolConnection.getPoolConnection().releaseConnection(conn);
 	}
 
 	public Auto select(Object o) throws Exception {
-		// TODO select
+		int id = 0;
+		if (o instanceof Number) {
+			id = ((Number) o).intValue();
+		}
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("select idAuto, patente, marca, modelo, esgrande from autos where idAuto = ?");
+		ps.setInt(1, id);
+		if (ps.execute()) {
+			ResultSet rs = ps.getResultSet();
+			if (rs.next()) {
+				int idAuto = rs.getInt(1);
+				String patente = rs.getString(2);
+				String marca = rs.getString(3);
+				String modelo = rs.getString(4);
+				boolean esGrande = rs.getBoolean(5);
+				Auto auto = new Auto(patente, marca, modelo, esGrande);
+				auto.setIdAuto(idAuto);
+				PoolConnection.getPoolConnection().releaseConnection(conn);
+				return auto;
+			}
+		}
 		return null;
 	}
 
@@ -109,4 +137,27 @@ public class AutosMapper implements Mapper {
 
         PoolConnection.getPoolConnection().releaseConnection(conn);
     }
+
+	public List<Auto> selectDeCliente(int idCliente) throws Exception {
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+        PreparedStatement ps = conn.prepareStatement("select idCliente, idAuto from clientes_autos where idCliente = ?");
+        ps.setInt(1, idCliente);
+        List<Auto> autos = new ArrayList<Auto>();
+
+        if (ps.execute()) {
+            ResultSet rs = ps.getResultSet();
+            int idAuto;
+
+            Auto auto = null;
+            while (rs.next()) {
+                idAuto = rs.getInt(2);
+                auto = select(idAuto);
+                if (auto != null) {
+                	autos.add(auto);
+                }
+            }
+        }
+        PoolConnection.getPoolConnection().releaseConnection(conn);
+        return autos;
+	}
 }

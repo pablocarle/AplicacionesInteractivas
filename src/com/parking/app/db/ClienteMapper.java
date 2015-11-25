@@ -89,13 +89,36 @@ public class ClienteMapper implements Mapper {
 	}
 
 	public Cliente select(Object o) throws Exception {
-	    Cliente cliente = null;
-		if (o instanceof Cliente) {
-			cliente = (Cliente) o;
-		} else {
-			throw new Exception();
+		int id = 0;
+		if (o instanceof Number) {
+			id = ((Number) o).intValue();
 		}
-		return cliente;
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("select idCliente, nombre, domicilio, telefono, email, activo from clientes where idCliente=?");
+		ps.setInt(1, id);
+		if (ps.execute()) {
+			ResultSet rs = ps.getResultSet();
+			if (rs.next()) {
+				int idCliente = rs.getInt(1);
+				String nombre = rs.getString(2);
+				String domicilio = rs.getString(3);
+				String telefono = rs.getString(4);
+				String email = rs.getString(5);
+				boolean activo = rs.getBoolean(6);
+				Cliente cliente = new Cliente();
+				cliente.setIdCliente(idCliente);
+				cliente.setNombre(nombre);
+				cliente.setDomicilio(domicilio);
+				cliente.setTelefono(telefono);
+				cliente.setEmail(email);
+				cliente.setActivo(activo);
+				Collection<Auto> autos = AutosMapper.obtenerMapper().selectDeCliente(idCliente);
+				cliente.setAutos(new ArrayList<Auto>(autos));
+				return cliente;
+			}
+		}
+		PoolConnection.getPoolConnection().releaseConnection(conn);
+		return null;
 	}
 
 	public Collection<Cliente> selectAll() throws Exception {
@@ -119,6 +142,7 @@ public class ClienteMapper implements Mapper {
 				email = rs.getString(5);
 				activo = rs.getBoolean(6);
 				cliente = new Cliente(idCliente, nombre, domicilio, telefono, email, activo);
+				cliente.setAutos(AutosMapper.obtenerMapper().selectDeCliente(idCliente));
 				clientes.add(cliente);
 			}
 		}

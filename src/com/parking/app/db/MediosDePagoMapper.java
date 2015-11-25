@@ -81,7 +81,27 @@ public class MediosDePagoMapper implements Mapper {
 
     @Override
     public MedioPago select(Object o) throws Exception {
-        // TODO select
+    	int id = 0;
+    	if (o instanceof Number) {
+    		id = ((Number) o).intValue();
+    	}
+    	Connection conn = PoolConnection.getPoolConnection().getConnection();
+    	PreparedStatement ps = conn.prepareStatement("select idMedioPago, nombre, descripcion, idBanco from mediospago where idMedioPago = ?");
+    	ps.setInt(1, id);
+    	if (ps.execute()) {
+    		ResultSet rs = ps.getResultSet();
+    		if (rs.next()) {
+    			int idMedioPago = rs.getInt(1);
+                String nombre = rs.getString(2);
+                String descripcion = rs.getString(3);
+                Integer idBanco = rs.getInt(4); 
+                Banco banco = BancosMapper.obtenerMapper().select(idBanco);
+                MedioPago medioPago = new MedioPago(nombre, banco, descripcion);
+                medioPago.setIdMedioPago(idMedioPago);
+                PoolConnection.getPoolConnection().releaseConnection(conn);
+                return medioPago;
+    		}
+    	}
         return null;
     }
 

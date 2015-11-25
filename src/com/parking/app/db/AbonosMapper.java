@@ -3,6 +3,7 @@ package com.parking.app.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,13 +35,13 @@ public class AbonosMapper implements Mapper {
             ps.setFloat(3, abono.getDescuento());
             ps.execute();
             PoolConnection.getPoolConnection().releaseConnection(conn);
-            return select(abono.getDias()).getIdAbono();
+            return selectPorDia(abono.getDias()).getIdAbono();
         } else {
             throw new Exception();
         }
     }
 
-    @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private int getAbonoId(String nombre) throws Exception {
         Connection conn = PoolConnection.getPoolConnection().getConnection();
         PreparedStatement ps = conn.prepareStatement("select idAbono from abonos where nombre=?");
@@ -80,10 +81,26 @@ public class AbonosMapper implements Mapper {
 
 	@Override
 	public Abono select(Object o) throws Exception {
-		int dias = 0;
+		int idAbono = 0;
 		if (o instanceof Number) {
-			dias = ((Number) o).intValue();
+			idAbono = ((Number) o).intValue();
 		}
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("select idAbono, nombre, dias, descuento from abonos where idAbono = ?");
+		ps.setInt(1, idAbono);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			Abono abono = new Abono();
+			abono.setIdAbono(rs.getInt(1));
+			abono.setNombre(rs.getString(2));
+			abono.setDias(rs.getInt(3));
+			abono.setDescuento(rs.getFloat(4));
+			return abono;
+		}
+		return null;
+	}
+
+    private Abono selectPorDia(int dias) throws SQLException {
 		Connection conn = PoolConnection.getPoolConnection().getConnection();
 		PreparedStatement ps = conn.prepareStatement("select idAbono, nombre, dias, descuento from abonos where dias = ?");
 		ps.setInt(1, dias);
@@ -98,7 +115,7 @@ public class AbonosMapper implements Mapper {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public Collection<Abono> selectAll() throws Exception {
 	    Connection conn = PoolConnection.getPoolConnection().getConnection();

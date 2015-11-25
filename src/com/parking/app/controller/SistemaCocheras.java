@@ -13,6 +13,7 @@ import com.parking.app.db.AutosMapper;
 import com.parking.app.db.BancosMapper;
 import com.parking.app.db.ClienteMapper;
 import com.parking.app.db.ContratosMapper;
+import com.parking.app.db.LayoutActivoMapper;
 import com.parking.app.db.MediosDePagoMapper;
 import com.parking.app.model.Abono;
 import com.parking.app.model.AbonoView;
@@ -27,6 +28,7 @@ import com.parking.app.model.Cochera;
 import com.parking.app.model.CocheraEstandar;
 import com.parking.app.model.Contrato;
 import com.parking.app.model.ContratoView;
+import com.parking.app.model.LayoutActivo;
 import com.parking.app.model.MapaCocheras;
 import com.parking.app.model.MedioPago;
 import com.parking.app.model.MedioPagoView;
@@ -65,12 +67,24 @@ public class SistemaCocheras {
 	}
 	
 	private void cargarModelo() throws Exception {
+		Collection<LayoutActivo> layoutActivo = LayoutActivoMapper.getMapper().selectAll();
+		if (!layoutActivo.isEmpty()) {
+			LayoutActivo activo = layoutActivo.iterator().next();
+			crearCocheras(activo.getCocherasEstandar(), activo.getCocherasEspeciales());
+		}
+		
 		clientes = ClienteMapper.obtenerMapper().selectAll();
 		bancos = BancosMapper.obtenerMapper().selectAll();
 		mediosPago = MediosDePagoMapper.obtenerMapper().selectAll();
 		autos = AutosMapper.obtenerMapper().selectAll();
 		contratos = ContratosMapper.obtenerMapper().selectAll();
 		abonos = AbonosMapper.obtenerMapper().selectAll();
+		
+		for (Contrato contrato : contratos) {
+			if (contrato.isActivo()) {
+				mapaCocheras.asignar(contrato.getAuto());
+			}
+		}
 	}
 
 	public static SistemaCocheras getSistemaCocheras() {
@@ -228,7 +242,7 @@ public class SistemaCocheras {
 			mapaCocheras.asignar(auto);
 			return contrato.obtenerVista();
 		} else {
-			throw new Exception();
+			throw new Exception("No hay disponibilidad");
 		}
 	}
 
