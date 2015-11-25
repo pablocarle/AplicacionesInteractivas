@@ -143,6 +143,7 @@ public class ContratosMapper implements Mapper {
 				PoolConnection.getPoolConnection().releaseConnection(conn);
 				return armarContrato(idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo);
 			} else {
+			    PoolConnection.getPoolConnection().releaseConnection(conn);
 				return null;
 			}
 		} else {

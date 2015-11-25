@@ -61,6 +61,7 @@ public class ChequesMapper implements Mapper {
 	@Override
 	public Object select(Object o) throws Exception {
 		int id = 0;
+		Cheque cheque = null;
 		if (o instanceof Number) {
 			id = ((Number) o).intValue();
 		}
@@ -69,7 +70,6 @@ public class ChequesMapper implements Mapper {
 		ps.setInt(1, id);
 		if (ps.execute()) {
 			ResultSet rs = ps.getResultSet();
-			Cheque cheque = null;
 			Date fecha;
 			BigDecimal monto;
 			String entidad;
@@ -91,10 +91,9 @@ public class ChequesMapper implements Mapper {
 				cheque.setMonto(monto);
 				cheque.setNumero(numero);
 			}
-			PoolConnection.getPoolConnection().releaseConnection(conn);
-			return cheque;
 		}
-		return null;
+		PoolConnection.getPoolConnection().releaseConnection(conn);
+        return cheque;
 	}
 
 	@Override
