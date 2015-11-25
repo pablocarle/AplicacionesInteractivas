@@ -11,12 +11,6 @@ public class CocheraEspezial extends Cochera {
 		this.cocheraSimple2 = cocheraSimple2;
 	}
 
-	@Override
-	public boolean aceptaAuto(Auto auto) {
-		// TODO Auto-generated method stub
-		return super.aceptaAuto(auto);
-	}
-	
 	public Cochera getCocheraSimple1() {
 		return cocheraSimple1;
 	}
@@ -31,5 +25,10 @@ public class CocheraEspezial extends Cochera {
 
 	public void setCocheraSimple2(Cochera cocheraSimple2) {
 		this.cocheraSimple2 = cocheraSimple2;
+	}
+
+	@Override
+	public boolean aceptaAuto(Auto auto) {
+		return auto.sosGrande();
 	}
 }

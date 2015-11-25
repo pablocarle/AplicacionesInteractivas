@@ -48,6 +48,12 @@ public class MapaCocheras {
 				}
 			}
 		}
+		for (Cochera cochera : retList) {
+			if (!mapa.containsKey(cochera)) {
+				mapa.put(cochera, null);
+			}
+			mapa.put(cochera, null);
+		}
 		return retList;
 	}
 }

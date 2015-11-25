@@ -1,6 +1,7 @@
 package com.parking.app.model;
 
 public class Auto {
+	
     protected int idAuto;
 	protected String patente;
 	protected String marca;

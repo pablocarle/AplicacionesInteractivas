@@ -202,6 +202,9 @@ public class SistemaCocheras {
 	}
 
 	public ContratoView crearContrato(int idCliente, String patente, int idMedioPago, int idAbono) throws Exception {
+		if (!inicializado) {
+			throw new Exception("Las cocheras no estan inicializadas. Inicialice layout de cocheras para comenzar");
+		}
 		Cliente cliente = obtenerCliente(idCliente);
 		Auto auto = cliente.obtenerAuto(patente);
 		MedioPago medioPago = obtenerMedioPago(idMedioPago);
