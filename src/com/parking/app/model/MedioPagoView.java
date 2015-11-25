@@ -1,7 +1,8 @@
 package com.parking.app.model;
 
 public class MedioPagoView {
-    private int idMedioPago;
+
+	private int idMedioPago;
     private String nombre;
     private BancoView banco;
     private String descripcion;
@@ -10,11 +11,11 @@ public class MedioPagoView {
     private String archivo;
 
 	public MedioPagoView(MedioPago medioPago) {
+		super();
 	    idMedioPago = medioPago.getIdMedioPago();
         nombre = medioPago.getNombre();
         banco = (medioPago.getBanco() == null) ? null : medioPago.getBanco().obtenerVista();
         descripcion = medioPago.getDescripcion();
-
     }
 
     public int getIdMedioPago() {
@@ -37,4 +38,44 @@ public class MedioPagoView {
     public String toString() {
         return nombre +" ("+descripcion+")";
     }
+
+	public String getFtpOut() {
+		return ftpOut;
+	}
+
+	public void setFtpOut(String ftpOut) {
+		this.ftpOut = ftpOut;
+	}
+
+	public String getFtpIn() {
+		return ftpIn;
+	}
+
+	public void setFtpIn(String ftpIn) {
+		this.ftpIn = ftpIn;
+	}
+
+	public String getArchivo() {
+		return archivo;
+	}
+
+	public void setArchivo(String archivo) {
+		this.archivo = archivo;
+	}
+
+	public void setIdMedioPago(int idMedioPago) {
+		this.idMedioPago = idMedioPago;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setBanco(BancoView banco) {
+		this.banco = banco;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 }
