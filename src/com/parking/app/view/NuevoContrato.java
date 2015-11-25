@@ -38,13 +38,13 @@ public class NuevoContrato extends JDialog {
 	private JComboBox<MedioPagoView> comboBoxMediosPago = new JComboBox<MedioPagoView>();
 	private JComboBox<AbonoView> comboBoxAbonos = new JComboBox<AbonoView>();
 	
-	private List<ChequeView> cheques = new ArrayList<>();
+	private List<ChequeView> cheques = new ArrayList<ChequeView>();
+	private JDialog chequesDialog = new AsignarChequesDialog(cheques);
 	private final JButton btnCheques = new JButton("Cheques");
 	{
 		btnCheques.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JDialog asignarCheques = new AsignarChequesDialog(cheques);
-				asignarCheques.setVisible(true);
+				chequesDialog.setVisible(true);
 			}
 		});
 		btnCheques.setVisible(false);
@@ -183,6 +183,7 @@ public class NuevoContrato extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						chequesDialog.dispose();
 						dispose();
 					}
 				});

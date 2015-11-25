@@ -84,9 +84,36 @@ public class ChequesMapper implements Mapper {
 	}
 
 	@Override
-	public Collection<? extends Object> selectAll() throws Exception {
-		Collection<Cheque> cheques = new ArrayList<>();
+	public Collection<Cheque> selectAll() throws Exception {
+		Collection<Cheque> cheques = new ArrayList<Cheque>();
+		Connection conn = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement ps = conn.prepareStatement("select idCheque, idContrato, fecha, monto, entidad, numero from cheques");
+		if (ps.execute()) {
+			ResultSet rs = ps.getResultSet();
+			int idCheque;
+			int idContrato;
+			Date fecha;
+			BigDecimal monto;
+			String entidad;
+			String numero;
+			Cheque c = null;
+			while (rs.next()) {
+				idCheque = rs.getInt(1);
+				idContrato = rs.getInt(2);
+				fecha = rs.getDate(3);
+				monto = rs.getBigDecimal(4);
+				entidad = rs.getString(5);
+				numero = rs.getString(6);
+				c = new Cheque();
+				c.setIdCheque(idCheque);
+				c.setIdContrato(idContrato);
+				c.setFecha(fecha);
+				c.setMonto(monto);
+				c.setEntidad(entidad);
+				c.setNumero(numero);
+				cheques.add(c);
+			}
+		}
 		return cheques;
 	}
-
 }

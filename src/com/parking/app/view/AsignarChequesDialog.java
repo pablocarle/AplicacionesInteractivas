@@ -25,6 +25,8 @@ public class AsignarChequesDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	private List<ChequeView> cheques;
+	private List<ChequeView> chequesAux;
+	
 	private JTextField txtNumero;
 	private JTextField txtEntidad;
 	private JTextField txtFecha;
@@ -32,16 +34,17 @@ public class AsignarChequesDialog extends JDialog {
 	
 	private JList<ChequeView> chequeList;
 
-	public AsignarChequesDialog(List<ChequeView> cheques) {
+	public AsignarChequesDialog(final List<ChequeView> cheques) {
 		super();
 		setBounds(100, 100, 534, 366);
 		setResizable(false);
 		setModal(true);
 		cheques.clear();
 		this.cheques = cheques;
+		this.chequesAux = cheques;
 		getContentPane().setLayout(null);
 		
-		chequeList = new JList<>();
+		chequeList = new JList<ChequeView>();
 		chequeList.setBounds(12, 12, 504, 131);
 		getContentPane().add(chequeList);
 		
@@ -50,7 +53,6 @@ public class AsignarChequesDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if (esFormValido()) {
 					ChequeView cv = new ChequeView();
-					cv.setEntidad(txtEntidad.getText());
 					SimpleDateFormat sdf = new SimpleDateFormat();
 					Date fecha;
 					try {
@@ -58,12 +60,14 @@ public class AsignarChequesDialog extends JDialog {
 						cv.setFecha(fecha);
 						cv.setMonto(new BigDecimal(Double.parseDouble(txtMonto.getText())));
 						cv.setNumero(txtNumero.getText());
-						
+						cv.setEntidad(txtEntidad.getText());
+						chequesAux.add(cv);
+						chequeList.removeAll();
+						chequeList.setListData(chequesAux.toArray(new ChequeView[0]));
 					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
+						showMessageDialog(null, e1.getMessage());
 						e1.printStackTrace();
 					}
-					
 				}
 			}
 		});
@@ -76,6 +80,7 @@ public class AsignarChequesDialog extends JDialog {
 				int index = chequeList.getSelectedIndex();
 				if (index >= 0) {
 					chequeList.remove(index);
+					chequesAux.remove(chequeList.getSelectedValue());
 				} else {
 					showMessageDialog(null, "Debe seleccionar un cheque");
 				}
@@ -87,12 +92,18 @@ public class AsignarChequesDialog extends JDialog {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cheques.addAll(chequesAux);
 			}
 		});
 		btnAceptar.setBounds(270, 295, 117, 25);
 		getContentPane().add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 		btnCancelar.setBounds(399, 295, 117, 25);
 		getContentPane().add(btnCancelar);
 		

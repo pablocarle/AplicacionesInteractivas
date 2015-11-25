@@ -262,7 +262,7 @@ public class SistemaCocheras {
 
 	public void crearCocheras(int cocherasSimples, int cocherasEspeciales) throws Exception {
 		if (!inicializado) {
-			List<Cochera> cocheras = new ArrayList<>();
+			List<Cochera> cocheras = new ArrayList<Cochera>();
 			int total = cocherasSimples + (cocherasEspeciales * 2);
 			if (total == CANTIDADCOCHERAS) {
 				Cochera cochera = null;

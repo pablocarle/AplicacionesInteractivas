@@ -44,7 +44,7 @@ public class MapaCocheras {
 	 */
 	public Collection<Cochera> inicializar(Collection<Cochera> cocheras, int estandars, int especiales) throws Exception {
 		limpiarLayoutActivos();
-		List<Cochera> retList = new ArrayList<>();
+		List<Cochera> retList = new ArrayList<Cochera>();
 		int simpleCount = 0;
 		int especialCount = 0;
 		Cochera actual = null;

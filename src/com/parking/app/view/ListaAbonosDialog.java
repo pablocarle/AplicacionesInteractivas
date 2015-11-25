@@ -32,7 +32,7 @@ public class ListaAbonosDialog extends JDialog {
 		getContentPane().setLayout(null);
 		setBounds(100, 100, 450, 311);
 		
-		abonoList = new JList<>();
+		abonoList = new JList<AbonoView>();
 		abonoList.setBounds(12, 42, 422, 185);
 		getContentPane().add(abonoList);
 		
