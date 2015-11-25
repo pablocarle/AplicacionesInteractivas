@@ -52,7 +52,15 @@ public class ContratosMapper implements Mapper {
 			ps.setDate(7, new java.sql.Date(c.getFechaInicio().getTime()));
 			ps.execute();
 			PoolConnection.getPoolConnection().releaseConnection(conn);
-			return getContratoId(c);
+			int idContrato = getContratoId(c);
+			if (c instanceof ContratoAbonoCheque) {
+				ContratoAbonoCheque cab = (ContratoAbonoCheque) c;
+				for (Cheque cheque : cab.getCheques()) {
+					cheque.setIdContrato(idContrato);
+					ChequesMapper.getMapper().insert(cheque);
+				}
+			}
+			return idContrato;
 		} else {
 			throw new ClassCastException();
 		}

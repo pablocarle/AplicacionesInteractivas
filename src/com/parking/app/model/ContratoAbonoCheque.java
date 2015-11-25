@@ -19,8 +19,12 @@ public class ContratoAbonoCheque extends ContratoAbono {
 	}
 
 	private Cheque convertir(ChequeView object) {
-		// TODO Auto-generated method stub
-		return null;
+		Cheque cheque = new Cheque();
+		cheque.setEntidad(object.getEntidad());
+		cheque.setFecha(object.getFecha());
+		cheque.setMonto(object.getMonto());
+		cheque.setNumero(object.getNumero());
+		return cheque;
 	}
 
 	public List<Cheque> getCheques() {
