@@ -1,6 +1,7 @@
 package com.parking.app.model;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 public abstract class Contrato {
@@ -60,7 +61,7 @@ public abstract class Contrato {
 	public abstract BigDecimal calcularPrecio();
 	
 	public Date getFechaInicio() {
-		return fechaInicio;
+		return fechaInicio == null ? Calendar.getInstance().getTime() : fechaInicio;
 	}
 	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;

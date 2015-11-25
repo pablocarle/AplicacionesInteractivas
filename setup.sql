@@ -103,3 +103,11 @@ insert into clientes values(3, 'Pedro Perez', 'Av. Independencia 552', '15765433
 insert into bancos values(1, 'Banco Frances', 'ftp://OutFrances', 'ftp://InFrances');
 insert into bancos values(2, 'Banco Galicia', 'ftp://OutGalicia', 'ftp://InGalicia');
 insert into bancos values(3, 'Banco Santander', 'ftp://OutSantander', 'ftp://InSantander');
+
+insert into abonos values (-1, 'Sin Abono', 0, 0);
+insert into abonos values (0, 'Mes', 30, 20);
+
+insert into mediospago values (-1, 'Efectivo', 'Efectivo', null);
+insert into mediospago values (-2, 'Cheque', 'Cheque', null);
+
+insert into layoutactivo values (30, 10);

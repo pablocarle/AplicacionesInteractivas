@@ -47,13 +47,17 @@ public class AbonosMapper implements Mapper {
         PreparedStatement ps = conn.prepareStatement("select idAbono from abonos where nombre=?");
         ps.setString(1, nombre);
         ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            int idAbono = rs.getInt(1);
-            PoolConnection.getPoolConnection().releaseConnection(conn);
-            return idAbono;
-        } else {
-            throw new Exception();
-        }
+        try {
+			if (rs.next()) {
+				int idAbono = rs.getInt(1);
+				PoolConnection.getPoolConnection().releaseConnection(conn);
+				return idAbono;
+			} else {
+				throw new Exception();
+			}
+		} finally {
+			PoolConnection.getPoolConnection().releaseConnection(conn);
+		}
     }
 
 

@@ -41,7 +41,7 @@ public class ContratosMapper implements Mapper {
 		if (o instanceof Contrato) {
 			Contrato c = (Contrato) o;
 			Connection conn = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement ps = conn.prepareStatement("insert into contratos (idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo) values (?, ?, ?, ?, ?, ?, ?, true)");
+			PreparedStatement ps = conn.prepareStatement("insert into contratos (idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo) values (?, ?, ?, ?, ?, ?, ?, 1)");
 			ps.setInt(1, c.getIdContrato());
 			ps.setInt(2, c.getCliente().getIdCliente());
 			ps.setString(3, c.getAuto().getPatente());

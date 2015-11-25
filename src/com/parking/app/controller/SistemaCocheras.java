@@ -37,7 +37,6 @@ import com.parking.app.model.LayoutActivo;
 import com.parking.app.model.MapaCocheras;
 import com.parking.app.model.MedioPago;
 import com.parking.app.model.MedioPagoView;
-import com.parking.app.model.Tarifa;
 
 public class SistemaCocheras {
 	
@@ -101,8 +100,8 @@ public class SistemaCocheras {
 	
 	private Collection<Cliente> clientes = new ArrayList<Cliente>();
 	private Collection<Contrato> contratos = new ArrayList<Contrato>();
+	@SuppressWarnings("unused")
 	private Collection<Cochera> cocheras = new ArrayList<Cochera>();
-	private Collection<Tarifa> tarifas = new ArrayList<Tarifa>();
 	private Collection<Abono> abonos = new ArrayList<Abono>();
 	private Collection<Banco> bancos = new ArrayList<Banco>();
 	private Collection<Auto> autos = new ArrayList<Auto>();
