@@ -40,6 +40,7 @@ public class ContratosMapper implements Mapper {
 	public int insert(Object o) throws Exception {
 		if (o instanceof Contrato) {
 			Contrato c = (Contrato) o;
+			c.setActivo(true);
 			Connection conn = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement ps = conn.prepareStatement("insert into contratos (idContrato, idCliente, idAuto, idMedioPago, idAbono, precio, fechaInicio, activo) values (?, ?, ?, ?, ?, ?, ?, 1)");
 			ps.setInt(1, c.getIdContrato());
