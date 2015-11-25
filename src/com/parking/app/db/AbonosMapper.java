@@ -86,6 +86,7 @@ public class AbonosMapper implements Mapper {
 	@Override
 	public Abono select(Object o) throws Exception {
 		int idAbono = 0;
+		Abono abono = null;
 		if (o instanceof Number) {
 			idAbono = ((Number) o).intValue();
 		}
@@ -94,15 +95,14 @@ public class AbonosMapper implements Mapper {
 		ps.setInt(1, idAbono);
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
-			Abono abono = new Abono();
+			abono = new Abono();
 			abono.setIdAbono(rs.getInt(1));
 			abono.setNombre(rs.getString(2));
 			abono.setDias(rs.getInt(3));
 			abono.setDescuento(rs.getFloat(4));
-			return abono;
 		}
 		PoolConnection.getPoolConnection().releaseConnection(conn);
-		return null;
+		return abono;
 	}
 
     private Abono selectPorDia(int dias) throws SQLException {

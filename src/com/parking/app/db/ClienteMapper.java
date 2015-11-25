@@ -90,6 +90,7 @@ public class ClienteMapper implements Mapper {
 
 	public Cliente select(Object o) throws Exception {
 		int id = 0;
+		Cliente cliente = null;
 		if (o instanceof Number) {
 			id = ((Number) o).intValue();
 		}
@@ -105,7 +106,7 @@ public class ClienteMapper implements Mapper {
 				String telefono = rs.getString(4);
 				String email = rs.getString(5);
 				boolean activo = rs.getBoolean(6);
-				Cliente cliente = new Cliente();
+				cliente = new Cliente();
 				cliente.setIdCliente(idCliente);
 				cliente.setNombre(nombre);
 				cliente.setDomicilio(domicilio);
@@ -114,11 +115,10 @@ public class ClienteMapper implements Mapper {
 				cliente.setActivo(activo);
 				Collection<Auto> autos = AutosMapper.obtenerMapper().selectDeCliente(idCliente);
 				cliente.setAutos(new ArrayList<Auto>(autos));
-				return cliente;
 			}
 		}
 		PoolConnection.getPoolConnection().releaseConnection(conn);
-		return null;
+		return cliente;
 	}
 
 	public Collection<Cliente> selectAll() throws Exception {
@@ -142,12 +142,13 @@ public class ClienteMapper implements Mapper {
 				email = rs.getString(5);
 				activo = rs.getBoolean(6);
 				cliente = new Cliente(idCliente, nombre, domicilio, telefono, email, activo);
-				cliente.setAutos(AutosMapper.obtenerMapper().selectDeCliente(idCliente));
 				clientes.add(cliente);
 			}
 		}
 		PoolConnection.getPoolConnection().releaseConnection(conn);
-
+		for(Cliente cliente:clientes) {
+		    cliente.setAutos(AutosMapper.obtenerMapper().selectDeCliente(cliente.getIdCliente()));
+		}
 		return clientes;
 	}
 }

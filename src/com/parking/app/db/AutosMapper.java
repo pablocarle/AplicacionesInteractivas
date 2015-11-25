@@ -76,6 +76,7 @@ public class AutosMapper implements Mapper {
 
 	public Auto select(Object o) throws Exception {
 		int id = 0;
+		Auto auto = null;
 		if (o instanceof Number) {
 			id = ((Number) o).intValue();
 		}
@@ -90,13 +91,12 @@ public class AutosMapper implements Mapper {
 				String marca = rs.getString(3);
 				String modelo = rs.getString(4);
 				boolean esGrande = rs.getBoolean(5);
-				Auto auto = new Auto(patente, marca, modelo, esGrande);
+				auto = new Auto(patente, marca, modelo, esGrande);
 				auto.setIdAuto(idAuto);
-				PoolConnection.getPoolConnection().releaseConnection(conn);
-				return auto;
 			}
 		}
-		return null;
+		PoolConnection.getPoolConnection().releaseConnection(conn);
+		return auto;
 	}
 
 	public Collection<Auto> selectAll() throws Exception {
@@ -140,7 +140,7 @@ public class AutosMapper implements Mapper {
 
 	public List<Auto> selectDeCliente(int idCliente) throws Exception {
 		Connection conn = PoolConnection.getPoolConnection().getConnection();
-        PreparedStatement ps = conn.prepareStatement("select idCliente, idAuto from clientes_autos where idCliente = ?");
+        PreparedStatement ps = conn.prepareStatement("select a.idAuto, a.patente, a.marca, a.modelo, a.esgrande from autos as a join clientes_autos as ca on ca.idAuto = a.idAuto where ca.idCliente = ? ");
         ps.setInt(1, idCliente);
         List<Auto> autos = new ArrayList<Auto>();
 
@@ -150,8 +150,14 @@ public class AutosMapper implements Mapper {
 
             Auto auto = null;
             while (rs.next()) {
-                idAuto = rs.getInt(2);
-                auto = select(idAuto);
+                
+                idAuto = rs.getInt(1);
+                String patente = rs.getString(2);
+                String marca = rs.getString(3);
+                String modelo = rs.getString(4);
+                boolean esGrande = rs.getBoolean(5);
+                auto = new Auto(patente, marca, modelo, esGrande);
+                auto.setIdAuto(idAuto);
                 if (auto != null) {
                 	autos.add(auto);
                 }

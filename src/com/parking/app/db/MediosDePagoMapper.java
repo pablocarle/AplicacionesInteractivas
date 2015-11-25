@@ -82,6 +82,7 @@ public class MediosDePagoMapper implements Mapper {
     @Override
     public MedioPago select(Object o) throws Exception {
     	int id = 0;
+    	MedioPago medioPago = null;
     	if (o instanceof Number) {
     		id = ((Number) o).intValue();
     	}
@@ -96,13 +97,13 @@ public class MediosDePagoMapper implements Mapper {
                 String descripcion = rs.getString(3);
                 Integer idBanco = rs.getInt(4); 
                 Banco banco = BancosMapper.obtenerMapper().select(idBanco);
-                MedioPago medioPago = new MedioPago(nombre, banco, descripcion);
+                medioPago = new MedioPago(nombre, banco, descripcion);
                 medioPago.setIdMedioPago(idMedioPago);
-                PoolConnection.getPoolConnection().releaseConnection(conn);
-                return medioPago;
     		}
     	}
-        return null;
+    	
+    	PoolConnection.getPoolConnection().releaseConnection(conn);
+        return medioPago;
     }
 
     @Override
