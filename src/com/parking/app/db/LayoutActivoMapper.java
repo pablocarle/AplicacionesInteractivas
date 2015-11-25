@@ -9,6 +9,19 @@ import java.util.Collection;
 import com.parking.app.model.LayoutActivo;
 
 public class LayoutActivoMapper implements Mapper {
+	
+	private static LayoutActivoMapper mapper = null;
+	
+	public static LayoutActivoMapper getMapper() {
+		if (mapper == null) {
+			mapper = new LayoutActivoMapper();
+		}
+		return mapper;
+	}
+	
+	private LayoutActivoMapper() {
+		super();
+	}
 
 	@Override
 	public int insert(Object o) throws Exception {
@@ -28,8 +41,8 @@ public class LayoutActivoMapper implements Mapper {
 
 	@Override
 	public void update(Object o) throws Exception {
-		// TODO Auto-generated method stub
-
+//		TODO update
+		throw new Exception("No implementado");
 	}
 
 	@Override
@@ -49,12 +62,12 @@ public class LayoutActivoMapper implements Mapper {
 
 	@Override
 	public Object select(Object o) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+//		TODO Select
+		return new Exception("No implementado");
 	}
 
 	@Override
-	public Collection<? extends Object> selectAll() throws Exception {
+	public Collection<LayoutActivo> selectAll() throws Exception {
 		Connection conn = PoolConnection.getPoolConnection().getConnection();
 		PreparedStatement ps = conn.prepareStatement("select cocherasEstandar, cocherasEspeciales from layoutactivo");
 		Collection<LayoutActivo> layoutActivo = new ArrayList<LayoutActivo>();

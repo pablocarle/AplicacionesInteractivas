@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.parking.app.db.LayoutActivoMapper;
+
 public class MapaCocheras {
 	
 	private Map<Cochera, Auto> mapa = new HashMap<Cochera, Auto>();
@@ -38,8 +40,10 @@ public class MapaCocheras {
 	 * 
 	 * @param cocheras
 	 * @return
+	 * @throws Exception 
 	 */
-	public Collection<Cochera> inicializar(Collection<Cochera> cocheras, int estandars, int especiales) {
+	public Collection<Cochera> inicializar(Collection<Cochera> cocheras, int estandars, int especiales) throws Exception {
+		limpiarLayoutActivos();
 		List<Cochera> retList = new ArrayList<>();
 		int simpleCount = 0;
 		int especialCount = 0;
@@ -67,6 +71,17 @@ public class MapaCocheras {
 			}
 			mapa.put(cochera, null);
 		}
+		LayoutActivo layout = new LayoutActivo();
+		layout.setCocherasEstandar(estandars);
+		layout.setCocherasEspeciales(especiales);
+		LayoutActivoMapper.getMapper().insert(layout);
 		return retList;
+	}
+
+	private void limpiarLayoutActivos() throws Exception {
+		Collection<LayoutActivo> layoutActivos = LayoutActivoMapper.getMapper().selectAll();
+		for (LayoutActivo la : layoutActivos) {
+			LayoutActivoMapper.getMapper().delete(la);
+		}
 	}
 }
