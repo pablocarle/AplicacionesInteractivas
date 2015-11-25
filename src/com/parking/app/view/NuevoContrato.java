@@ -133,6 +133,14 @@ public class NuevoContrato extends JDialog {
 							comboBoxMediosPago.addItem(medioPago);
 						}
 					}
+				} else {
+					comboBoxMediosPago.removeAllItems();
+					MedioPagoView efectivo = new MedioPagoView();
+					efectivo.setIdMedioPago(SistemaCocheras.MEDIOPAGO_EFECTIVO);
+					efectivo.setNombre("Efectivo");
+					efectivo.setDescripcion("Efectivo");
+					efectivo.setBanco(null);
+					comboBoxMediosPago.addItem(efectivo);
 				}
 			}
 		});
@@ -256,9 +264,11 @@ public class NuevoContrato extends JDialog {
 			comboBoxAbonos.addItem(abono);
 		}
 		comboBoxMediosPago.removeAllItems();
-		Vector<MedioPagoView> mediosPago = SistemaCocheras.getSistemaCocheras().listarMediosPago();
-		for (MedioPagoView medioPago : mediosPago) {
-			comboBoxMediosPago.addItem(medioPago);
-		}
+		MedioPagoView efectivo = new MedioPagoView();
+		efectivo.setIdMedioPago(SistemaCocheras.MEDIOPAGO_EFECTIVO);
+		efectivo.setNombre("Efectivo");
+		efectivo.setDescripcion("Efectivo");
+		efectivo.setBanco(null);
+		comboBoxMediosPago.addItem(efectivo);
 	}
 }
