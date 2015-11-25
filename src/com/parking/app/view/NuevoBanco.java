@@ -25,7 +25,7 @@ public class NuevoBanco extends JDialog {
      */
     private static final long serialVersionUID = 1L;
     private final JPanel contentPanel = new JPanel();
-    private JTextField textFieldNombreMedioPago;
+    private JTextField textFieldNombreBanco;
     private JTextField textFieldFTPOut;
     private JTextField textFieldFTPIn;
 
@@ -49,7 +49,7 @@ public class NuevoBanco extends JDialog {
         setResizable(false);
         setModalityType(ModalityType.APPLICATION_MODAL);
         setModal(true);
-        setTitle("Nuevo Medio de Pago");
+        setTitle("Nuevo Banco");
         setBounds(100, 100, 450, 180);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,10 +61,10 @@ public class NuevoBanco extends JDialog {
             contentPanel.add(lblNombre);
         }
         {
-            textFieldNombreMedioPago = new JTextField();
-            textFieldNombreMedioPago.setBounds(211, 8, 213, 20);
-            contentPanel.add(textFieldNombreMedioPago);
-            textFieldNombreMedioPago.setColumns(10);
+            textFieldNombreBanco = new JTextField();
+            textFieldNombreBanco.setBounds(211, 8, 213, 20);
+            contentPanel.add(textFieldNombreBanco);
+            textFieldNombreBanco.setColumns(10);
         }
         {
             JLabel lblNewLabel = new JLabel("FTP Salida");
@@ -97,7 +97,7 @@ public class NuevoBanco extends JDialog {
                 JButton okButton = new JButton("OK");
                 okButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        String nombre = textFieldNombreMedioPago.getText();
+                        String nombre = textFieldNombreBanco.getText();
                         String ftpOut = textFieldFTPOut.getText();
                         String ftpIn = textFieldFTPIn.getText();
                         BancoView bancoView = null;

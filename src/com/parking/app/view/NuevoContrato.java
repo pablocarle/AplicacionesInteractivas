@@ -213,7 +213,7 @@ public class NuevoContrato extends JDialog {
 											showMessageDialog(null, "Contrato creado correctamente con id " + contrato.getIdContrato());
 										}
 									} catch (Exception e1) {
-										showMessageDialog(null, e1.getMessage());
+										showMessageDialog(null, "Ya existe un contrato asociado");
 									}
 								}
 							} else {
