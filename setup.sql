@@ -53,8 +53,19 @@ create table mediospago (
 	nombre varchar(30) not null,
 	descripcion varchar(100),
 	idBanco integer null,
+	escheque boolean,
 	constraint mediospago_pk primary key ( idMedioPago ),
 	constraint mediospago_bancos_fk foreign key (idBanco) references bancos (idBanco)
+);
+
+drop table if exists cheques;
+create table cheques (
+	idCheque integer not null,
+	numero varchar(30) not null,
+	entidad varchar(100),
+	fecha date,
+	monto float not null,
+	primary key (idCheque)
 );
 
 drop table if exists bancos;
