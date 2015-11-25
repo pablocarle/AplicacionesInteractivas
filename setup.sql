@@ -75,6 +75,13 @@ create table abonos (
 	constraint abonos_pk primary key (idAbono)
 );
 
+drop table if exists layoutactivo;
+create table layoutactivo (
+	cocherasEstandar int not null,
+	cocherasEspeciales int null,
+	constraint layoutactivo_pk primary key ( cocherasEstandar, cocherasEspeciales )
+);
+
 create unique index autos_patente_idx on autos ( patente );
 
 insert into clientes values(1, 'Juan Perez', 'Cochabamba 332', '467532463', 'email@localhost', 1);
