@@ -388,4 +388,10 @@ public class SistemaCocheras {
 		abonos.remove(abono);
 		AbonosMapper.obtenerMapper().delete(idAbono);
 	}
+
+    public void bajaMedioPago(int idMedioPago) throws Exception {
+        MedioPago medioPago = obtenerMedioPago(idMedioPago);
+        mediosPago.remove(medioPago);
+        MediosDePagoMapper.obtenerMapper().delete(idMedioPago);
+    }
 }

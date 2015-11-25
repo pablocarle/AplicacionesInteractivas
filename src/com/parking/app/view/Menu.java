@@ -191,6 +191,15 @@ public class Menu extends javax.swing.JFrame {
 				});
 				mnMediosDePago.add(mntmNuevoMedioDe);
 				
+				JMenuItem mntmEliminarMedioDe = new JMenuItem("Eliminar Medio de Pago");
+				mntmEliminarMedioDe.addActionListener(new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				        JDialog dialog = new EliminarMedioPago();
+                        dialog.setVisible(true);
+				    }
+				});
+				mnMediosDePago.add(mntmEliminarMedioDe);
+				
 				mnNewMenu = new JMenu("Bancos");
 				jMenuBar1.add(mnNewMenu);
 				
@@ -200,7 +209,7 @@ public class Menu extends javax.swing.JFrame {
 				    }
 				});
 				mnNewMenu.add(mntmNewMenuItem_1);
-				
+
 				mntmNewMenuItem = new JMenuItem("Nuevo Banco");
 				mntmNewMenuItem.addActionListener(new ActionListener() {
 				    public void actionPerformed(ActionEvent e) {

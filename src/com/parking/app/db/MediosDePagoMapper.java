@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import com.parking.app.controller.SistemaCocheras;
 import com.parking.app.model.Banco;
+import com.parking.app.model.Cliente;
 import com.parking.app.model.MedioPago;
 
 public class MediosDePagoMapper implements Mapper {
@@ -68,9 +69,16 @@ public class MediosDePagoMapper implements Mapper {
     }
 
     @Override
-    public void delete(Object d) throws Exception {
-        // TODO delete
-
+    public void delete(Object idMedioPago) throws Exception {
+        if (idMedioPago instanceof Integer) {
+            Connection conn = PoolConnection.getPoolConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement("delete from mediospago where idMedioPago = ?");
+            ps.setInt(1, (int) idMedioPago);
+            ps.executeUpdate();
+            PoolConnection.getPoolConnection().releaseConnection(conn);
+        } else {
+            throw new Exception();
+        }
     }
 
     @Override
