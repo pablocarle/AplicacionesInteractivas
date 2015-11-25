@@ -33,6 +33,10 @@ import com.parking.app.model.Tarifa;
 
 public class SistemaCocheras {
 	
+	public static int MEDIOPAGO_EFECTIVO = -1;
+	public static int MEDIOPAGO_CHEQUE = -2;
+	public static int ABONO_SINABONO = -1;
+	
 	private static SistemaCocheras instancia;
 	
 	private static Properties props;
@@ -210,6 +214,9 @@ public class SistemaCocheras {
 		MedioPago medioPago = obtenerMedioPago(idMedioPago);
 		Abono abono = obtenerAbono(idAbono);
 		if (mapaCocheras.hayDisponible(auto)) {
+			
+			
+			
 			Contrato contrato = new Contrato();
 			contrato.setAuto(auto);
 			contrato.setCliente(cliente);

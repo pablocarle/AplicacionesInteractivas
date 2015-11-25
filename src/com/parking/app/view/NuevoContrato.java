@@ -116,6 +116,7 @@ public class NuevoContrato extends JDialog {
 							AbonoView abono = (AbonoView) comboBoxAbonos.getSelectedItem();
 							MedioPagoView medioPago = (MedioPagoView) comboBoxMediosPago.getSelectedItem();
 							AutoView auto = (AutoView) comboBoxAuto.getSelectedItem();
+							
 							try {
 								ContratoView contrato = SistemaCocheras.getSistemaCocheras().crearContrato(cliente.getIdCliente(), auto.getPatente(), medioPago == null ? 0 : medioPago.getIdMedioPago(), abono == null ? 0 : abono.getIdAbono());
 								showMessageDialog(null, "Contrato creado correctamente con id " + contrato.getIdContrato());

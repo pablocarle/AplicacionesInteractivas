@@ -1,5 +1,5 @@
 package com.parking.app.model;
 
-public class ContratoAbono {
+public class ContratoAbono extends Contrato {
 
 }
